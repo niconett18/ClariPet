@@ -3,6 +3,8 @@ import {
   ShieldCheck, Leaf, MapPin, Sparkles, HandHeart, Award, FlaskConical,
   Users, Droplet, Smile, Clock, ChevronDown, Plus, Minus, Trash2,
   Dog, Cat, Bone, SprayCan, Facebook, Instagram, Music2,
+  AlertCircle, LogOut, Package, MapPinned, Settings, LayoutDashboard,
+  Boxes, ShoppingBag, Edit, Save, ArrowLeft, Eye, EyeOff,
   type LucideIcon,
 } from "lucide-react";
 
@@ -42,6 +44,19 @@ export const icons: Record<string, LucideIcon> = {
   facebook: Facebook,
   instagram: Instagram,
   tiktok: Music2,
+  "alert-circle": AlertCircle,
+  "log-out": LogOut,
+  package: Package,
+  pinned: MapPinned,
+  settings: Settings,
+  dashboard: LayoutDashboard,
+  boxes: Boxes,
+  bag: ShoppingBag,
+  edit: Edit,
+  save: Save,
+  "arrow-left": ArrowLeft,
+  eye: Eye,
+  "eye-off": EyeOff,
 };
 
 export function Icon({

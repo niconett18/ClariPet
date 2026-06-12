@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useRef } from "react";
+import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons";
@@ -9,35 +9,41 @@ import { Placeholder } from "@/components/Placeholder";
 import { StarRating } from "@/components/ui/StarRating";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { useCart } from "@/context/CartContext";
+import { useFlyToCart } from "@/context/FlyToCartContext";
 
 export function ProductCard({ product }: { product: Product }) {
   const cart = useCart();
-  const router = useRouter();
+  const btnRef = useRef<HTMLDivElement>(null);
+  const { flyToCart } = useFlyToCart();
   const [wish, setWish] = useState(false);
 
   return (
-    <div
-      className="prod-card"
-      role="link"
-      tabIndex={0}
-      onClick={() => router.push(`/product/${product.slug}`)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") router.push(`/product/${product.slug}`);
-      }}
-    >
+    <div className="prod-card">
+      <Link
+        className="prod-card-link"
+        href={`/product/${product.slug}`}
+        aria-label={product.name}
+      />
       <div className="prod-media">
         {product.bestSeller && <span className="prod-tag tag">Best Seller</span>}
         <button
           className={"wishlist" + (wish ? " active" : "")}
           aria-label="Add to wishlist"
-          onClick={(e) => {
-            e.stopPropagation();
-            setWish((w) => !w);
-          }}
+          aria-pressed={wish}
+          onClick={() => setWish((w) => !w)}
         >
           <Icon name="heart" size={19} />
         </button>
-        <Placeholder tone={product.tone} label={product.name} />
+        {product.images?.[0] ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={product.images[0].url}
+            alt={product.images[0].alt ?? product.name}
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        ) : (
+          <Placeholder tone={product.tone} label={product.name} />
+        )}
       </div>
       <div className="prod-body">
         <div className="prod-name">{product.name}</div>
@@ -47,10 +53,11 @@ export function ProductCard({ product }: { product: Product }) {
           <StarRating rating={product.rating} reviews={product.reviews} />
         </div>
         <div
+          ref={btnRef}
           className="prod-add"
-          onClick={(e) => {
-            e.stopPropagation();
-            cart.add(product.slug);
+          onClick={() => {
+            if (btnRef.current) flyToCart(btnRef.current);
+            cart.add(product.slug, undefined, 1, product);
           }}
         >
           <PrimaryButton block size="sm">

@@ -1,13 +1,10 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
 
 export function Hero() {
-  const router = useRouter();
   return (
     <section className="hero">
       <div className="hero-blob" aria-hidden="true" />
@@ -19,12 +16,16 @@ export function Hero() {
           <h1 className="h-display">Premium care for happy, healthy fur babies.</h1>
           <p className="lead">Safe. Gentle. Effective. Because they deserve the best.</p>
           <div className="hero-actions">
-            <PrimaryButton size="lg" icon="arrowRight" onClick={() => router.push("/shop")}>
-              Shop Now
-            </PrimaryButton>
-            <SecondaryButton size="lg" onClick={() => router.push("/quiz")}>
-              Take the Quiz
-            </SecondaryButton>
+            <Link href="/shop">
+              <PrimaryButton size="lg" icon="arrowRight">
+                Shop Now
+              </PrimaryButton>
+            </Link>
+            <Link href="/quiz">
+              <SecondaryButton size="lg">
+                Take the Quiz
+              </SecondaryButton>
+            </Link>
           </div>
         </div>
         <div style={{ position: "relative" }}>

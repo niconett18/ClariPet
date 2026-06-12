@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { Product, Tone } from "@/lib/types";
 import { PRODUCTS } from "@/data/products";
 import { formatPrice } from "@/lib/format";
@@ -14,16 +14,21 @@ import { Accordion, type AccordionItem } from "@/components/ui/Accordion";
 import { Mascot } from "@/components/Mascot";
 import { ProductCard } from "@/components/ProductCard";
 import { useCart } from "@/context/CartContext";
+import { useFlyToCart } from "@/context/FlyToCartContext";
 
 const FEATURE_ICONS = ["shield", "droplet", "clock", "pin"];
 
 export function ProductView({ product }: { product: Product }) {
   const cart = useCart();
+  const { flyToCart } = useFlyToCart();
+  const addRef = useRef<HTMLDivElement>(null);
   const [activeThumb, setActiveThumb] = useState(0);
   const [size, setSize] = useState(product.sizes[0]);
   const [qty, setQty] = useState(1);
   const [wish, setWish] = useState(false);
 
+  const photos = product.images ?? [];
+  const hasPhotos = photos.length > 0;
   const thumbTones: Tone[] = [product.tone, "sky", "cream", "sage"];
 
   const related = PRODUCTS.filter((p) => p.slug !== product.slug && p.category === product.category).slice(0, 4);
@@ -85,19 +90,44 @@ export function ProductView({ product }: { product: Product }) {
       <div className="wrap pdp">
         <div className="pdp-gallery">
           <div className="pdp-thumbs">
-            {thumbTones.map((t, i) => (
-              <button
-                key={i}
-                className={"pdp-thumb" + (activeThumb === i ? " active" : "")}
-                onClick={() => setActiveThumb(i)}
-                aria-label={`View image ${i + 1}`}
-              >
-                <Placeholder tone={t} paw={i === 0} label="" />
-              </button>
-            ))}
+            {hasPhotos
+              ? photos.map((img, i) => (
+                  <button
+                    key={img.url}
+                    className={"pdp-thumb" + (activeThumb === i ? " active" : "")}
+                    onClick={() => setActiveThumb(i)}
+                    aria-label={`View image ${i + 1}`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={img.url}
+                      alt={img.alt ?? `${product.name} photo ${i + 1}`}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                  </button>
+                ))
+              : thumbTones.map((t, i) => (
+                  <button
+                    key={i}
+                    className={"pdp-thumb" + (activeThumb === i ? " active" : "")}
+                    onClick={() => setActiveThumb(i)}
+                    aria-label={`View image ${i + 1}`}
+                  >
+                    <Placeholder tone={t} paw={i === 0} label="" />
+                  </button>
+                ))}
           </div>
           <div className="pdp-main">
-            <Placeholder tone={thumbTones[activeThumb]} label={product.name} />
+            {hasPhotos ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={photos[Math.min(activeThumb, photos.length - 1)].url}
+                alt={photos[Math.min(activeThumb, photos.length - 1)].alt ?? product.name}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
+            ) : (
+              <Placeholder tone={thumbTones[activeThumb]} label={product.name} />
+            )}
           </div>
         </div>
 
@@ -134,9 +164,15 @@ export function ProductView({ product }: { product: Product }) {
             </div>
           </div>
 
-          <div className="pdp-buy">
+          <div className="pdp-buy" ref={addRef}>
             <QuantityStepper value={qty} onChange={setQty} />
-            <PrimaryButton size="lg" onClick={() => cart.add(product.slug, size, qty)}>
+            <PrimaryButton
+              size="lg"
+              onClick={() => {
+                if (addRef.current) flyToCart(addRef.current);
+                cart.add(product.slug, size, qty, product);
+              }}
+            >
               Add to Cart
             </PrimaryButton>
             <button

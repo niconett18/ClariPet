@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useRef, type ReactNode } from "react";
 import { Icon } from "@/components/icons";
 
 type BtnProps = {
@@ -8,14 +10,45 @@ type BtnProps = {
   block?: boolean;
   type?: "button" | "submit";
   icon?: string;
+  disabled?: boolean;
 };
 
-export function PrimaryButton({ children, onClick, size = "md", block, type = "button", icon }: BtnProps) {
-  const cls = ["btn btn-primary", size === "lg" ? "btn-lg" : size === "sm" ? "btn-sm" : "", block ? "btn-block" : ""]
+export function PrimaryButton({
+  children,
+  onClick,
+  size = "md",
+  block,
+  type = "button",
+  icon,
+  disabled,
+}: BtnProps) {
+  const ref = useRef<HTMLButtonElement>(null);
+  const cls = [
+    "btn btn-primary ripple",
+    size === "lg" ? "btn-lg" : size === "sm" ? "btn-sm" : "",
+    block ? "btn-block" : "",
+  ]
     .filter(Boolean)
     .join(" ");
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const btn = ref.current;
+    if (btn) {
+      const r = btn.getBoundingClientRect();
+      btn.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+      btn.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+    }
+    onClick?.();
+  };
+
   return (
-    <button type={type} onClick={onClick} className={cls}>
+    <button
+      ref={ref}
+      type={type}
+      onClick={handleClick}
+      className={cls}
+      disabled={disabled}
+    >
       {children}
       {icon && <Icon name={icon} size={18} />}
     </button>

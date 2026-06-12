@@ -121,7 +121,7 @@ export function Quiz() {
           <Mascot tone="sky" speech="Great choices ahead!" sub="ClariPet recommends" />
           <div
             className="prod-grid"
-            style={{ gridTemplateColumns: `repeat(${Math.min(recs.length, 3)}, 1fr)`, marginTop: 28 }}
+            style={{ gridTemplateColumns: `repeat(auto-fit, minmax(180px, 1fr))`, marginTop: 28 }}
           >
             {recs.map((p) => (
               <ProductCard key={p.slug} product={p} />

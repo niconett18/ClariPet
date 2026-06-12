@@ -1,13 +1,15 @@
 import Link from "next/link";
-import { BEST_SELLERS } from "@/data/products";
+import { getBestSellers } from "@/lib/data";
 import { Icon } from "@/components/icons";
 import { ProductCard } from "@/components/ProductCard";
 
-export function BestSellers() {
+export async function BestSellers() {
+  const products = await getBestSellers();
+
   return (
     <section className="section" style={{ paddingTop: 0 }}>
       <div className="wrap">
-        <div className="sec-head">
+        <div className="sec-head reveal">
           <div>
             <div className="eyebrow" style={{ marginBottom: 10 }}>
               Loved most
@@ -19,8 +21,10 @@ export function BestSellers() {
           </Link>
         </div>
         <div className="prod-grid">
-          {BEST_SELLERS.map((p) => (
-            <ProductCard key={p.slug} product={p} />
+          {products.map((p, i) => (
+            <div key={p.slug} className={`reveal-scale reveal-d${Math.min(i + 1, 5)}`}>
+              <ProductCard product={p} />
+            </div>
           ))}
         </div>
       </div>

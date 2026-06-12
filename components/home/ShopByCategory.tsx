@@ -7,7 +7,7 @@ export function ShopByCategory() {
   return (
     <section className="section">
       <div className="wrap">
-        <div className="sec-head">
+        <div className="sec-head reveal">
           <div>
             <div className="eyebrow" style={{ marginBottom: 10 }}>
               Find their match
@@ -19,8 +19,10 @@ export function ShopByCategory() {
           </Link>
         </div>
         <div className="cat-grid">
-          {CATEGORIES.map((c) => (
-            <CategoryCard key={c.slug} cat={c} />
+          {CATEGORIES.map((c, i) => (
+            <div key={c.slug} className={`reveal reveal-d${Math.min(i + 1, 5)}`}>
+              <CategoryCard cat={c} />
+            </div>
           ))}
         </div>
       </div>

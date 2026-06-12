@@ -13,7 +13,7 @@ export function WhyChoose() {
     <section className="section" style={{ paddingTop: 0 }}>
       <div className="wrap">
         <div className="why">
-          <div className="center">
+          <div className="center reveal">
             <div className="eyebrow" style={{ marginBottom: 10 }}>
               Our difference
             </div>
@@ -21,7 +21,7 @@ export function WhyChoose() {
           </div>
           <div className="why-grid">
             {WHY.map((w, i) => (
-              <div className="why-item" key={i}>
+              <div key={i} className={`why-item reveal reveal-d${Math.min(i + 1, 5)}`}>
                 <div className="why-ic">
                   <Icon name={w.ic} size={28} />
                 </div>

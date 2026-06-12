@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useRef, type ReactNode } from "react";
 import { Icon } from "@/components/icons";
 
 type BtnProps = {
@@ -9,12 +11,34 @@ type BtnProps = {
   icon?: string;
 };
 
-export function SecondaryButton({ children, onClick, size = "md", block, icon }: BtnProps) {
-  const cls = ["btn btn-secondary", size === "lg" ? "btn-lg" : size === "sm" ? "btn-sm" : "", block ? "btn-block" : ""]
+export function SecondaryButton({
+  children,
+  onClick,
+  size = "md",
+  block,
+  icon,
+}: BtnProps) {
+  const ref = useRef<HTMLButtonElement>(null);
+  const cls = [
+    "btn btn-secondary ripple",
+    size === "lg" ? "btn-lg" : size === "sm" ? "btn-sm" : "",
+    block ? "btn-block" : "",
+  ]
     .filter(Boolean)
     .join(" ");
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const btn = ref.current;
+    if (btn) {
+      const r = btn.getBoundingClientRect();
+      btn.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+      btn.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+    }
+    onClick?.();
+  };
+
   return (
-    <button type="button" onClick={onClick} className={cls}>
+    <button type="button" onClick={handleClick} className={cls}>
       {children}
       {icon && <Icon name={icon} size={18} />}
     </button>

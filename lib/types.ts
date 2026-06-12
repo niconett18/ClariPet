@@ -27,6 +27,8 @@ export interface Product {
   mascot: string;
   ingredients: string;
   howto: string;
+  /** Uploaded photos, ordered. Empty/undefined → illustrated placeholder. */
+  images?: { url: string; alt?: string }[];
 }
 
 export interface ArticleSection {

@@ -68,6 +68,8 @@
 
 html { scroll-behavior: smooth; }
 
+html, body { overflow-x: hidden; max-width: 100%; }
+
 body {
   margin: 0;
   font-family: var(--font-poppins), -apple-system, BlinkMacSystemFont, sans-serif;
@@ -141,8 +143,8 @@ img { display: block; max-width: 100%; }
   border-radius: var(--r-pill);
   padding: 14px 26px;
   border: 1.5px solid transparent;
-  transition: transform .25s var(--ease), background .2s var(--ease),
-              box-shadow .25s var(--ease), color .2s var(--ease);
+  transition: transform .12s var(--ease), background .12s var(--ease),
+              box-shadow .12s var(--ease), color .12s var(--ease);
   white-space: nowrap;
   line-height: 1;
 }
@@ -329,6 +331,55 @@ img { display: block; max-width: 100%; }
   border: 2px solid var(--offwhite);
 }
 .hamburger { display: none; }
+
+/* account dropdown */
+.account-wrap { position: relative; }
+.account-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: #fff;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--line-soft);
+  padding: 8px;
+  z-index: 150;
+  animation: menuFade .2s var(--ease);
+}
+@keyframes menuFade {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.account-head {
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+}
+.account-name { font-weight: 600; color: var(--navy); font-size: 14px; }
+.account-email { font-size: 12px; color: var(--text-soft); margin-top: 2px; }
+.account-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--navy);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s;
+}
+.account-link:hover { background: var(--mist); }
+.account-link.signout { color: #b04050; }
+.account-link.signout:hover { background: var(--pink-50); }
+.account-link.admin-link { color: #3b65b0; }
+.account-link.admin-link:hover { background: var(--sky-50); }
 
 /* mobile menu */
 .mobile-menu {
@@ -851,7 +902,7 @@ img { display: block; max-width: 100%; }
 }
 .benefit-ic svg { width: 16px; height: 16px; }
 .benefit span { font-weight: 500; color: var(--navy); }
-.size-row { display: flex; gap: 10px; margin: 22px 0; }
+.size-row { display: flex; gap: 10px; margin: 22px 0; flex-wrap: wrap; }
 .size-opt {
   border: 1.5px solid var(--line);
   border-radius: var(--r-pill);
@@ -1171,6 +1222,55 @@ img { display: block; max-width: 100%; }
 .toast svg { width: 18px; height: 18px; color: var(--sage); }
 
 /* ===========================================================
+   ADMIN — shared table & badge styles
+   =========================================================== */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.data-table th {
+  text-align: left;
+  padding: 12px 14px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--line);
+}
+.data-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--text);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--mist); }
+.table-scroll .data-table { min-width: 640px; }
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.badge-pending { background: var(--cream); color: var(--navy); }
+.badge-paid { background: var(--sky); color: var(--navy); }
+.badge-processing { background: var(--lavender); color: var(--navy); }
+.badge-shipped, .badge-delivered { background: var(--sage); color: var(--navy); }
+.badge-cancelled { background: var(--pink); color: var(--navy); }
+.badge-active { background: var(--sage); color: var(--navy); }
+.badge-draft { background: var(--cream); color: var(--navy); }
+.badge-archived { background: var(--line); color: var(--text-soft); }
+
+/* ===========================================================
    RESPONSIVE
    =========================================================== */
 @media (max-width: 1024px) {
@@ -1206,4 +1306,196 @@ img { display: block; max-width: 100%; }
   .pdp-thumbs { flex-direction: row; }
   .cart-item { grid-template-columns: 72px 1fr; }
   .cart-item .ci-actions { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; }
+}
+
+/* ===========================================================
+   PAGE TRANSITIONS & SCROLL REVEAL
+   =========================================================== */
+
+/* Page transitions — snappy and light */
+.page-transition {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+  will-change: opacity, transform;
+}
+.page-transition.page-entering {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* Navbar entrance */
+.nav {
+  animation: navFade .35s var(--ease);
+}
+@keyframes navFade {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll reveal — add .reveal / .reveal-left / .reveal-right / .reveal-scale to elements */
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
+  opacity: 0;
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+.reveal     { transform: translateY(28px); }
+.reveal-left  { transform: translateX(-28px); }
+.reveal-right { transform: translateX(28px); }
+.reveal-scale { transform: scale(.92); }
+.reveal.revealed,
+.reveal-left.revealed,
+.reveal-right.revealed,
+.reveal-scale.revealed { opacity: 1; transform: translate(0) scale(1); }
+
+/* Stagger delays */
+.reveal-d1 { transition-delay: .08s; }
+.reveal-d2 { transition-delay: .16s; }
+.reveal-d3 { transition-delay: .24s; }
+.reveal-d4 { transition-delay: .32s; }
+.reveal-d5 { transition-delay: .40s; }
+
+/* ===========================================================
+   BUTTON CLICK FEEDBACK
+   =========================================================== */
+.btn:active { transform: scale(.96); }
+.btn-primary:active { box-shadow: 0 4px 10px rgba(27,42,74,.12); }
+
+/* Ripple container */
+.ripple { position: relative; overflow: hidden; }
+.ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.35) 0, transparent 60%);
+  opacity: 0;
+  transition: opacity .3s;
+  pointer-events: none;
+}
+.ripple:active::after { opacity: 1; }
+
+/* ===========================================================
+   CHECKOUT / PAY BUTTON ANIMATION
+   =========================================================== */
+.pay-btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s var(--ease), background .2s, box-shadow .2s;
+}
+.pay-btn:active { transform: scale(.97); }
+.pay-btn:not(:disabled)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0, rgba(255,255,255,.12) 50%, transparent 100%);
+  transform: translateX(-100%);
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+.pay-btn.loading {
+  pointer-events: none;
+  color: transparent;
+}
+.pay-btn.loading::after {
+  content: '';
+  position: absolute;
+  inset: 0; margin: auto;
+  width: 20px; height: 20px;
+  border: 2.5px solid rgba(255,255,255,.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spinner .6s linear infinite;
+}
+.pay-btn:disabled::before { display: none; }
+@keyframes spinner { to { transform: rotate(360deg); } }
+
+/* Icon bounce on action buttons */
+.btn svg { transition: transform .25s var(--ease); }
+.btn:hover svg { transform: translateX(3px); }
+
+/* ── Fly-to-cart particle ────────────────────── */
+.fly-particle {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  margin-top: -20px;
+  border-radius: 50%;
+  background: var(--pink);
+  border: 2px solid #fff;
+  box-shadow: 
+    0 0 15px rgba(245,205,211, 1), 
+    0 0 30px rgba(245,205,211, 0.6), 
+    0 0 50px rgba(245,205,211, 0.4);
+}
+
+/* ── Cart badge pop when item flies in ───────── */
+.cart-badge.cart-pop {
+  animation: cartPop .45s var(--ease) 1.15s; /* Delay to match arrival */
+}
+@keyframes cartPop {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.45); }
+  50%  { transform: scale(.85); }
+  75%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* ── Product card overlay link (keyboard/SR navigable) ── */
+.prod-card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+.prod-card-link:focus-visible {
+  outline: 3px solid var(--sky);
+  outline-offset: 2px;
+}
+.prod-add { z-index: 2; }
+
+/* ── Free shipping progress (cart summary) ───── */
+.freeship-strip {
+  background: var(--mist);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--ink);
+  margin-bottom: 14px;
+  display: grid;
+  gap: 8px;
+}
+.freeship-strip b { color: var(--navy); }
+.freeship-bar {
+  height: 6px;
+  background: rgba(27, 42, 74, .12);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.freeship-bar > div {
+  height: 100%;
+  background: var(--navy);
+  border-radius: 999px;
+  transition: width .3s var(--ease);
+}
+
+/* ── Loading skeletons ───────────────────────── */
+.skel {
+  background: linear-gradient(90deg, #eef1f5 25%, #f7f9fb 50%, #eef1f5 75%);
+  background-size: 200% 100%;
+  animation: skelShimmer 1.4s ease infinite;
+  border-radius: var(--r-md);
+}
+.skel-card { height: 380px; border-radius: var(--r-lg); }
+@keyframes skelShimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .skel { animation: none; }
 }

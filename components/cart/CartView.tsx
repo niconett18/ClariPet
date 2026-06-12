@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons";
@@ -9,12 +9,11 @@ import { PageHead } from "@/components/PageHead";
 import { QuantityStepper } from "@/components/ui/QuantityStepper";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
-import { useCart, FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from "@/context/CartContext";
+import { useCart, FREE_SHIPPING_THRESHOLD } from "@/context/CartContext";
 
 export function CartView() {
   const cart = useCart();
   const router = useRouter();
-  const [modal, setModal] = useState(false);
 
   if (cart.detailed.length === 0) {
     return (
@@ -38,8 +37,8 @@ export function CartView() {
     );
   }
 
-  const shipping = cart.subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
-  const total = cart.subtotal + shipping;
+  const remaining = FREE_SHIPPING_THRESHOLD - cart.subtotal;
+  const progress = Math.min(100, Math.round((cart.subtotal / FREE_SHIPPING_THRESHOLD) * 100));
 
   return (
     <main>
@@ -48,13 +47,13 @@ export function CartView() {
         <div className="cart-items">
           {cart.detailed.map((item) => (
             <div className="cart-item" key={item.slug + item.size}>
-              <div
+              <Link
                 className="ci-media"
-                onClick={() => router.push(`/product/${item.slug}`)}
-                style={{ cursor: "pointer" }}
+                href={`/product/${item.slug}`}
+                aria-label={item.product.name}
               >
                 <Placeholder tone={item.product.tone} paw={false} label="" />
-              </div>
+              </Link>
               <div>
                 <div className="ci-name">{item.product.name}</div>
                 <div className="ci-size">Size: {item.size}</div>
@@ -77,25 +76,34 @@ export function CartView() {
 
         <aside className="summary">
           <h3 className="h3">Order Summary</h3>
+          <div className="freeship-strip">
+            {remaining > 0 ? (
+              <>
+                <span>
+                  Add <b>{formatPrice(remaining)}</b> more for <b>FREE shipping</b>
+                </span>
+                <div className="freeship-bar" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
+                  <div style={{ width: `${progress}%` }} />
+                </div>
+              </>
+            ) : (
+              <span>🎉 You’ve unlocked <b>FREE shipping</b>!</span>
+            )}
+          </div>
           <div className="summary-row">
             <span>Subtotal</span>
             <span>{formatPrice(cart.subtotal)}</span>
           </div>
           <div className="summary-row">
             <span>Shipping</span>
-            <span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span>
+            <span>{remaining > 0 ? "Calculated at checkout" : "Free"}</span>
           </div>
-          {shipping > 0 && (
-            <div className="muted" style={{ fontSize: 13, marginBottom: 14 }}>
-              Add {formatPrice(FREE_SHIPPING_THRESHOLD - cart.subtotal)} more for free shipping.
-            </div>
-          )}
           <div className="summary-row total">
             <span>Total</span>
-            <span>{formatPrice(total)}</span>
+            <span>{formatPrice(cart.subtotal)}</span>
           </div>
           <div style={{ marginTop: 22 }}>
-            <PrimaryButton block size="lg" onClick={() => setModal(true)}>
+            <PrimaryButton block size="lg" onClick={() => router.push("/checkout")}>
               Proceed to Checkout
             </PrimaryButton>
           </div>
@@ -106,32 +114,6 @@ export function CartView() {
           </div>
         </aside>
       </div>
-
-      {modal && (
-        <div className="modal-scrim" onClick={() => setModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="check">
-              <Icon name="check" size={36} strokeWidth={3} />
-            </div>
-            <h3 className="h3" style={{ marginBottom: 10 }}>
-              Order placed!
-            </h3>
-            <p className="muted" style={{ marginBottom: 24 }}>
-              Thank you — this is a demo checkout. Your fur baby’s goodies are on the way. 🐾
-            </p>
-            <PrimaryButton
-              block
-              onClick={() => {
-                cart.clear();
-                setModal(false);
-                router.push("/");
-              }}
-            >
-              Back to Home
-            </PrimaryButton>
-          </div>
-        </div>
-      )}
     </main>
   );
 }

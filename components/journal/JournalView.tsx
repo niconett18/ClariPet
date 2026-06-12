@@ -3,25 +3,38 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ARTICLES, JOURNAL_FILTERS, FEATURED_ARTICLE } from "@/data/articles";
+import type { Article } from "@/lib/types";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 import { PageHead } from "@/components/PageHead";
 
-export function JournalView() {
+export function JournalView({
+  articles,
+  featured,
+}: {
+  articles: Article[];
+  featured?: Article;
+}) {
   const [filter, setFilter] = useState("All");
   const router = useRouter();
-  const featured = FEATURED_ARTICLE;
-  const filtered = ARTICLES.filter((a) => filter === "All" || a.category === filter);
-  const showFeatured = filter === "All" || featured.category === filter;
-  const sidebar = filtered.filter((a) => !(filter === "All" && a.slug === featured.slug));
+
+  const filters = [
+    "All",
+    ...Array.from(new Set(articles.map((a) => a.category).filter(Boolean))),
+  ];
+
+  const filtered = articles.filter((a) => filter === "All" || a.category === filter);
+  const showFeatured = !!featured && (filter === "All" || featured.category === filter);
+  const sidebar = filtered.filter(
+    (a) => !(filter === "All" && featured && a.slug === featured.slug),
+  );
 
   return (
     <main>
       <PageHead title="Pet Care Journal" subtitle="Tips, guides, and insights for happy, healthy pets." />
       <div className="wrap section-sm" style={{ paddingTop: 0 }}>
         <div className="filter-pills" style={{ marginBottom: 36, justifyContent: "center" }}>
-          {JOURNAL_FILTERS.map((f) => (
+          {filters.map((f) => (
             <button key={f} className={"pill" + (filter === f ? " active" : "")} onClick={() => setFilter(f)}>
               {f}
             </button>
@@ -36,7 +49,7 @@ export function JournalView() {
 
         <div className="journal-grid">
           <div>
-            {showFeatured && (
+            {showFeatured && featured && (
               <article
                 className="featured-card"
                 onClick={() => router.push(`/journal/${featured.slug}`)}
@@ -72,7 +85,7 @@ export function JournalView() {
 
           <div className="article-list">
             {sidebar
-              .filter((a) => !(showFeatured && a.slug === featured.slug))
+              .filter((a) => !(showFeatured && featured && a.slug === featured.slug))
               .map((a) => (
                 <article className="article-row" key={a.slug} onClick={() => router.push(`/journal/${a.slug}`)}>
                   <div className="thumb">

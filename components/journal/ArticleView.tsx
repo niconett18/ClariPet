@@ -3,14 +3,18 @@
 import { Fragment } from "react";
 import { useRouter } from "next/navigation";
 import type { Article } from "@/lib/types";
-import { ARTICLES } from "@/data/articles";
 import { Placeholder } from "@/components/Placeholder";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 
-export function ArticleView({ article }: { article: Article }) {
+export function ArticleView({
+  article,
+  more = [],
+}: {
+  article: Article;
+  more?: Article[];
+}) {
   const router = useRouter();
-  const more = ARTICLES.filter((a) => a.slug !== article.slug).slice(0, 3);
 
   return (
     <main>

@@ -10,7 +10,7 @@ const TRUST = [
 export function TrustBadges() {
   return (
     <div className="wrap" style={{ marginTop: -40, position: "relative", zIndex: 2 }}>
-      <div className="trust">
+      <div className="trust reveal">
         {TRUST.map((b, i) => (
           <div className="trust-item" key={i}>
             <div className="trust-ic" style={{ background: `var(--${b.tone})` }}>
