@@ -45,13 +45,18 @@ export async function POST(req: NextRequest) {
         orderStatus = "pending";
     }
 
-    await supabase
+    const { error: updateError } = await supabase
       .from("orders")
       .update({
         status: orderStatus,
         payment_ref: body.transaction_id ?? null,
       })
       .eq("id", orderId);
+
+    if (updateError) {
+      console.error("[Supabase Update Error]", updateError);
+      return NextResponse.json({ error: "Failed to update database" }, { status: 500 });
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {
