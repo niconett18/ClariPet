@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/lib/format";
@@ -77,6 +78,69 @@ export function CheckoutView() {
   const [promoOpen, setPromoOpen] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [modal, setModal] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  async function handlePayment() {
+    setIsProcessing(true);
+    try {
+      // 1. Create order
+      const orderRes = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          shipping_address: {
+            full_name: form.fullName,
+            phone: form.phone,
+            street: form.address,
+            city: form.city,
+            province: form.province,
+            postal_code: form.postalCode,
+          },
+          courier_code: selectedRate?.courierCode,
+          courier_service_code: selectedRate?.courierServiceCode,
+        }),
+      });
+      const orderData = await orderRes.json();
+      if (!orderData.success) throw new Error(orderData.error || "Gagal membuat pesanan");
+
+      // 2. Get payment token
+      const payRes = await fetch("/api/payments/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ order_id: orderData.data.id }),
+      });
+      const payData = await payRes.json();
+      if (!payData.success) throw new Error(payData.error || "Gagal membuat token pembayaran");
+
+      // 3. Launch midtrans snap
+      if (typeof (window as any).snap !== "undefined") {
+        (window as any).snap.pay(payData.data.token, {
+          onSuccess: function (result: any) {
+            cart.clear();
+            router.push("/account/orders");
+          },
+          onPending: function (result: any) {
+            cart.clear();
+            router.push("/account/orders");
+          },
+          onError: function (result: any) {
+            alert("Pembayaran gagal.");
+          },
+          onClose: function () {
+            // User closed the popup, redirect to orders page to retry later
+            cart.clear(); // Cart must be cleared because order is already created
+            router.push("/account/orders");
+          }
+        });
+      } else {
+        alert("Midtrans script not found.");
+      }
+    } catch (err: any) {
+      alert(err.message || "Terdapat kesalahan. Silakan coba lagi.");
+    } finally {
+      setIsProcessing(false);
+    }
+  }
 
   // Load saved addresses for logged-in users so they can pick one
   useEffect(() => {
@@ -512,24 +576,16 @@ export function CheckoutView() {
               <SummaryRow label="Total Biaya" value={formatPrice(cart.subtotal + shippingFee - discount)} />
               <div className="summary-total"><span>Total Tagihan</span><strong>{formatPrice(total)}</strong></div>
               <div className="reward-strip">🎁 Kamu akan mendapatkan <b>{points} testPets Poin</b> dari transaksi ini</div>
-              <button className="pay-btn" disabled={!canPay} onClick={() => setModal(true)}>
-                Lanjutkan ke Pembayaran
+              <button className="pay-btn" disabled={!canPay || isProcessing} onClick={handlePayment}>
+                {isProcessing ? "Memproses..." : "Lanjutkan ke Pembayaran"}
               </button>
             </div>
           </aside>
         </div>
       </div>
 
-      {modal && (
-        <div className="modal-scrim" onClick={() => setModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="check"><Icon name="check" size={36} strokeWidth={3} /></div>
-            <h3 className="h3">Order ready!</h3>
-            <p className="muted" style={{ marginBottom: 24 }}>Payment gateway belum diintegrasikan. Ongkir sudah dihitung via RajaOngkir.</p>
-            <PrimaryButton block onClick={() => { cart.clear(); setModal(false); router.push("/"); }}>Back to Home</PrimaryButton>
-          </div>
-        </div>
-      )}
+      <Script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY} />
+
       <CheckoutStyles />
     </main>
   );
