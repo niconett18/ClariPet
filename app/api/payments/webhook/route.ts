@@ -14,9 +14,18 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // TODO: Verify webhook signature from payment gateway
-    // const isValid = verifySignature(req.headers, body);
-    // if (!isValid) return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+    // Verify webhook signature from Midtrans
+    const crypto = await import("crypto");
+    const serverKey = process.env.MIDTRANS_SERVER_KEY || "";
+    
+    // Midtrans signature formula: SHA512(order_id + status_code + gross_amount + ServerKey)
+    const hashData = `${body.order_id}${body.status_code}${body.gross_amount}${serverKey}`;
+    const expectedSignature = crypto.createHash("sha512").update(hashData).digest("hex");
+
+    if (body.signature_key !== expectedSignature) {
+      console.error("[Payment Webhook Error] Invalid signature");
+      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+    }
 
     const orderId = body.order_id;
     const paymentStatus = body.transaction_status; // e.g., "settlement", "pending", "deny", "expire"
@@ -29,33 +38,36 @@ export async function POST(req: NextRequest) {
 
     // Map payment gateway status to our order status
     let orderStatus: string;
-    switch (paymentStatus) {
-      case "settlement":
-      case "capture":
-        orderStatus = "paid";
-        break;
-      case "deny":
-      case "expire":
-      case "cancel":
-        orderStatus = "cancelled";
-        // Restore stock
-        await supabase.rpc("restore_stock_for_order", { p_order_id: orderId });
-        break;
-      default:
-        orderStatus = "pending";
+    
+    // Check for Fraud Detection System challenge first
+    if (body.fraud_status === "challenge") {
+      orderStatus = "challenged";
+    } else {
+      switch (paymentStatus) {
+        case "settlement":
+        case "capture":
+          orderStatus = "paid";
+          break;
+        case "deny":
+        case "expire":
+        case "cancel":
+          orderStatus = "cancelled";
+          break;
+        default:
+          orderStatus = "pending";
+      }
     }
 
-    const { error: updateError } = await supabase
-      .from("orders")
-      .update({
-        status: orderStatus,
-        payment_ref: body.transaction_id ?? null,
-      })
-      .eq("id", orderId);
+    // Call atomic RPC to handle status update and optional stock restoration safely
+    const { error: rpcError } = await supabase.rpc("handle_payment_webhook", {
+      p_order_id: orderId,
+      p_new_status: orderStatus,
+      p_payment_ref: body.transaction_id ?? null,
+    });
 
-    if (updateError) {
-      console.error("[Supabase Update Error]", updateError);
-      return NextResponse.json({ error: "Failed to update database" }, { status: 500 });
+    if (rpcError) {
+      console.error("[Supabase RPC Error]", rpcError);
+      return NextResponse.json({ error: "Failed to process webhook securely" }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
