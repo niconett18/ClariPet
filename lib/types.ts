@@ -29,6 +29,10 @@ export interface Product {
   howto: string;
   /** Uploaded photos, ordered. Empty/undefined → illustrated placeholder. */
   images?: { url: string; alt?: string }[];
+  /** Optional collection-filter facets. When present, they appear as filter
+   *  sections on the collection page; when absent, those sections are hidden. */
+  petType?: ("Cat" | "Dog")[];
+  concern?: string[];
 }
 
 export interface ArticleSection {

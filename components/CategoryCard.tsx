@@ -6,7 +6,7 @@ import { Placeholder } from "@/components/Placeholder";
 export function CategoryCard({ cat }: { cat: Category }) {
   return (
     <Link
-      href={`/shop?category=${cat.slug}`}
+      href={`/shop/${cat.slug}`}
       className={"cat-card ph " + cat.tone}
       style={{ background: `var(--${cat.tone}-50)` }}
     >

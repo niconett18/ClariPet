@@ -1753,3 +1753,79 @@ img { display: block; max-width: 100%; }
   .cf-row { grid-template-columns: 1fr; }
   .prod-review { grid-template-columns: 84px 1fr; }
 }
+
+/* ===========================================================
+   COLLECTION PAGE
+   =========================================================== */
+.collection-banner {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 32px;
+  align-items: center;
+  border-radius: var(--r-xl);
+  padding: 48px;
+  border: 1px solid var(--line-soft);
+  margin-top: 8px;
+}
+.collection-banner-media { aspect-ratio: 16/10; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+.collection-layout { display: grid; grid-template-columns: 248px 1fr; gap: 32px; align-items: start; }
+.filter-toggle { display: none; margin-bottom: 16px; }
+.filter-panel {
+  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 22px;
+  position: sticky;
+  top: calc(var(--nav-h) + 20px);
+}
+.filter-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.filter-clear { background: none; border: none; color: var(--text-soft); font-size: 13px; font-weight: 500; text-decoration: underline; padding: 0; }
+.filter-clear:hover { color: var(--navy); }
+.filter-group { padding: 16px 0; border-bottom: 1px solid var(--line-soft); }
+.filter-group:last-child { border-bottom: none; padding-bottom: 0; }
+.filter-group-title { font-weight: 600; color: var(--navy); font-size: 14px; margin-bottom: 12px; }
+.filter-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 14px;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+.filter-check input { width: 17px; height: 17px; accent-color: var(--navy); cursor: pointer; }
+.filter-check:hover { color: var(--navy); }
+.filter-link { display: block; padding: 7px 0; font-size: 14px; color: var(--text-soft); }
+.filter-link:hover { color: var(--navy); }
+.collection-main .shop-toolbar { margin-bottom: 22px; }
+
+/* ===========================================================
+   SHOP LANDING BANNER
+   =========================================================== */
+.shop-banner {
+  background: linear-gradient(120deg, var(--sky-50), var(--lavender-50));
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-xl);
+  padding: 48px;
+  text-align: center;
+}
+.shop-banner .lead { margin-left: auto; margin-right: auto; }
+
+@media (max-width: 860px) {
+  .collection-banner { grid-template-columns: 1fr; padding: 32px; }
+  .collection-layout { grid-template-columns: 1fr; }
+  .filter-toggle { display: inline-flex; }
+  .filter-panel {
+    display: none;
+    position: static;
+  }
+  .filter-panel.open { display: block; }
+}

@@ -35,7 +35,7 @@ export function Footer() {
             <ul>
               {CATEGORIES.slice(0, 5).map((c) => (
                 <li key={c.slug}>
-                  <Link href={`/shop?category=${c.slug}`}>{c.name}</Link>
+                  <Link href={`/shop/${c.slug}`}>{c.name}</Link>
                 </li>
               ))}
               <li>
