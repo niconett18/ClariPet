@@ -26,3 +26,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# temp PDF mockup render artifacts
+.pdfvenv/
+.mockup_pages/

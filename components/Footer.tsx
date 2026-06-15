@@ -49,18 +49,19 @@ export function Footer() {
             <ul>
               <li><Link href="/about">About Us</Link></li>
               <li><Link href="/journal">Pet Care Journal</Link></li>
-              <li><Link href="/about">Affiliate Program</Link></li>
-              <li><Link href="/about">Careers</Link></li>
+              <li><Link href="/reviews">Reviews</Link></li>
+              <li><Link href="/contact">Affiliate Program</Link></li>
             </ul>
           </div>
 
           <div className="footer-col">
             <h4>Support</h4>
             <ul>
-              <li><Link href="/about">Contact</Link></li>
-              <li><Link href="/about">Shipping & Returns</Link></li>
-              <li><Link href="/about">FAQ</Link></li>
-              <li><Link href="/about">Track Order</Link></li>
+              <li><Link href="/contact">Contact</Link></li>
+              <li><Link href="/faq">FAQ</Link></li>
+              <li><Link href="/shipping">Shipping & Delivery</Link></li>
+              <li><Link href="/returns">Returns & Refunds</Link></li>
+              <li><Link href="/account/orders">Track Order</Link></li>
             </ul>
             <form className="newsletter" onSubmit={(e) => e.preventDefault()}>
               <input placeholder="Your email" aria-label="Email for newsletter" type="email" />
@@ -70,7 +71,11 @@ export function Footer() {
         </div>
         <div className="footer-bar">
           <span>© 2026 ClariPet. All rights reserved.</span>
-          <span>Privacy Policy · Terms of Service</span>
+          <span className="footer-legal">
+            <Link href="/privacy-policy">Privacy Policy</Link>
+            <span className="sep">·</span>
+            <Link href="/terms">Terms & Conditions</Link>
+          </span>
         </div>
       </div>
     </footer>

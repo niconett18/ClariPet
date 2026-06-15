@@ -12,9 +12,9 @@ const NAV_ITEMS = [
   { label: "Shop", href: "/shop" },
   { label: "Pet Care Journal", href: "/journal" },
   { label: "About Us", href: "/about" },
-  { label: "Reviews", href: "/shop" },
-  { label: "Affiliate", href: "/about" },
-  { label: "Contact", href: "/about" },
+  { label: "Reviews", href: "/reviews" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
