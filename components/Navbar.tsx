@@ -25,12 +25,20 @@ export function Navbar() {
   const [menu, setMenu] = useState(false);
   const [search, setSearch] = useState(false);
   const [account, setAccount] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const accountRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setMenu(false);
     setAccount(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     function onClick(e: MouseEvent) {
@@ -63,7 +71,7 @@ export function Navbar() {
     pathname === href || (href !== "/" && pathname.startsWith(href));
 
   return (
-    <header className="nav">
+    <header className={"nav" + (scrolled ? " scrolled" : "")}>
       <div className="wrap nav-inner">
         <Link className="brand" href="/" aria-label="ClariPet home">
           ClariPet<sup>®</sup>
