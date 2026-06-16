@@ -370,6 +370,44 @@ img { display: block; max-width: 100%; }
 }
 .hamburger { display: none; }
 
+/* shop dropdown */
+.nav-dropdown { position: relative; }
+.nav-dropdown > .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.nav-dropdown > .nav-link svg { transition: transform .2s var(--ease); }
+.nav-dropdown:hover > .nav-link svg { transform: rotate(180deg); }
+.shop-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  background: #fff;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--line-soft);
+  padding: 8px;
+  z-index: 150;
+  animation: menuFade .2s var(--ease);
+}
+.shop-menu-link {
+  display: block;
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-soft);
+  transition: all .15s var(--ease);
+}
+.shop-menu-link:hover { color: var(--navy); background: var(--mist); }
+.shop-menu-sep {
+  height: 1px;
+  background: var(--line);
+  margin: 6px 8px;
+}
+
 /* account dropdown */
 .account-wrap { position: relative; }
 .account-menu {

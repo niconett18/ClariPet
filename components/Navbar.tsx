@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Icon } from "@/components/icons";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { CATEGORIES } from "@/data/categories";
 import { SearchOverlay } from "@/components/SearchOverlay";
 
 const NAV_ITEMS = [
@@ -26,11 +27,15 @@ export function Navbar() {
   const [search, setSearch] = useState(false);
   const [account, setAccount] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [shopOpen, setShopOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement | null>(null);
+  const shopRef = useRef<HTMLDivElement | null>(null);
+  const shopCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setMenu(false);
     setAccount(false);
+    setShopOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -45,11 +50,15 @@ export function Navbar() {
       if (accountRef.current && !accountRef.current.contains(e.target as Node)) {
         setAccount(false);
       }
+      if (shopRef.current && !shopRef.current.contains(e.target as Node)) {
+        setShopOpen(false);
+      }
     }
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
         setMenu(false);
         setAccount(false);
+        setShopOpen(false);
       }
     }
     document.addEventListener("mousedown", onClick);
@@ -59,6 +68,17 @@ export function Navbar() {
       document.removeEventListener("keydown", onKey);
     };
   }, []);
+
+  // Hover open/close with a small close delay so moving the cursor from the
+  // trigger to the menu doesn't dismiss it.
+  const openShop = () => {
+    if (shopCloseTimer.current) clearTimeout(shopCloseTimer.current);
+    setShopOpen(true);
+  };
+  const closeShopSoon = () => {
+    if (shopCloseTimer.current) clearTimeout(shopCloseTimer.current);
+    shopCloseTimer.current = setTimeout(() => setShopOpen(false), 140);
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -77,11 +97,50 @@ export function Navbar() {
           ClariPet<sup>®</sup>
         </Link>
         <nav className="nav-links" aria-label="Main">
-          {NAV_ITEMS.map((n, i) => (
-            <Link key={i} className={"nav-link" + (isActive(n.href) ? " active" : "")} href={n.href}>
-              {n.label}
-            </Link>
-          ))}
+          {NAV_ITEMS.map((n) =>
+            n.href === "/shop" ? (
+              <div
+                key={n.href}
+                className="nav-dropdown"
+                ref={shopRef}
+                onMouseEnter={openShop}
+                onMouseLeave={closeShopSoon}
+              >
+                <Link
+                  className={"nav-link" + (isActive(n.href) ? " active" : "")}
+                  href={n.href}
+                  aria-haspopup="true"
+                  aria-expanded={shopOpen}
+                  onClick={() => setShopOpen(false)}
+                >
+                  {n.label}
+                  <Icon name="chevDown" size={15} />
+                </Link>
+                {shopOpen && (
+                  <div className="shop-menu" role="menu">
+                    <Link href="/shop" className="shop-menu-link" role="menuitem">
+                      All Products
+                    </Link>
+                    <div className="shop-menu-sep" />
+                    {CATEGORIES.map((c) => (
+                      <Link
+                        key={c.slug}
+                        href={`/shop/${c.slug}`}
+                        className="shop-menu-link"
+                        role="menuitem"
+                      >
+                        {c.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link key={n.href} className={"nav-link" + (isActive(n.href) ? " active" : "")} href={n.href}>
+                {n.label}
+              </Link>
+            ),
+          )}
         </nav>
         <div className="nav-actions">
           <button className="icon-btn" aria-label="Search" onClick={() => setSearch(true)}>
