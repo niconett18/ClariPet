@@ -23,10 +23,18 @@ function RecentList() {
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
-    const [rRes, pRes] = await Promise.all([fetch("/api/recently-viewed"), fetch("/api/products")]);
-    const [r, p] = await Promise.all([rRes.json(), pRes.json()]);
-    if (r.success) setSlugs(r.data);
-    if (p.success) setProducts(p.data);
+    // Step 1: fetch the ordered slug list
+    const rRes = await fetch("/api/recently-viewed");
+    const r = await rRes.json();
+    const slugList: string[] = r.success ? r.data : [];
+    setSlugs(slugList);
+
+    // Step 2: fetch only those specific products (not the entire catalogue)
+    if (slugList.length > 0) {
+      const pRes = await fetch(`/api/products?slugs=${encodeURIComponent(slugList.join(","))}`);
+      const p = await pRes.json();
+      if (p.success) setProducts(p.data.products);
+    }
     setLoading(false);
   }, []);
 

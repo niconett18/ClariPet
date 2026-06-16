@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
 import { Icon } from "@/components/icons";
 import { AccountShell } from "@/components/account/AccountShell";
 import { ProductCard } from "@/components/ProductCard";
 import type { Product } from "@/lib/types";
+import { useWishlist } from "@/context/WishlistContext";
 
 export default function SavedPage() {
   return (
@@ -17,29 +17,39 @@ export default function SavedPage() {
 }
 
 function SavedList() {
-  const { user, loading: authLoading } = useAuth();
-  const [slugs, setSlugs] = useState<string[]>([]);
+  const { slugs, remove, loading: wishlistLoading } = useWishlist();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const load = useCallback(async () => {
-    const [wRes, pRes] = await Promise.all([fetch("/api/wishlist"), fetch("/api/products")]);
-    const [w, p] = await Promise.all([wRes.json(), pRes.json()]);
-    if (w.success) setSlugs(w.data);
-    if (p.success) setProducts(p.data);
-    setLoading(false);
-  }, []);
-
   useEffect(() => {
-    if (!authLoading && user) load();
-  }, [authLoading, user, load]);
+    let mounted = true;
+    async function fetchProducts() {
+      if (wishlistLoading) return;
+      if (slugs.length === 0) {
+        if (mounted) {
+          setProducts([]);
+          setLoading(false);
+        }
+        return;
+      }
+      setLoading(true);
+      try {
+        const pRes = await fetch(`/api/products?slugs=${encodeURIComponent(slugs.join(","))}`);
+        const p = await pRes.json();
+        if (mounted && p.success) {
+          setProducts(p.data.products);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    fetchProducts();
+    return () => { mounted = false; };
+  }, [slugs, wishlistLoading]);
 
-  const remove = async (slug: string) => {
-    await fetch(`/api/wishlist?slug=${encodeURIComponent(slug)}`, { method: "DELETE" });
-    setSlugs((s) => s.filter((x) => x !== slug));
-  };
-
-  if (loading) return <p className="muted">Loading your saved items…</p>;
+  if (wishlistLoading || loading) return <p className="muted">Loading your saved items…</p>;
 
   const saved = slugs
     .map((slug) => products.find((p) => p.slug === slug))
@@ -61,12 +71,7 @@ function SavedList() {
   return (
     <div className="prod-grid">
       {saved.map((p) => (
-        <div key={p.slug} className="saved-wrap">
-          <ProductCard product={p} />
-          <button className="saved-remove" onClick={() => remove(p.slug)}>
-            <Icon name="trash" size={15} /> Remove
-          </button>
-        </div>
+        <ProductCard key={p.slug} product={p} />
       ))}
     </div>
   );

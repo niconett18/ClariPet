@@ -14,6 +14,7 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
     sort: searchParams.get("sort") ?? undefined,
     page: searchParams.get("page") ?? 1,
     limit: searchParams.get("limit") ?? 20,
+    slugs: searchParams.get("slugs") ?? undefined,
   });
 
   const supabase = createClient();
@@ -25,6 +26,24 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
       { count: "exact" },
     )
     .eq("status", "active");
+
+  // Slug filter: fetch only the exact products requested (wishlist / recently-viewed).
+  // When slugs= is provided we skip category/search/sort/pagination because
+  // the caller already knows exactly what it wants.
+  if (query.slugs) {
+    const slugList = query.slugs
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .slice(0, 50); // hard limit to prevent abuse
+    if (slugList.length === 0) {
+      return ok({ products: [], total: 0, page: 1, limit: slugList.length });
+    }
+    qb = qb.in("slug", slugList);
+    const { data, count, error: dbError } = await qb;
+    if (dbError) return error(dbError.message, 500);
+    return ok({ products: data ?? [], total: count ?? 0, page: 1, limit: slugList.length });
+  }
 
   // Filter by category slug
   if (query.category) {

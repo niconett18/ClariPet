@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { Product, Tone } from "@/lib/types";
 import { PRODUCTS } from "@/data/products";
 import { formatPrice } from "@/lib/format";
@@ -15,17 +15,32 @@ import { Mascot } from "@/components/Mascot";
 import { ProductCard } from "@/components/ProductCard";
 import { useCart } from "@/context/CartContext";
 import { useFlyToCart } from "@/context/FlyToCartContext";
+import { useWishlist } from "@/context/WishlistContext";
+import { useAuth } from "@/context/AuthContext";
 
 const FEATURE_ICONS = ["shield", "droplet", "clock", "pin"];
 
 export function ProductView({ product }: { product: Product }) {
+  const { user } = useAuth();
   const cart = useCart();
   const { flyToCart } = useFlyToCart();
+  const { slugs, toggle } = useWishlist();
+  const isWished = slugs.includes(product.slug);
   const addRef = useRef<HTMLDivElement>(null);
   const [activeThumb, setActiveThumb] = useState(0);
   const [size, setSize] = useState(product.sizes[0]);
   const [qty, setQty] = useState(1);
-  const [wish, setWish] = useState(false);
+
+  // Track Recently Viewed
+  useEffect(() => {
+    if (user) {
+      fetch("/api/recently-viewed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product_slug: product.slug }),
+      }).catch(console.error);
+    }
+  }, [user, product.slug]);
 
   const photos = product.images ?? [];
   const hasPhotos = photos.length > 0;
@@ -102,6 +117,8 @@ export function ProductView({ product }: { product: Product }) {
                     <img
                       src={img.url}
                       alt={img.alt ?? `${product.name} photo ${i + 1}`}
+                      loading="lazy"
+                      decoding="async"
                       style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                     />
                   </button>
@@ -123,6 +140,10 @@ export function ProductView({ product }: { product: Product }) {
               <img
                 src={photos[Math.min(activeThumb, photos.length - 1)].url}
                 alt={photos[Math.min(activeThumb, photos.length - 1)].alt ?? product.name}
+                // This is the Largest Contentful Paint element — hint the browser
+                // to fetch it at the highest priority and decode off the main thread.
+                fetchPriority="high"
+                decoding="async"
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
             ) : (
@@ -176,10 +197,11 @@ export function ProductView({ product }: { product: Product }) {
               Add to Cart
             </PrimaryButton>
             <button
-              className={"wishlist" + (wish ? " active" : "")}
+              className={"wishlist" + (isWished ? " active" : "")}
               style={{ position: "static", width: 50, height: 50, background: "var(--mist)" }}
-              aria-label="Add to wishlist"
-              onClick={() => setWish(!wish)}
+              aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
+              aria-pressed={isWished}
+              onClick={() => toggle(product.slug)}
             >
               <Icon name="heart" size={19} />
             </button>
