@@ -10,6 +10,10 @@ import { PageHead } from "@/components/PageHead";
 const NAV_ITEMS = [
   { href: "/account", label: "Profile", icon: "user" as const },
   { href: "/account/orders", label: "My Orders", icon: "package" as const },
+  { href: "/account/saved", label: "Saved Items", icon: "heart" as const },
+  { href: "/account/rewards", label: "Rewards", icon: "award" as const },
+  { href: "/account/pets", label: "My Pets", icon: "dog" as const },
+  { href: "/account/recently-viewed", label: "Recently Viewed", icon: "clock" as const },
   { href: "/account/addresses", label: "Addresses", icon: "pinned" as const },
 ];
 

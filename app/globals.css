@@ -1829,3 +1829,74 @@ img { display: block; max-width: 100%; }
   }
   .filter-panel.open { display: block; }
 }
+
+/* ===========================================================
+   ACCOUNT — saved, rewards, pets
+   =========================================================== */
+.saved-wrap { display: flex; flex-direction: column; gap: 8px; }
+.saved-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-soft);
+  font-family: inherit;
+}
+.saved-remove:hover { color: #b04050; border-color: var(--pink); }
+
+.rewards-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  background: linear-gradient(120deg, var(--navy), #2c4374);
+  color: #fff;
+  border-radius: var(--r-xl);
+  padding: 32px 36px;
+}
+.rewards-points { display: flex; align-items: center; gap: 16px; }
+.rewards-points > svg { color: var(--cream); }
+.rewards-balance { font-size: 38px; font-weight: 700; line-height: 1; }
+.rewards-label { font-size: 13px; color: #c7d2e6; margin-top: 4px; }
+.rewards-meta { text-align: right; font-size: 14px; color: #c7d2e6; }
+.rewards-meta span { color: #fff; font-weight: 700; }
+.rewards-tier {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 5px 14px;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+}
+.rewards-earn { margin-top: 0; }
+
+.pets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pet-card { display: flex; gap: 16px; padding: 20px; align-items: flex-start; }
+.pet-avatar {
+  width: 52px; height: 52px;
+  border-radius: var(--r-pill);
+  background: var(--sky-50);
+  color: var(--navy);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.pet-info { flex: 1; min-width: 0; }
+.pet-name { font-weight: 600; color: var(--navy); font-size: 16px; }
+.pet-sub { font-size: 13px; color: var(--text-soft); margin-top: 2px; }
+.pet-notes { font-size: 13px; color: var(--text-soft); margin-top: 8px; line-height: 1.5; }
+.pet-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.pet-modal { max-width: 460px; text-align: left; display: flex; flex-direction: column; gap: 14px; }
+
+@media (max-width: 560px) {
+  .pets-grid { grid-template-columns: 1fr; }
+  .rewards-meta { text-align: left; }
+}
