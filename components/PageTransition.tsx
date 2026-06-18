@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
+  const [entering, setEntering] = useState(false);
   const [progress, setProgress] = useState(0);
   // Persist the IntersectionObserver across navigations to avoid re-creating it
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -41,18 +42,47 @@ export function PageTransition({ children }: { children: ReactNode }) {
       setProgress(0);
     }, 300);
 
-    // Observe any new reveal elements added by the incoming route — runs after
-    // React has committed the new DOM so querySelectorAll finds real nodes.
+    // Observe any new reveal elements added by the incoming route after React
+    // has committed the DOM. Common visual blocks are auto-marked so pages do
+    // not feel static when a component has not been manually annotated.
+    setEntering(true);
+    const enterTimer = setTimeout(() => setEntering(false), 420);
     const revealTimer = setTimeout(() => {
       if (!observerRef.current) return;
-      const els = document.querySelectorAll<HTMLElement>(
-        ".reveal:not(.revealed), .reveal-left:not(.revealed), .reveal-right:not(.revealed), .reveal-scale:not(.revealed)",
-      );
-      els.forEach((el) => observerRef.current!.observe(el));
-    }, 50); // slight delay so the page DOM is flushed
+      const selectors = [
+        ".reveal",
+        ".reveal-left",
+        ".reveal-right",
+        ".reveal-scale",
+        ".section > .wrap",
+        ".hero-copy",
+        ".hero-media",
+        ".trust",
+        ".cat-card",
+        ".prod-card",
+        ".why",
+        ".quiz-cta",
+        ".card",
+        ".faq-card",
+        ".inquiry-card",
+        ".story-card",
+        ".result-card",
+        ".collection-banner",
+        ".shop-banner",
+      ];
+      const elements = document.querySelectorAll<HTMLElement>(selectors.join(", "));
+      elements.forEach((el, index) => {
+        if (!el.classList.contains("reveal") && !el.classList.contains("reveal-left") && !el.classList.contains("reveal-right") && !el.classList.contains("reveal-scale")) {
+          el.classList.add("reveal-pop");
+        }
+        el.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 55}ms`);
+        if (!el.classList.contains("revealed")) observerRef.current!.observe(el);
+      });
+    }, 50);
 
     return () => {
       clearTimeout(loadTimer);
+      clearTimeout(enterTimer);
       clearTimeout(revealTimer);
     };
   }, [pathname]);
@@ -126,7 +156,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
           }}
         />
       )}
-      <div className="page-transition">
+      <div className={"page-transition" + (entering ? " page-entering" : "")}>
         {children}
       </div>
     </>
