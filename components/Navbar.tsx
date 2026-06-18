@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef, lazy, Suspense } from "react";
+import { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Icon } from "@/components/icons";
@@ -8,10 +9,9 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { CATEGORIES } from "@/data/categories";
 
-// Lazy-load the search overlay so its JS (which bundles all PRODUCTS for
-// client-side search) is not included in the initial page payload.
-const SearchOverlay = lazy(() =>
-  import("@/components/SearchOverlay").then((m) => ({ default: m.SearchOverlay })),
+const SearchOverlay = dynamic(
+  () => import("@/components/SearchOverlay").then((mod) => mod.SearchOverlay),
+  { ssr: false },
 );
 
 const NAV_ITEMS = [
@@ -23,32 +23,6 @@ const NAV_ITEMS = [
   { label: "Contact", href: "/contact" },
 ];
 
-/**
- * Deferred wrapper: the SearchOverlay chunk is not downloaded until the user
- * opens search for the first time.  After that it stays mounted so CSS
- * close-transitions (`search-overlay` without the `open` class) still fire.
- */
-function SearchOverlayOnDemand({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) {
-  const [everOpened, setEverOpened] = useState(false);
-  useEffect(() => {
-    if (open) setEverOpened(true);
-  }, [open]);
-
-  if (!everOpened) return null;
-
-  return (
-    <Suspense fallback={null}>
-      <SearchOverlay open={open} onClose={onClose} />
-    </Suspense>
-  );
-}
-
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -58,6 +32,7 @@ export function Navbar() {
   const [search, setSearch] = useState(false);
   const [account, setAccount] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navMorphing, setNavMorphing] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement | null>(null);
   const shopRef = useRef<HTMLDivElement | null>(null);
@@ -70,7 +45,16 @@ export function Navbar() {
   }, [pathname]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      const nextScrolled = window.scrollY > 8;
+      setScrolled((wasScrolled) => {
+        if (wasScrolled !== nextScrolled) {
+          setNavMorphing(true);
+          window.setTimeout(() => setNavMorphing(false), 460);
+        }
+        return nextScrolled;
+      });
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -122,7 +106,7 @@ export function Navbar() {
     pathname === href || (href !== "/" && pathname.startsWith(href));
 
   return (
-    <header className={"nav" + (scrolled ? " scrolled" : "")}>
+    <header className={"nav" + (scrolled ? " scrolled" : "") + (navMorphing ? " morphing" : "")}>
       <div className="wrap nav-inner">
         <Link className="brand" href="/" aria-label="ClariPet home">
           ClariPet<sup>®</sup>
@@ -292,9 +276,7 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Defer download of the overlay until first open; then keep it mounted
-          so CSS close-transitions work correctly (open prop drives visibility). */}
-      <SearchOverlayOnDemand open={search} onClose={() => setSearch(false)} />
+      {search && <SearchOverlay open={search} onClose={() => setSearch(false)} />}
     </header>
   );
 }
