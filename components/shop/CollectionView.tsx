@@ -205,7 +205,7 @@ export function CollectionView({
             </div>
 
             {filtered.length > 0 ? (
-              <div className="prod-grid collection-grid">
+              <div className="prod-grid prod-grid-vertical collection-grid">
                 {filtered.map((p) => (
                   <ProductCard key={p.slug} product={p} />
                 ))}

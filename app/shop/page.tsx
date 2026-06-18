@@ -70,7 +70,7 @@ export default async function ShopPage() {
             {products.length} products
           </span>
         </div>
-        <div className="prod-grid">
+        <div className="prod-grid prod-grid-vertical">
           {featured.map((p) => (
             <ProductCard key={p.slug} product={p} />
           ))}

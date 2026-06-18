@@ -69,7 +69,7 @@ function SavedList() {
   }
 
   return (
-    <div className="prod-grid">
+    <div className="prod-grid prod-grid-vertical">
       {saved.map((p) => (
         <ProductCard key={p.slug} product={p} />
       ))}
