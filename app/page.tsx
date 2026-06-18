@@ -7,9 +7,6 @@ import { SITE_URL } from "@/lib/site";
 const ShopByCategory = dynamic(() =>
   import("@/components/home/ShopByCategory").then((mod) => mod.ShopByCategory),
 );
-const BestSellers = dynamic(() =>
-  import("@/components/home/BestSellers").then((mod) => mod.BestSellers),
-);
 const WhyChoose = dynamic(() =>
   import("@/components/home/WhyChoose").then((mod) => mod.WhyChoose),
 );
@@ -70,7 +67,6 @@ export default function HomePage() {
         <Hero />
         <TrustBadges />
         <ShopByCategory />
-        <BestSellers />
         <WhyChoose />
         <QuizCTA />
       </main>
