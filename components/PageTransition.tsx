@@ -1,12 +1,36 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  // Persist the IntersectionObserver across navigations to avoid re-creating it
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  // Track the in-flight progress interval so it can be cleared on unmount even
+  // if the link's mouseup/mouseleave never fire (e.g. keyboard navigation).
+  const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Initialise the scroll-reveal observer once and reuse it.
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            observerRef.current?.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -20px 0px" },
+    );
+    return () => {
+      observerRef.current?.disconnect();
+      observerRef.current = null;
+    };
+  }, []); // run once
 
   // Handle route change completion
   useEffect(() => {
@@ -17,31 +41,19 @@ export function PageTransition({ children }: { children: ReactNode }) {
       setProgress(0);
     }, 300);
 
-    // Scroll-reveal observer
-    const els = document.querySelectorAll<HTMLElement>(
-      ".reveal, .reveal-left, .reveal-right, .reveal-scale",
-    );
-    if (els.length > 0) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("revealed");
-              observer.unobserve(entry.target);
-            }
-          }
-        },
-        { threshold: 0.08, rootMargin: "0px 0px -20px 0px" },
+    // Observe any new reveal elements added by the incoming route — runs after
+    // React has committed the new DOM so querySelectorAll finds real nodes.
+    const revealTimer = setTimeout(() => {
+      if (!observerRef.current) return;
+      const els = document.querySelectorAll<HTMLElement>(
+        ".reveal:not(.revealed), .reveal-left:not(.revealed), .reveal-right:not(.revealed), .reveal-scale:not(.revealed)",
       );
-      els.forEach((el) => observer.observe(el));
-      return () => {
-        observer.disconnect();
-        clearTimeout(loadTimer);
-      };
-    }
+      els.forEach((el) => observerRef.current!.observe(el));
+    }, 50); // slight delay so the page DOM is flushed
 
     return () => {
       clearTimeout(loadTimer);
+      clearTimeout(revealTimer);
     };
   }, [pathname]);
 
@@ -71,6 +83,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
         setLoading(true);
         setProgress(15);
 
+        if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
         const interval = setInterval(() => {
           setProgress((prev) => {
             if (prev >= 90) {
@@ -80,6 +93,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
             return prev + (90 - prev) * 0.25;
           });
         }, 100);
+        progressIntervalRef.current = interval;
 
         target.addEventListener("mouseup", () => clearInterval(interval), { once: true });
         target.addEventListener("mouseleave", () => clearInterval(interval), { once: true });
@@ -87,7 +101,10 @@ export function PageTransition({ children }: { children: ReactNode }) {
     };
 
     document.addEventListener("click", handleLinkClick);
-    return () => document.removeEventListener("click", handleLinkClick);
+    return () => {
+      document.removeEventListener("click", handleLinkClick);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    };
   }, []);
 
   return (
@@ -102,8 +119,9 @@ export function PageTransition({ children }: { children: ReactNode }) {
             backgroundColor: "var(--pink)",
             boxShadow: "0 0 8px rgba(245, 205, 211, 0.8)",
             zIndex: 99999,
-            width: `${progress}%`,
-            transition: progress === 100 ? "width 0.2s ease, opacity 0.2s ease 0.1s" : "width 0.3s cubic-bezier(0.1, 0.8, 0.2, 1)",
+            transform: `scaleX(${progress / 100})`,
+            transformOrigin: "left",
+            transition: progress === 100 ? "transform 0.2s ease, opacity 0.2s ease 0.1s" : "transform 0.3s cubic-bezier(0.1, 0.8, 0.2, 1)",
             opacity: progress === 100 ? 0 : 1,
           }}
         />

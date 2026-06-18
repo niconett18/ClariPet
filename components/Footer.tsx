@@ -50,7 +50,7 @@ export function Footer() {
               <li><Link href="/about">About Us</Link></li>
               <li><Link href="/journal">Pet Care Journal</Link></li>
               <li><Link href="/reviews">Reviews</Link></li>
-              <li><Link href="/contact">Affiliate Program</Link></li>
+              <li><Link href="/contact">Contact Us</Link></li>
             </ul>
           </div>
 

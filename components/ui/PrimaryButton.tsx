@@ -11,6 +11,7 @@ type BtnProps = {
   type?: "button" | "submit";
   icon?: string;
   disabled?: boolean;
+  "aria-label"?: string;
 };
 
 export function PrimaryButton({
@@ -21,6 +22,7 @@ export function PrimaryButton({
   type = "button",
   icon,
   disabled,
+  "aria-label": ariaLabel,
 }: BtnProps) {
   const ref = useRef<HTMLButtonElement>(null);
   const cls = [
@@ -48,6 +50,7 @@ export function PrimaryButton({
       onClick={handleClick}
       className={cls}
       disabled={disabled}
+      aria-label={ariaLabel}
     >
       {children}
       {icon && <Icon name={icon} size={18} />}

@@ -1,13 +1,18 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Icon } from "@/components/icons";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { CATEGORIES } from "@/data/categories";
-import { SearchOverlay } from "@/components/SearchOverlay";
+
+// Lazy-load the search overlay so its JS (which bundles all PRODUCTS for
+// client-side search) is not included in the initial page payload.
+const SearchOverlay = lazy(() =>
+  import("@/components/SearchOverlay").then((m) => ({ default: m.SearchOverlay })),
+);
 
 const NAV_ITEMS = [
   { label: "Shop", href: "/shop" },
@@ -17,6 +22,32 @@ const NAV_ITEMS = [
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ];
+
+/**
+ * Deferred wrapper: the SearchOverlay chunk is not downloaded until the user
+ * opens search for the first time.  After that it stays mounted so CSS
+ * close-transitions (`search-overlay` without the `open` class) still fire.
+ */
+function SearchOverlayOnDemand({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
+  const [everOpened, setEverOpened] = useState(false);
+  useEffect(() => {
+    if (open) setEverOpened(true);
+  }, [open]);
+
+  if (!everOpened) return null;
+
+  return (
+    <Suspense fallback={null}>
+      <SearchOverlay open={open} onClose={onClose} />
+    </Suspense>
+  );
+}
 
 export function Navbar() {
   const pathname = usePathname();
@@ -150,6 +181,7 @@ export function Navbar() {
             <button
               className="icon-btn"
               aria-label="Account"
+              aria-expanded={account}
               onClick={() => setAccount((v) => !v)}
             >
               <Icon name="user" size={21} />
@@ -195,7 +227,7 @@ export function Navbar() {
               </div>
             )}
           </div>
-          <Link className="icon-btn" aria-label="Cart" href="/cart">
+          <Link className="icon-btn" aria-label={`Cart with ${count} items`} href="/cart">
             <Icon name="cart" size={21} />
             {count > 0 && <span className="cart-badge">{count}</span>}
           </Link>
@@ -222,8 +254,8 @@ export function Navbar() {
           >
             <Icon name="close" size={21} />
           </button>
-          {NAV_ITEMS.map((n, i) => (
-            <Link key={i} href={n.href}>
+          {NAV_ITEMS.map((n) => (
+            <Link key={n.href} href={n.href}>
               {n.label}
             </Link>
           ))}
@@ -260,7 +292,9 @@ export function Navbar() {
         </div>
       </div>
 
-      <SearchOverlay open={search} onClose={() => setSearch(false)} />
+      {/* Defer download of the overlay until first open; then keep it mounted
+          so CSS close-transitions work correctly (open prop drives visibility). */}
+      <SearchOverlayOnDemand open={search} onClose={() => setSearch(false)} />
     </header>
   );
 }

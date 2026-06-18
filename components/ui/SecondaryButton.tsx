@@ -8,7 +8,10 @@ type BtnProps = {
   onClick?: () => void;
   size?: "sm" | "md" | "lg";
   block?: boolean;
+  type?: "button" | "submit";
   icon?: string;
+  disabled?: boolean;
+  "aria-label"?: string;
 };
 
 export function SecondaryButton({
@@ -16,7 +19,10 @@ export function SecondaryButton({
   onClick,
   size = "md",
   block,
+  type = "button",
   icon,
+  disabled,
+  "aria-label": ariaLabel,
 }: BtnProps) {
   const ref = useRef<HTMLButtonElement>(null);
   const cls = [
@@ -38,7 +44,15 @@ export function SecondaryButton({
   };
 
   return (
-    <button type="button" onClick={handleClick} className={cls}>
+    <button
+      ref={ref}
+      type={type}
+      onClick={handleClick}
+      className={cls}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      style={{ minWidth: "44px", minHeight: "44px" }}
+    >
       {children}
       {icon && <Icon name={icon} size={18} />}
     </button>

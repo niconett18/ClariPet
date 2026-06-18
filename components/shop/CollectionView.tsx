@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import Link from "next/link";
 import type { Product, Category } from "@/lib/types";
 import { Icon } from "@/components/icons";
@@ -63,16 +63,18 @@ export function CollectionView({
     return list;
   }, [products, prices, minRating, bestOnly, petTypes, concerns, sort]);
 
-  const toggle = (arr: string[], set: (v: string[]) => void, val: string) =>
-    set(arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val]);
+  // useCallback keeps these stable across renders so child components that
+  // receive them as props (e.g. filter labels) are not forced to re-render.
+  const toggle = useCallback((arr: string[], set: (v: string[]) => void, val: string) =>
+    set(arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val]), []);
 
-  const clearAll = () => {
+  const clearAll = useCallback(() => {
     setPrices([]);
     setMinRating(null);
     setBestOnly(false);
     setPetTypes([]);
     setConcerns([]);
-  };
+  }, []);
 
   const activeCount =
     prices.length + petTypes.length + concerns.length + (minRating !== null ? 1 : 0) + (bestOnly ? 1 : 0);

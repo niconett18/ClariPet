@@ -59,11 +59,12 @@ export function CartView() {
                 <div className="ci-size">Size: {item.size}</div>
                 <div className="ci-actions" style={{ display: "flex", alignItems: "center", gap: 16 }}>
                   <QuantityStepper value={item.qty} onChange={(q) => cart.updateQty(item.slug, item.size, q)} />
-                  <button
-                    className="ci-remove"
-                    aria-label="Remove item"
-                    onClick={() => cart.remove(item.slug, item.size)}
-                  >
+                    <button
+                      className="ci-remove"
+                      aria-label={`Remove ${item.product.name} from cart`}
+                      onClick={() => cart.remove(item.slug, item.size)}
+                      style={{ minWidth: "44px", minHeight: "44px", border: "none", background: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                    >
                     <Icon name="trash" size={18} />{" "}
                     <span style={{ fontSize: 13, verticalAlign: "middle" }}>Remove</span>
                   </button>

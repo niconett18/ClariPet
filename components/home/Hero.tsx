@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
@@ -11,21 +12,24 @@ export function Hero() {
       <div className="wrap hero-grid">
         <div className="hero-copy">
           <div className="eyebrow" style={{ marginBottom: 16 }}>
-            <Icon name="leaf" size={16} /> Pet-safe · Made in Indonesia
+            PREMIUM PET CARE FOR CATS & DOGS
           </div>
-          <h1 className="h-display">Premium care for happy, healthy fur babies.</h1>
-          <p className="lead">Safe. Gentle. Effective. Because they deserve the best.</p>
+          <h1 className="h-display">Helping You Help Them.</h1>
+          <p className="lead">Safe, gentle, and effective pet care products made with love in Indonesia.</p>
           <div className="hero-actions">
-            <Link href="/shop">
-              <PrimaryButton size="lg" icon="arrowRight">
-                Shop Now
+            <Link href="/shop" tabIndex={-1} aria-hidden="true">
+              <PrimaryButton size="lg" icon="arrowRight" aria-label="Shop Products">
+                Shop Products
               </PrimaryButton>
             </Link>
-            <Link href="/quiz">
-              <SecondaryButton size="lg">
-                Take the Quiz
+            <Link href="/quiz" tabIndex={-1} aria-hidden="true">
+              <SecondaryButton size="lg" aria-label="Find My Product">
+                Find My Product
               </SecondaryButton>
             </Link>
+          </div>
+          <div style={{ marginTop: 24, fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: 6 }} aria-label="Trusted by pet parents across Indonesia">
+             <span aria-hidden="true" role="img" aria-label="5 stars">★★★★★</span> Trusted by pet parents across Indonesia
           </div>
         </div>
         <div style={{ position: "relative" }}>

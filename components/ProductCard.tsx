@@ -2,12 +2,16 @@
 
 import { memo, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import dynamic from "next/dynamic";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 import { StarRating } from "@/components/ui/StarRating";
-import { PrimaryButton } from "@/components/ui/PrimaryButton";
+
+const PrimaryButton = dynamic(() => import("@/components/ui/PrimaryButton").then((mod) => mod.PrimaryButton));
+
 import { useCart } from "@/context/CartContext";
 import { useFlyToCart } from "@/context/FlyToCartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -36,12 +40,7 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
   );
 
   return (
-    <div className="prod-card">
-      <Link
-        className="prod-card-link"
-        href={`/product/${product.slug}`}
-        aria-label={product.name}
-      />
+    <div className="prod-card" role="group" aria-label={`Product: ${product.name}`}>
       <div className="prod-media">
         {product.bestSeller && <span className="prod-tag tag">Best Seller</span>}
         <button
@@ -52,28 +51,35 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
         >
           <Icon name="heart" size={19} />
         </button>
-        {product.images?.[0] ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={product.images[0].url}
-            alt={product.images[0].alt ?? product.name}
-            loading="lazy"
-            decoding="async"
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          />
-        ) : (
-          <Placeholder tone={product.tone} label={product.name} />
-        )}
+        <Link
+          className="prod-media-link"
+          href={`/product/${product.slug}`}
+          aria-label={`View ${product.name} details`}
+        >
+          {product.images?.[0] ? (
+            <Image
+              src={product.images[0].url}
+              alt={product.images[0].alt ?? product.name}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              style={{ objectFit: "cover" }}
+            />
+          ) : (
+            <Placeholder tone={product.tone} label={product.name} />
+          )}
+        </Link>
       </div>
       <div className="prod-body">
-        <div className="prod-name">{product.name}</div>
+        <Link className="prod-name" href={`/product/${product.slug}`}>
+          {product.name}
+        </Link>
         <div className="prod-sub">{product.subtitle}</div>
         <div className="prod-foot">
           <span className="prod-price">{formatPrice(product.price)}</span>
           <StarRating rating={product.rating} reviews={product.reviews} />
         </div>
-        <div ref={btnRef} className="prod-add" onClick={handleAddToCart}>
-          <PrimaryButton block size="sm">
+        <div ref={btnRef} className="prod-add">
+          <PrimaryButton block size="sm" type="button" onClick={handleAddToCart} aria-label={`Add ${product.name} to cart`}>
             Add to Cart
           </PrimaryButton>
         </div>

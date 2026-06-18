@@ -95,6 +95,15 @@ a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; }
 img { display: block; max-width: 100%; }
 
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--sky);
+  outline-offset: 2px;
+}
+
 .wrap {
   width: 100%;
   max-width: var(--maxw);
@@ -133,21 +142,25 @@ img { display: block; max-width: 100%; }
 .mx-auto { margin-left: auto; margin-right: auto; }
 
 /* ---------- Buttons ---------- */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  font-weight: 600;
-  font-size: 15px;
-  border-radius: var(--r-pill);
-  padding: 14px 26px;
-  border: 1.5px solid transparent;
-  transition: transform .12s var(--ease), background .12s var(--ease),
-              box-shadow .12s var(--ease), color .12s var(--ease);
-  white-space: nowrap;
-  line-height: 1;
-}
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: var(--r-pill);
+    padding: 14px 26px;
+    border: 1.5px solid transparent;
+    transition: transform .12s var(--ease), background .12s var(--ease),
+      border-color .12s var(--ease), color .12s var(--ease), box-shadow .12s var(--ease);
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    min-height: 44px;
+    min-width: 44px;
+  }
 .btn svg { width: 18px; height: 18px; }
 .btn-primary {
   background: var(--navy);
@@ -268,15 +281,15 @@ img { display: block; max-width: 100%; }
    =========================================================== */
 .nav {
   position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(251, 252, 254, 0.85);
-  backdrop-filter: saturate(160%) blur(14px);
-  border-bottom: 1px solid var(--line-soft);
-  transition: top .3s var(--ease), margin .3s var(--ease),
-    border-radius .3s var(--ease), background .3s var(--ease),
-    box-shadow .3s var(--ease), border-color .3s var(--ease);
-}
+    top: 0;
+    z-index: 100;
+    background: rgba(251, 252, 254, 0.85);
+    backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid var(--line-soft);
+    transition: transform .3s var(--ease),
+      border-radius .3s var(--ease), background .3s var(--ease),
+      box-shadow .3s var(--ease), border-color .3s var(--ease);
+  }
 /* Floating pill once the page is scrolled.
    Keep .nav full-width + transparent so it never becomes the containing
    block for the fixed mobile menu / search overlay. The visible pill lives
@@ -343,9 +356,9 @@ img { display: block; max-width: 100%; }
 .nav-link:hover { color: var(--navy); background: var(--mist); }
 .nav-link.active { color: var(--navy); font-weight: 600; }
 .nav-actions { display: flex; align-items: center; gap: 6px; }
-.icon-btn {
-  width: 42px; height: 42px;
-  display: grid; place-items: center;
+  .icon-btn {
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
   border-radius: var(--r-pill);
   background: transparent;
   border: none;
@@ -756,16 +769,6 @@ img { display: block; max-width: 100%; }
   margin-top: 10px;
 }
 .prod-price { font-weight: 700; color: var(--navy); font-size: 17px; }
-.prod-add {
-  position: absolute;
-  left: 18px; right: 18px;
-  bottom: 18px;
-  transform: translateY(calc(100% + 18px));
-  opacity: 0;
-  transition: all .3s var(--ease);
-}
-.prod-card:hover .prod-add { transform: translateY(0); opacity: 1; }
-.prod-card:hover .prod-foot { opacity: 0; }
 
 /* star rating */
 .stars { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--text-soft); }
@@ -1160,12 +1163,13 @@ img { display: block; max-width: 100%; }
   overflow: hidden;
   margin-bottom: 12px;
 }
-.quiz-progress .bar {
-  height: 100%;
-  background: var(--navy);
-  border-radius: var(--r-pill);
-  transition: width .4s var(--ease);
-}
+  .quiz-progress .bar {
+    height: 100%;
+    background: var(--navy);
+    border-radius: var(--r-pill);
+    transform-origin: left;
+    transition: transform .4s var(--ease);
+  }
 .quiz-step-label { font-size: 13px; color: var(--text-soft); font-weight: 500; margin-bottom: 28px; }
 .quiz-card {
   background: #fff;
@@ -1525,18 +1529,33 @@ img { display: block; max-width: 100%; }
   100% { transform: scale(1); }
 }
 
-/* ── Product card overlay link (keyboard/SR navigable) ── */
-.prod-card-link {
+/* Product card media link (keyboard/SR navigable) */
+.prod-media-link {
   position: absolute;
   inset: 0;
   z-index: 1;
-  border-radius: inherit;
+  display: block;
 }
-.prod-card-link:focus-visible {
+.prod-media-link:focus-visible,
+.prod-name:focus-visible {
   outline: 3px solid var(--sky);
   outline-offset: 2px;
 }
-.prod-add { z-index: 2; }
+.prod-add { 
+  z-index: 2; 
+  position: absolute;
+  left: 18px; right: 18px;
+  bottom: 18px;
+  transform: translateY(calc(100% + 18px));
+  opacity: 0;
+  transition: all .3s var(--ease);
+}
+.prod-card:hover .prod-add { transform: translateY(0); opacity: 1; }
+.prod-card:hover .prod-foot { opacity: 0; }
+.prod-add:focus-within {
+  transform: translateY(0); 
+  opacity: 1;
+}
 
 /* ── Free shipping progress (cart summary) ───── */
 .freeship-strip {
@@ -1556,12 +1575,13 @@ img { display: block; max-width: 100%; }
   border-radius: 999px;
   overflow: hidden;
 }
-.freeship-bar > div {
-  height: 100%;
-  background: var(--navy);
-  border-radius: 999px;
-  transition: width .3s var(--ease);
-}
+  .freeship-bar > div {
+    height: 100%;
+    background: var(--navy);
+    border-radius: 999px;
+    transform-origin: left;
+    transition: transform .3s var(--ease);
+  }
 
 /* ── Loading skeletons ───────────────────────── */
 .skel {

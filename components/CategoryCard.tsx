@@ -9,6 +9,7 @@ export function CategoryCard({ cat }: { cat: Category }) {
       href={`/shop/${cat.slug}`}
       className={"cat-card ph " + cat.tone}
       style={{ background: `var(--${cat.tone}-50)` }}
+      aria-label={`Shop ${cat.name} category`}
     >
       <div className="cat-img">
         <Placeholder tone={cat.tone} label={cat.name} />

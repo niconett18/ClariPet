@@ -59,6 +59,9 @@ function Particle({
 
     const timer = setTimeout(() => onDone(item.id), 1400); // Wait for animation to finish
     return () => clearTimeout(timer);
+    // Single-fire animation: intentionally runs once on mount. The stale closure
+    // over `item`/`onDone` is the desired behaviour (the particle never changes).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
