@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Script from "next/script";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
@@ -613,8 +614,7 @@ function CourierLogo({ code, name }: { code: string; name: string }) {
   };
   const src = file[code];
   if (src) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img className="courier-logo-img" src={src} alt={`${code.toUpperCase()} logo`} />;
+    return <Image className="courier-logo-img" src={src} alt={`${code.toUpperCase()} logo`} width={60} height={20} style={{ objectFit: "contain" }} />;
   }
   return <span className="courier-logo generic" aria-label={name}>{(name || code).slice(0, 8).toUpperCase()}</span>;
 }

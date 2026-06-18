@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import dynamic from "next/dynamic";
 import type { Product, Tone } from "@/lib/types";
 import { PRODUCTS } from "@/data/products";
 import { formatPrice } from "@/lib/format";
@@ -12,7 +14,9 @@ import { QuantityStepper } from "@/components/ui/QuantityStepper";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { Accordion, type AccordionItem } from "@/components/ui/Accordion";
 import { Mascot } from "@/components/Mascot";
-import { ProductCard } from "@/components/ProductCard";
+
+const ProductCard = dynamic(() => import("@/components/ProductCard").then((mod) => mod.ProductCard));
+
 import { useCart } from "@/context/CartContext";
 import { useFlyToCart } from "@/context/FlyToCartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -97,12 +101,12 @@ export function ProductView({ product }: { product: Product }) {
     <main>
       <Breadcrumb
         trail={[
-          { label: "Home", href: "/" },
-          { label: product.categoryName, href: `/shop?category=${product.category}` },
+          { label: "Shop", href: "/shop" },
+          { label: product.category, href: `/shop/${product.category.toLowerCase()}` },
           { label: product.name },
         ]}
       />
-      <div className="wrap pdp">
+      <div className="wrap product-grid pdp">
         <div className="pdp-gallery">
           <div className="pdp-thumbs">
             {hasPhotos
@@ -113,13 +117,12 @@ export function ProductView({ product }: { product: Product }) {
                     onClick={() => setActiveThumb(i)}
                     aria-label={`View image ${i + 1}`}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={img.url}
                       alt={img.alt ?? `${product.name} photo ${i + 1}`}
-                      loading="lazy"
-                      decoding="async"
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      width={80}
+                      height={80}
+                      style={{ objectFit: "cover" }}
                     />
                   </button>
                 ))
@@ -136,14 +139,13 @@ export function ProductView({ product }: { product: Product }) {
           </div>
           <div className="pdp-main">
             {hasPhotos ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={photos[Math.min(activeThumb, photos.length - 1)].url}
                 alt={photos[Math.min(activeThumb, photos.length - 1)].alt ?? product.name}
-                // This is the Largest Contentful Paint element — hint the browser
-                // to fetch it at the highest priority and decode off the main thread.
-                fetchPriority="high"
-                decoding="async"
+                priority
+                sizes="(max-width: 768px) 100vw, 800px"
+                width={800}
+                height={800}
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
             ) : (
@@ -232,7 +234,7 @@ export function ProductView({ product }: { product: Product }) {
             <h2 className="h3">You might also like</h2>
           </div>
           <div className="prod-grid">
-            {relatedAll.map((p) => (
+            {related.map((p) => (
               <ProductCard key={p.slug} product={p} />
             ))}
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
 
 export interface ProductImageInput {
@@ -70,8 +71,7 @@ export function ImageUploader({
         <div className="thumbs">
           {images.map((img, i) => (
             <div key={img.url} className="thumb">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={img.url} alt={img.alt ?? `Product photo ${i + 1}`} />
+              <Image src={img.url} alt={img.alt ?? `Product photo ${i + 1}`} width={100} height={100} style={{ objectFit: "cover" }} />
               {i === 0 && <span className="badge">Main</span>}
               <div className="thumb-actions">
                 <button type="button" onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move left">

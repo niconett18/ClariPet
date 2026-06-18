@@ -1,9 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
 import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+
+const Footer = dynamic(() => import("@/components/Footer").then((mod) => mod.Footer));
 
 // Routes that render full-screen without the global navbar/footer.
 const BARE_ROUTES = ["/login", "/signup", "/forgot-password", "/reset-password"];
