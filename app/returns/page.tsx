@@ -5,6 +5,13 @@ export const metadata: Metadata = {
   title: "Return & Refund Policy",
   description: "How returns, exchanges, and refunds work for ClariPet orders.",
   alternates: { canonical: "/returns" },
+  openGraph: {
+    title: "Return & Refund Policy — ClariPet",
+    description:
+      "How returns, exchanges, and refunds work for ClariPet orders.",
+    url: "/returns",
+    type: "website",
+  },
 };
 
 export default function ReturnsPage() {

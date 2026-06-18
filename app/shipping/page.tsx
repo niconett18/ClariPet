@@ -3,8 +3,16 @@ import { LegalView } from "@/components/legal/LegalView";
 
 export const metadata: Metadata = {
   title: "Shipping & Delivery Policy",
-  description: "Shipping options, delivery times, and order tracking for ClariPet orders.",
+  description:
+    "Shipping options, delivery times, and order tracking for ClariPet orders.",
   alternates: { canonical: "/shipping" },
+  openGraph: {
+    title: "Shipping & Delivery Policy — ClariPet",
+    description:
+      "Shipping options, delivery times, and order tracking for ClariPet orders.",
+    url: "/shipping",
+    type: "website",
+  },
 };
 
 export default function ShippingPage() {

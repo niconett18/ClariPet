@@ -3,8 +3,13 @@ import { LegalView } from "@/components/legal/LegalView";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "How ClariPet collects, uses, and protects your personal information.",
+  description:
+    "How ClariPet collects, uses, and protects your personal information.",
   alternates: { canonical: "/privacy-policy" },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function PrivacyPolicyPage() {

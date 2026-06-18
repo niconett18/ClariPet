@@ -6,7 +6,7 @@ export const CATEGORIES: Category[] = [
   { slug: "tear-stain-care", name: "Tear Stain Care", tone: "lavender", icon: "sparkle", blurb: "Clear, bright-eyed faces" },
   { slug: "skin-care", name: "Skin Care", tone: "sage", icon: "leaf", blurb: "Soothe, calm & protect" },
   { slug: "grooming", name: "Grooming", tone: "cream", icon: "smile", blurb: "Clean coats, happy days" },
-  { slug: "supplements", name: "Supplements", tone: "peach", icon: "shield", blurb: "Wellness from the inside out" },
+  { slug: "beauty", name: "Beauty", tone: "peach", icon: "sparkle", blurb: "Enhanced pet beauty routines" },
 ];
 
 export function getCategory(slug: string): Category | undefined {

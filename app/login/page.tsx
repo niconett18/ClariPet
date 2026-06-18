@@ -8,10 +8,17 @@ import { Icon } from "@/components/icons";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { GoogleButton } from "@/components/auth/GoogleButton";
 
+/** Accept only relative paths to prevent open-redirect attacks. */
+function safeRedirectPath(value: string | null): string {
+  if (!value) return "/";
+  // Must start with a single slash — reject protocol-relative (//evil.com) and absolute URLs
+  return /^\/[^/\\]/.test(value) || value === "/" ? value : "/";
+}
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/";
+  const redirect = safeRedirectPath(searchParams.get("redirect"));
   const { signIn } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -35,7 +42,7 @@ function LoginForm() {
     }
   };
 
-  const signupHref = `/signup${redirect !== "/" ? `?redirect=${redirect}` : ""}`;
+  const signupHref = `/signup${redirect !== "/" ? `?redirect=${encodeURIComponent(redirect)}` : ""}`;
 
   return (
     <AuthShell
@@ -44,7 +51,7 @@ function LoginForm() {
       bullets={[
         "Gentle, pet-safe formulas made in Indonesia",
         "Faster checkout with saved addresses",
-        "Earn testPets points on every order",
+        "Earn ClariPet points on every order",
       ]}
     >
       <div className="form-head">

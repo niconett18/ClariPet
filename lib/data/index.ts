@@ -13,7 +13,10 @@ import { ARTICLES, getArticle as getStaticArticle, FEATURED_ARTICLE } from "@/da
 import { mapDBProductToProduct } from "@/lib/data/mapProduct";
 import type { Product, Category, Article } from "@/lib/types";
 
-const USE_DATABASE = process.env.NEXT_PUBLIC_SUPABASE_URL !== "your-supabase-url-here";
+const USE_DATABASE = Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_URL !== "your-supabase-url-here",
+);
 
 // ----- PRODUCTS -----
 
@@ -62,18 +65,15 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
   try {
     const supabase = createClient();
 
-    const { data: category } = await supabase
-      .from("categories")
-      .select("id")
-      .eq("slug", categorySlug)
-      .single();
-
-    if (!category) return getStaticProductsByCategory(categorySlug);
-
+    // Single query: join categories on slug so we avoid the 2-round-trip pattern
+    // (fetch category id → fetch products). PostgREST supports filtering on
+    // nested relations directly via `category!inner(slug)`.
     const { data, error } = await supabase
       .from("products")
-      .select("*, category:categories(*), sizes:product_sizes(label), images:product_images(url, alt, sort_order)")
-      .eq("category_id", category.id)
+      .select(
+        "*, category:categories!inner(*), sizes:product_sizes(label), images:product_images(url, alt, sort_order)",
+      )
+      .eq("category.slug", categorySlug)
       .eq("status", "active")
       .order("best_seller", { ascending: false });
 
@@ -205,7 +205,15 @@ export async function getFeaturedArticle(): Promise<Article | undefined> {
 
 // ----- MAPPERS -----
 
-function mapDBCategoryToCategory(db: any): Category {
+interface DBCategoryRow {
+  slug: string;
+  name: string;
+  tone?: Category["tone"] | null;
+  icon?: string | null;
+  blurb?: string | null;
+}
+
+function mapDBCategoryToCategory(db: DBCategoryRow): Category {
   return {
     slug: db.slug,
     name: db.name,
@@ -215,7 +223,19 @@ function mapDBCategoryToCategory(db: any): Category {
   };
 }
 
-function mapDBArticleToArticle(db: any): Article {
+interface DBArticleRow {
+  slug: string;
+  title: string;
+  category?: string | null;
+  read_time?: string | null;
+  tone?: Article["tone"] | null;
+  featured?: boolean | null;
+  excerpt?: string | null;
+  body?: string[] | null;
+  sections?: Article["sections"] | null;
+}
+
+function mapDBArticleToArticle(db: DBArticleRow): Article {
   return {
     slug: db.slug,
     title: db.title,

@@ -3,8 +3,13 @@ import { LegalView } from "@/components/legal/LegalView";
 
 export const metadata: Metadata = {
   title: "Terms & Conditions",
-  description: "The terms that govern your use of the ClariPet website and services.",
+  description:
+    "The terms that govern your use of the ClariPet website and services.",
   alternates: { canonical: "/terms" },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function TermsPage() {

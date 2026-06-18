@@ -8,13 +8,32 @@ import { Icon } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Shop ClariPet",
-  description: "Everything your pet needs for grooming, wellness, hygiene and everyday care.",
+  description:
+    "Everything your pet needs for grooming, wellness, hygiene and everyday care.",
   alternates: { canonical: "/shop" },
+  openGraph: {
+    title: "Shop ClariPet",
+    description:
+      "Everything your pet needs for grooming, wellness, hygiene and everyday care.",
+    url: "/shop",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shop ClariPet",
+    description:
+      "Everything your pet needs for grooming, wellness, hygiene and everyday care.",
+  },
 };
 
 export default async function ShopPage() {
-  const [products, categories] = await Promise.all([getAllProducts(), getAllCategories()]);
-  const featured = [...products].sort((a, b) => Number(b.bestSeller) - Number(a.bestSeller));
+  const [products, categories] = await Promise.all([
+    getAllProducts(),
+    getAllCategories(),
+  ]);
+  const featured = [...products].sort(
+    (a, b) => Number(b.bestSeller) - Number(a.bestSeller),
+  );
 
   return (
     <main>
@@ -26,7 +45,9 @@ export default async function ShopPage() {
       <section className="wrap section-sm" style={{ paddingTop: 0 }}>
         <div className="sec-head">
           <div>
-            <div className="eyebrow" style={{ marginBottom: 10 }}>Browse</div>
+            <div className="eyebrow" style={{ marginBottom: 10 }}>
+              Browse
+            </div>
             <h2 className="h2">Shop by Category</h2>
           </div>
         </div>
@@ -40,10 +61,14 @@ export default async function ShopPage() {
       <section className="wrap section-sm" style={{ paddingTop: 0 }}>
         <div className="sec-head">
           <div>
-            <div className="eyebrow" style={{ marginBottom: 10 }}>Everything in one place</div>
+            <div className="eyebrow" style={{ marginBottom: 10 }}>
+              Everything in one place
+            </div>
             <h2 className="h2">All Products</h2>
           </div>
-          <span className="muted" style={{ fontSize: 14 }}>{products.length} products</span>
+          <span className="muted" style={{ fontSize: 14 }}>
+            {products.length} products
+          </span>
         </div>
         <div className="prod-grid">
           {featured.map((p) => (
@@ -55,9 +80,12 @@ export default async function ShopPage() {
       <section className="wrap section-sm" style={{ paddingTop: 0 }}>
         <div className="shop-banner">
           <div>
-            <h2 className="h2" style={{ marginBottom: 10 }}>Helping You Help Them.</h2>
+            <h2 className="h2" style={{ marginBottom: 10 }}>
+              Helping You Help Them.
+            </h2>
             <p className="lead" style={{ marginBottom: 22 }}>
-              Not sure where to start? Take our quick quiz and we'll match your pet with the right care.
+              Not sure where to start? Take our quick quiz and we&apos;ll match
+              your pet with the right care.
             </p>
             <Link href="/quiz" className="btn btn-primary btn-lg">
               <Icon name="sparkle" size={18} /> Find My Product

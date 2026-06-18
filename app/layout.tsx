@@ -1,35 +1,73 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import dynamic from "next/dynamic";
 import "./globals.css";
 import { Providers } from "./Providers";
-import { Toast } from "@/components/Toast";
 import { SiteChrome } from "@/components/SiteChrome";
 import { FlyToCartProvider } from "@/context/FlyToCartContext";
+import { SITE_URL } from "@/lib/site";
+
+const Toast = dynamic(
+  () => import("@/components/Toast").then((mod) => mod.Toast),
+  { ssr: false },
+);
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  // 300 (light) is not used anywhere in the design system. Removing it saves
+  // one font-face download (~20 KB woff2) on every page load.
+  weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "ClariPet® — Premium Pet Care",
-    template: "%s | ClariPet®",
+    default: "ClariPetAr | Premium Pet Care",
+    template: "%s | ClariPetAr",
   },
-  description: "Safe. Gentle. Effective. Premium, pet-safe care made with love in Indonesia.",
+  description:
+    "Safe. Gentle. Effective. Premium, pet-safe care made with love in Indonesia.",
   openGraph: {
-    siteName: "ClariPet",
+    title: {
+      default: "ClariPetAr | Premium Pet Care",
+      template: "%s | ClariPetAr",
+    },
+    description:
+      "Safe. Gentle. Effective. Premium, pet-safe care made with love in Indonesia.",
+    siteName: "ClariPetAr",
     type: "website",
-    locale: "id_ID",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: {
+      default: "ClariPetAr | Premium Pet Care",
+      template: "%s | ClariPetAr",
+    },
+    description:
+      "Safe. Gentle. Effective. Premium, pet-safe care made with love in Indonesia.",
+    creator: "@ClariPetAr",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className={poppins.variable}>
       <body>

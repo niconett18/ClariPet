@@ -8,10 +8,16 @@ import { Icon } from "@/components/icons";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { GoogleButton } from "@/components/auth/GoogleButton";
 
+/** Accept only relative paths to prevent open-redirect attacks. */
+function safeRedirectPath(value: string | null): string {
+  if (!value) return "/";
+  return /^\/[^/\\]/.test(value) || value === "/" ? value : "/";
+}
+
 function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/";
+  const redirect = safeRedirectPath(searchParams.get("redirect"));
   const { signUp } = useAuth();
 
   const [fullName, setFullName] = useState("");
@@ -72,7 +78,7 @@ function SignupForm() {
       bullets={[
         "Gentle, pet-safe formulas made in Indonesia",
         "Faster checkout with saved addresses",
-        "Earn testPets points on every order",
+        "Earn ClariPet points on every order",
       ]}
     >
       <div className="form-head">
@@ -151,7 +157,7 @@ function SignupForm() {
 
       <p className="auth-footer">
         Already have an account?{" "}
-        <Link href={`/login${redirect !== "/" ? `?redirect=${redirect}` : ""}`}>Sign in</Link>
+        <Link href={`/login${redirect !== "/" ? `?redirect=${encodeURIComponent(redirect)}` : ""}`}>Sign in</Link>
       </p>
     </AuthShell>
   );

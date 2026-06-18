@@ -12,8 +12,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const article = await getArticleBySlug(params.slug);
   if (!article) return {};
+  const ogImage = (article as any).image
+    ? [{ url: (article as any).image, alt: article.title }]
+    : undefined;
+
   return {
-    title: article.title,
+    title: `${article.title} — ClariPet Journal`,
     description: article.excerpt,
     alternates: { canonical: `/journal/${article.slug}` },
     openGraph: {
@@ -21,6 +25,12 @@ export async function generateMetadata({
       description: article.excerpt,
       type: "article",
       url: `/journal/${article.slug}`,
+      ...(ogImage && { images: ogImage }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
     },
   };
 }
