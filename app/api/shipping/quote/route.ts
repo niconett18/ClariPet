@@ -1,10 +1,17 @@
 import { ok, error } from "@/lib/helpers/response";
 import { withErrorHandling } from "@/lib/helpers/handler";
 import { getShippingRates } from "@/lib/shipping";
+import { rateLimit } from "@/lib/helpers/rateLimit";
 
 export const dynamic = "force-dynamic";
 
 export const POST = withErrorHandling(async (req: Request) => {
+  // Rate Limit: 30 requests per minute
+  const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
+  if (ip !== "unknown" && !rateLimit(`shipping_${ip}`, 30, 60 * 1000)) {
+    return error("Terlalu banyak permintaan. Silakan coba lagi nanti.", 429);
+  }
+
   const body = await req.json();
 
   if (!body?.province || typeof body.province !== "string") {

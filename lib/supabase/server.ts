@@ -7,6 +7,10 @@ const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 export function createClient() {
   const cookieStore = cookies();
 
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY || SUPABASE_URL.includes("placeholder")) {
+    throw new Error("Supabase environment variables are missing or invalid.");
+  }
+
   return createServerClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY,

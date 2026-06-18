@@ -4,11 +4,24 @@ import { NextResponse, type NextRequest } from "next/server";
 /**
  * OAuth / email-confirmation callback.
  * Supabase redirects here with a ?code=... parameter.
+ *
+ * Security: the `next` parameter is validated to be a same-origin relative
+ * path to prevent open-redirect attacks (e.g. ?next=https://evil.com).
  */
+
+/** Accept only relative paths that start with / and contain no protocol. */
+function isSafeRedirectPath(value: string): boolean {
+  // Must start with a single slash (not //host or protocol://)
+  return /^\/[^/\\]/.test(value) || value === "/";
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/";
+  const rawNext = searchParams.get("next") ?? "/";
+
+  // Sanitise: fall back to "/" if the value is not a safe relative path
+  const next = isSafeRedirectPath(rawNext) ? rawNext : "/";
 
   if (code) {
     const supabase = createClient();

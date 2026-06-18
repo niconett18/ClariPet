@@ -6,6 +6,7 @@ import { createOrderSchema, orderQuerySchema } from "@/lib/validators/order";
 import { ok, error } from "@/lib/helpers/response";
 import { withErrorHandling } from "@/lib/helpers/handler";
 import { calculateShippingQuote } from "@/lib/shipping";
+import { safeLog } from "@/lib/helpers/safeLog";
 import type { NextRequest } from "next/server";
 
 // GET /api/orders — list user's orders
@@ -115,7 +116,8 @@ export const POST = withErrorHandling(async (req: Request) => {
     if (rpcError.message?.includes("INSUFFICIENT_STOCK")) {
       return error(rpcError.message, 400);
     }
-    return error(rpcError.message, 500);
+    safeLog.error("Order Creation RPC Error", rpcError);
+    return error("Failed to create order", 500);
   }
 
   // Fetch the new order

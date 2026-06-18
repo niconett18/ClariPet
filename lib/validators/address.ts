@@ -3,7 +3,7 @@ import { z } from "zod";
 export const addressSchema = z.object({
   label: z.string().min(1).max(50), // e.g., "Home", "Office"
   full_name: z.string().min(1).max(100),
-  phone: z.string().min(8).max(20),
+  phone: z.string().regex(/^\+?[0-9 ()-]{8,20}$/, "Invalid phone format"),
   street: z.string().min(1).max(300),
   city: z.string().min(1).max(100),
   province: z.string().min(1).max(100),

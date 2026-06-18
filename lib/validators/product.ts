@@ -48,10 +48,13 @@ export const updateProductSchema = createProductSchema.partial();
 
 export const productQuerySchema = z.object({
   category: z.string().optional(),
-  search: z.string().optional(),
+  search: z.string().max(100).optional(),
   sort: z.enum(["price_asc", "price_desc", "name", "newest"]).optional(),
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(20),
+  // Comma-separated list of slugs — used by wishlist/recently-viewed pages to
+  // fetch only the exact products they need rather than loading all products.
+  slugs: z.string().optional(),
 });
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;

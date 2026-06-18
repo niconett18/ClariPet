@@ -300,7 +300,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [user]);
 
-  const count = items.reduce((s, i) => s + i.qty, 0);
+  // Memoised so these values only recompute when items or products change,
+  // not on every render triggered by context consumers.
+  const count = useMemo(() => items.reduce((s, i) => s + i.qty, 0), [items]);
   const detailed: DetailedItem[] = useMemo(
     () =>
       items
@@ -308,7 +310,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         .filter((i): i is DetailedItem => Boolean(i.product)),
     [items, products],
   );
-  const subtotal = detailed.reduce((s, i) => s + i.product.price * i.qty, 0);
+  const subtotal = useMemo(
+    () => detailed.reduce((s, i) => s + i.product.price * i.qty, 0),
+    [detailed],
+  );
 
   return (
     <CartContext.Provider
