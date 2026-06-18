@@ -105,8 +105,19 @@ export function Navbar() {
   const isActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(href));
 
+  useEffect(() => {
+    if (menu) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menu]);
+
   return (
-    <header className={"nav" + (scrolled ? " scrolled" : "") + (navMorphing ? " morphing" : "")}>
+    <header className={"nav" + (scrolled ? " scrolled" : "") + (navMorphing ? " morphing" : "") + (menu ? " menu-open" : "")}>
       <div className="wrap nav-inner">
         <Link className="brand" href="/" aria-label="ClariPet home">
           ClariPet<sup>®</sup>
