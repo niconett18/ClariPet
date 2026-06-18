@@ -188,25 +188,27 @@ export function ProductView({ product }: { product: Product }) {
           </div>
 
           <div className="pdp-buy" ref={addRef}>
-            <QuantityStepper value={qty} onChange={setQty} />
-            <PrimaryButton
-              size="lg"
-              onClick={() => {
-                if (addRef.current) flyToCart(addRef.current);
-                cart.add(product.slug, size, qty, product);
-              }}
-            >
-              Add to Cart
-            </PrimaryButton>
-            <button
-              className={"wishlist" + (isWished ? " active" : "")}
-              style={{ position: "static", width: 50, height: 50, background: "var(--mist)" }}
-              aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
-              aria-pressed={isWished}
-              onClick={() => toggle(product.slug)}
-            >
-              <Icon name="heart" size={19} />
-            </button>
+            <div className="pdp-actions-row">
+              <QuantityStepper value={qty} onChange={setQty} />
+              <PrimaryButton
+                size="lg"
+                onClick={() => {
+                  if (addRef.current) flyToCart(addRef.current);
+                  cart.add(product.slug, size, qty, product);
+                }}
+              >
+                Add to Cart
+              </PrimaryButton>
+              <button
+                className={"wishlist" + (isWished ? " active" : "")}
+                style={{ position: "static", width: 50, height: 50, background: "var(--mist)", flexShrink: 0 }}
+                aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
+                aria-pressed={isWished}
+                onClick={() => toggle(product.slug)}
+              >
+                <Icon name="heart" size={19} />
+              </button>
+            </div>
           </div>
 
           <div className="feature-row">
