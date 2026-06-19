@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 
+// FIXED: mobile search — auto-focus, input attrs, clear button, tap targets, dvh
 export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -15,7 +16,8 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
   useEffect(() => {
     if (open) {
       setQ("");
-      const t = setTimeout(() => inputRef.current?.focus(), 80);
+      // 100ms timeout required on iOS Safari to let the overlay finish rendering
+      const t = setTimeout(() => inputRef.current?.focus(), 100);
       return () => clearTimeout(t);
     }
   }, [open]);
@@ -46,11 +48,26 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
           <Icon name="search" className="muted" size={20} />
           <input
             ref={inputRef}
+            type="search"
+            inputMode="search"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search products…"
+            placeholder="Cari produk…"
             aria-label="Search products"
           />
+          {q.length > 0 && (
+            <button
+              className="icon-btn search-clear"
+              aria-label="Clear search"
+              onClick={() => { setQ(""); inputRef.current?.focus(); }}
+            >
+              <Icon name="close" size={18} />
+            </button>
+          )}
           <button className="icon-btn" aria-label="Close search" onClick={onClose}>
             <Icon name="close" size={21} />
           </button>
@@ -73,7 +90,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
           )}
           {results.length === 0 && <div className="search-empty">No products match “{q}”.</div>}
           {results.map((p) => (
-            <div key={p.slug} className="search-result" onClick={() => goTo(p.slug)}>
+            <div key={p.slug} className="search-result" onClick={() => goTo(p.slug)} role="link" tabIndex={0}>
               <div className="thumb">
                 <Placeholder tone={p.tone} paw={false} label="" />
               </div>

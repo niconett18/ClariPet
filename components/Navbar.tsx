@@ -302,13 +302,19 @@ export function Navbar() {
                 <>
                   <div className="mobile-nav-section-label">Account</div>
                   <Link href="/account" className="mobile-nav-link" onClick={() => setMenu(false)}>
-                    <Icon name="user" size={19} /> My Account
+                    <Icon name="user" size={19} /> Profile
                   </Link>
                   <Link href="/account/orders" className="mobile-nav-link" onClick={() => setMenu(false)}>
                     <Icon name="package" size={19} /> My Orders
                   </Link>
                   <Link href="/account/saved" className="mobile-nav-link" onClick={() => setMenu(false)}>
                     <Icon name="heart" size={19} /> Saved Items
+                  </Link>
+                  <Link href="/account/pets" className="mobile-nav-link" onClick={() => setMenu(false)}>
+                    <Icon name="paw" size={19} /> My Pets
+                  </Link>
+                  <Link href="/account/addresses" className="mobile-nav-link" onClick={() => setMenu(false)}>
+                    <Icon name="pinned" size={19} /> Addresses
                   </Link>
                   {user.profile?.role === "admin" && (
                     <Link href="/admin" className="mobile-nav-link" onClick={() => setMenu(false)}>

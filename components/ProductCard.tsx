@@ -18,6 +18,7 @@ import { useWishlist } from "@/context/WishlistContext";
 
 // memo prevents re-renders of every card in the grid when unrelated parent
 // state changes (e.g. filter toggles, cart count update in Navbar).
+// FIXED: price row nowrap + product name 2-line clamp for consistent card height on mobile
 export const ProductCard = memo(function ProductCard({ product }: { product: Product }) {
   const cart = useCart();
   const btnRef = useRef<HTMLDivElement>(null);
@@ -74,11 +75,16 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
           {product.name}
         </Link>
         <div className="prod-sub">{product.subtitle}</div>
-        <div className="prod-foot">
-          <span className="prod-price">{formatPrice(product.price)}</span>
-          <StarRating rating={product.rating} reviews={product.reviews} />
+        <div className="prod-foot-wrapper">
+          <div className="prod-foot">
+            <span className="prod-price">{formatPrice(product.price)}</span>
+            <StarRating rating={product.rating} reviews={product.reviews} />
+          </div>
+          <button className="mobile-add-btn mobile-only" onClick={handleAddToCart} aria-label="Add to cart">
+            <Icon name="plus" size={18} />
+          </button>
         </div>
-        <div ref={btnRef} className="prod-add">
+        <div ref={btnRef} className="prod-add desktop-only">
           <PrimaryButton block size="sm" type="button" onClick={handleAddToCart} aria-label={`Add ${product.name} to cart`}>
             Add to Cart
           </PrimaryButton>
