@@ -635,8 +635,8 @@ function CheckoutStyles() {
       .checkout-shell { width:min(1240px, calc(100% - 32px)); margin:0 auto; }
       .checkout-title, .checkout-shell h1 { font-size:26px; margin:0 0 20px; font-weight:800; color:#171717; }
       .checkout-grid { display:grid; grid-template-columns:minmax(0, 760px) 390px; gap:56px; align-items:start; }
-      .checkout-main { display:grid; gap:22px; }
-      .checkout-card, .side-card { background:#fff; border:1px solid #dde3ea; border-radius:10px; padding:24px; box-shadow:0 1px 2px rgba(16,24,40,.04); }
+      .checkout-main { display:grid; gap:22px; min-width: 0; }
+      .checkout-card, .side-card { background:#fff; border:1px solid #dde3ea; border-radius:10px; padding:24px; box-shadow:0 1px 2px rgba(16,24,40,.04); min-width: 0; }
       .checkout-card h2, .side-card h2, .voucher-head h2 { font-size:18px; margin:0 0 16px; font-weight:800; color:#171717; }
       .inner-card { border:1px solid #d8dee6; border-radius:8px; padding:24px; }
       .inner-card h3 { font-size:16px; margin:0 0 18px; font-weight:800; }
@@ -751,8 +751,8 @@ function CheckoutStyles() {
       .pay-btn { width:100%; height:46px; border:0; border-radius:8px; background:#111; color:#fff; font-weight:800; cursor:pointer; }
       .pay-btn:disabled:not(.loading) { background:#edf0f3; color:#a0a8b1; cursor:not-allowed; }
       .empty-checkout .center-card { display:grid; place-items:center; text-align:center; gap:10px; }
-      @media (max-width: 980px) { .checkout-grid { grid-template-columns:1fr; gap:22px; } .checkout-sidebar { position:static; } .two-col { grid-template-columns:1fr; } }
-      @media (max-width: 640px) { .checkout-page { padding-top:18px; } .checkout-card, .side-card, .inner-card { padding:16px; } .checkout-item { grid-template-columns:54px 1fr; } .checkout-item b { grid-column:2; } .destination-list { max-height:200px; } .courier-opt { grid-template-columns:18px 44px 1fr auto; gap:9px; padding:12px; } .courier-logo-img { width:44px; height:28px; } .courier-info strong { font-size:12.5px; } .courier-fee b { font-size:13px; } }
+      @media (max-width: 980px) { .checkout-grid { grid-template-columns:minmax(0, 1fr); gap:22px; } .checkout-sidebar { position:static; } .two-col { grid-template-columns:1fr; } }
+      @media (max-width: 640px) { .checkout-page { padding-top:18px; } .checkout-card, .side-card, .inner-card { padding:16px; min-width: 0; } .checkout-item { grid-template-columns:54px 1fr; } .checkout-item b { grid-column:2; } .destination-list { max-height:200px; } .courier-opt { grid-template-columns:18px 44px 1fr auto; gap:9px; padding:12px; } .courier-logo-img { width:44px; height:28px; } .courier-info strong { font-size:12.5px; } .courier-fee b { font-size:13px; } .saved-addr-head { flex-direction: column; align-items: flex-start; gap: 8px; } .saved-addr-grid { grid-template-columns: 1fr; } }
     `}</style>
   );
 }

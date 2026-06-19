@@ -88,7 +88,7 @@ export function CartView() {
                 </div>
               </>
             ) : (
-              <span>🎉 You’ve unlocked <b>FREE shipping</b>!</span>
+              <span>🎉 You&apos;ve unlocked <b>FREE shipping</b>!</span>
             )}
           </div>
           <div className="summary-row">
@@ -103,17 +103,24 @@ export function CartView() {
             <span>Total</span>
             <span>{formatPrice(cart.subtotal)}</span>
           </div>
-          <div style={{ marginTop: 22 }}>
-            <PrimaryButton block size="lg" onClick={() => router.push("/checkout")}>
-              Proceed to Checkout
-            </PrimaryButton>
-          </div>
-          <div style={{ marginTop: 12 }}>
-            <SecondaryButton block onClick={() => router.push("/shop")}>
-              Continue Shopping
-            </SecondaryButton>
-          </div>
+          <Link href="/checkout" className="btn btn-primary cart-checkout-btn" style={{ width: '100%', display: 'block', textAlign: 'center', padding: '16px', fontSize: '16px' }}>
+            Proceed to Checkout
+          </Link>
+          <Link href="/shop" className="btn btn-outline" style={{ display: 'block', textAlign: 'center', marginTop: 12, padding: '16px', fontSize: '16px' }}>
+            Continue Shopping
+          </Link>
         </aside>
+      </div>
+
+      {/* Sticky mobile checkout bar */}
+      <div className="mobile-cart-bar">
+        <div className="mcb-total">
+          <span className="mcb-label">Total</span>
+          <span className="mcb-value">{formatPrice(cart.subtotal)}</span>
+        </div>
+        <Link href="/checkout" className="btn btn-primary mcb-btn">
+          Checkout
+        </Link>
       </div>
     </main>
   );

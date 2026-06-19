@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -34,9 +35,14 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [navMorphing, setNavMorphing] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const accountRef = useRef<HTMLDivElement | null>(null);
   const shopRef = useRef<HTMLDivElement | null>(null);
   const shopCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setMenu(false);
@@ -168,124 +174,169 @@ export function Navbar() {
             ),
           )}
         </nav>
-        <div className="nav-actions">
-          <button className="icon-btn" aria-label="Search" onClick={() => setSearch(true)}>
-            <Icon name="search" size={21} />
-          </button>
-          <div className="account-wrap desktop-only" ref={accountRef}>
-            <button
-              className="icon-btn"
-              aria-label="Account"
-              aria-expanded={account}
-              onClick={() => setAccount((v) => !v)}
-            >
-              <Icon name="user" size={21} />
+          <div className="nav-actions">
+            <button className="icon-btn" aria-label="Search" onClick={() => setSearch(true)}>
+              <Icon name="search" size={21} />
             </button>
-            {account && (
-              <div className="account-menu">
-                {user ? (
-                  <>
-                    <div className="account-head">
-                      <div className="account-name">
-                        {user.profile?.full_name || "Account"}
+            <div className="account-wrap desktop-only" ref={accountRef}>
+              <button
+                className="icon-btn"
+                aria-label="Account"
+                aria-expanded={account}
+                onClick={() => setAccount((v) => !v)}
+              >
+                <Icon name="user" size={21} />
+              </button>
+              {account && (
+                <div className="account-menu wide">
+                  {user ? (
+                    <>
+                      <div className="account-head">
+                        <div className="account-name">
+                          {user.profile?.full_name || "Account"}
+                        </div>
+                        <div className="account-email">{user.email}</div>
                       </div>
-                      <div className="account-email">{user.email}</div>
-                    </div>
-                    <Link href="/account/orders" className="account-link">
-                      <Icon name="package" size={17} /> My Orders
-                    </Link>
-                    <Link href="/account/addresses" className="account-link">
-                      <Icon name="pinned" size={17} /> Addresses
-                    </Link>
-                    <Link href="/account" className="account-link">
-                      <Icon name="settings" size={17} /> Profile
-                    </Link>
-                    {user.profile?.role === "admin" && (
-                      <Link href="/admin" className="account-link admin-link">
-                        <Icon name="dashboard" size={17} /> Admin Dashboard
+                      <div className="account-grid">
+                        <div className="account-column">
+                          <Link href="/account" className="account-link">
+                            <Icon name="user" size={17} /> Profile
+                          </Link>
+                          <Link href="/account/saved" className="account-link">
+                            <Icon name="heart" size={17} /> Saved Items
+                          </Link>
+                          <Link href="/account/pets" className="account-link">
+                            <Icon name="paw" size={17} /> My Pets
+                          </Link>
+                          <Link href="/account/addresses" className="account-link">
+                            <Icon name="pinned" size={17} /> Addresses
+                          </Link>
+                        </div>
+                        <div className="account-column">
+                          <Link href="/account/orders" className="account-link">
+                            <Icon name="package" size={17} /> My Orders
+                          </Link>
+                          <Link href="/account/rewards" className="account-link">
+                            <Icon name="award" size={17} /> Rewards
+                          </Link>
+                          <Link href="/account/recently-viewed" className="account-link">
+                            <Icon name="clock" size={17} /> Recently Viewed
+                          </Link>
+                          <button onClick={handleSignOut} className="account-link signout">
+                            <Icon name="log-out" size={17} /> Sign Out
+                          </button>
+                        </div>
+                      </div>
+                      {user.profile?.role === "admin" && (
+                        <Link href="/admin" className="account-link admin-link" style={{ marginTop: 8, gridColumn: 'span 2', justifyContent: 'center', background: 'var(--mist)' }}>
+                          <Icon name="dashboard" size={17} /> Admin Dashboard
+                        </Link>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <Link href="/login" className="account-link">
+                        Sign In
                       </Link>
-                    )}
-                    <button onClick={handleSignOut} className="account-link signout">
-                      <Icon name="log-out" size={17} /> Sign Out
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link href="/login" className="account-link">
-                      Sign In
-                    </Link>
-                    <Link href="/signup" className="account-link">
-                      Create Account
-                    </Link>
-                  </>
-                )}
-              </div>
-            )}
+                      <Link href="/signup" className="account-link">
+                        Create Account
+                      </Link>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+            <Link className="icon-btn" aria-label={`Cart with ${count} items`} href="/cart">
+              <Icon name="cart" size={21} />
+              {count > 0 && <span className="cart-badge">{count}</span>}
+            </Link>
+            <button
+              className="icon-btn hamburger mobile-only"
+              aria-label="Menu"
+              aria-expanded={menu}
+              aria-controls="mobile-menu"
+              onClick={() => setMenu(true)}
+            >
+              <Icon name="menu" size={21} />
+            </button>
           </div>
-          <Link className="icon-btn" aria-label={`Cart with ${count} items`} href="/cart">
-            <Icon name="cart" size={21} />
-            {count > 0 && <span className="cart-badge">{count}</span>}
-          </Link>
-          <button
-            className="icon-btn hamburger"
-            aria-label="Menu"
-            aria-expanded={menu}
-            aria-controls="mobile-menu"
-            onClick={() => setMenu(true)}
-          >
-            <Icon name="menu" size={21} />
-          </button>
-        </div>
       </div>
 
-      <div id="mobile-menu" className={"mobile-menu" + (menu ? " open" : "")} aria-hidden={!menu}>
-        <div className="scrim" onClick={() => setMenu(false)} />
-        <div className="panel" role="dialog" aria-modal="true" aria-label="Menu">
-          <button
-            className="icon-btn"
-            style={{ alignSelf: "flex-end" }}
-            aria-label="Close menu"
-            onClick={() => setMenu(false)}
-          >
-            <Icon name="close" size={21} />
-          </button>
-          {NAV_ITEMS.map((n) => (
-            <Link key={n.href} href={n.href}>
-              {n.label}
-            </Link>
-          ))}
-          <div style={{ borderTop: "1px solid var(--line)", margin: "8px 0" }} />
-          {user ? (
-            <>
-              <Link href="/account">My Account</Link>
-              <Link href="/account/orders">My Orders</Link>
-              {user.profile?.role === "admin" && (
-                <Link href="/admin">Admin Dashboard</Link>
-              )}
+      {mounted && createPortal(
+        <div id="mobile-menu" className={"mobile-menu" + (menu ? " open" : "")} aria-hidden={!menu}>
+          <div className="scrim" onClick={() => setMenu(false)} />
+          <div className="panel" role="dialog" aria-modal="true" aria-label="Menu">
+            <div className="panel-header">
+              <Link className="brand" href="/" onClick={() => setMenu(false)} aria-label="ClariPet home">
+                ClariPet<sup>®</sup>
+              </Link>
               <button
-                onClick={handleSignOut}
-                style={{
-                  textAlign: "left",
-                  padding: "14px 16px",
-                  borderRadius: "var(--r-md)",
-                  fontWeight: 500,
-                  fontSize: 17,
-                  color: "var(--navy)",
-                  background: "none",
-                  border: "none",
-                }}
+                className="icon-btn"
+                aria-label="Close menu"
+                onClick={() => setMenu(false)}
               >
-                Sign Out
+                <Icon name="close" size={22} />
               </button>
-            </>
-          ) : (
-            <>
-              <Link href="/login">Sign In</Link>
-              <Link href="/signup">Create Account</Link>
-            </>
-          )}
-        </div>
-      </div>
+            </div>
+            <div className="panel-content">
+              {user && (
+                <div className="mobile-account-head">
+                  <div className="mobile-account-avatar">
+                    <Icon name="user" size={22} />
+                  </div>
+                  <div>
+                    <div className="mobile-account-name">{user.profile?.full_name || "Account"}</div>
+                    <div className="mobile-account-email">{user.email}</div>
+                  </div>
+                </div>
+              )}
+              <div className="mobile-nav-section-label">Browse</div>
+              {NAV_ITEMS.map((n) => (
+                <Link key={n.href} href={n.href} className="mobile-nav-link" onClick={() => setMenu(false)}>
+                  {n.label}
+                  <Icon name="arrowRight" size={17} />
+                </Link>
+              ))}
+              <div className="mobile-nav-sep" />
+              {user ? (
+                <>
+                  <div className="mobile-nav-section-label">Account</div>
+                  <Link href="/account" className="mobile-nav-link" onClick={() => setMenu(false)}>
+                    <Icon name="user" size={19} /> My Account
+                  </Link>
+                  <Link href="/account/orders" className="mobile-nav-link" onClick={() => setMenu(false)}>
+                    <Icon name="package" size={19} /> My Orders
+                  </Link>
+                  <Link href="/account/saved" className="mobile-nav-link" onClick={() => setMenu(false)}>
+                    <Icon name="heart" size={19} /> Saved Items
+                  </Link>
+                  {user.profile?.role === "admin" && (
+                    <Link href="/admin" className="mobile-nav-link" onClick={() => setMenu(false)}>
+                      <Icon name="dashboard" size={19} /> Admin Dashboard
+                    </Link>
+                  )}
+                  <button
+                    onClick={handleSignOut}
+                    className="mobile-nav-link signout-btn"
+                  >
+                    <Icon name="log-out" size={19} /> Sign Out
+                  </button>
+                </>
+              ) : (
+                <div className="mobile-auth-actions">
+                  <Link href="/login" className="btn btn-outline" onClick={() => setMenu(false)} style={{ width: '100%', textAlign: 'center', padding: '14px' }}>
+                    Sign In
+                  </Link>
+                  <Link href="/signup" className="btn btn-primary" onClick={() => setMenu(false)} style={{ width: '100%', textAlign: 'center', padding: '14px' }}>
+                    Create Account
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>,
+        document.body,
+      )}
 
       {search && <SearchOverlay open={search} onClose={() => setSearch(false)} />}
     </header>

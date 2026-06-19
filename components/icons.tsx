@@ -57,6 +57,7 @@ export const icons: Record<string, LucideIcon> = {
   "arrow-left": ArrowLeft,
   eye: Eye,
   "eye-off": EyeOff,
+  paw: Dog,
 };
 
 export function Icon({
