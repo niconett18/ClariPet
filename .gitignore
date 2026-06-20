@@ -30,3 +30,6 @@ next-env.d.ts
 # temp PDF mockup render artifacts
 .pdfvenv/
 .mockup_pages/
+
+# local dev script (reads service-role key from .env, not for CI)
+/scripts/test-payment-webhook.mjs
