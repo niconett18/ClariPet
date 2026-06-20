@@ -29,9 +29,18 @@ export const POST = withErrorHandling(async (req: Request) => {
     return error("Order not found", 404);
   }
 
-  // Init Midtrans Snap
+  // Never mint a fresh payment token for an order that is already settled or dead.
+  if (order.status === "paid") {
+    return error("Order already paid", 409);
+  }
+  if (order.status === "cancelled") {
+    return error("Order is no longer payable", 409);
+  }
+
+  // Init Midtrans Snap. Sandbox vs production is driven by a single explicit flag
+  // (shared with the frontend snap.js URL) so the two can never drift apart.
   const snap = new Snap({
-    isProduction: process.env.NODE_ENV === "production",
+    isProduction: process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true",
     serverKey: process.env.MIDTRANS_SERVER_KEY || "",
     clientKey: process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || ""
   });
@@ -40,6 +49,12 @@ export const POST = withErrorHandling(async (req: Request) => {
     transaction_details: {
       order_id: order.id,
       gross_amount: order.total
+    },
+    // Expire abandoned checkouts quickly so reserved stock is freed via the
+    // Midtrans `expire` webhook (-> cancelled -> stock restored) instead of ~24h later.
+    expiry: {
+      unit: "minutes",
+      duration: 60
     },
     customer_details: {
       first_name: order.shipping_address?.full_name || user.email || "Customer",
