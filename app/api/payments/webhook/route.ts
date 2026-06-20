@@ -65,6 +65,22 @@ export async function POST(req: NextRequest) {
 
     const supabase = createAdminClient();
 
+    // Defense-in-depth: confirm the notified amount matches the stored order total.
+    // Redundant with the signature, but a cheap guard. Midtrans sends gross_amount as a
+    // decimal string ("10000.00"); order.total is an integer in IDR.
+    const { data: amountOrder } = await supabase
+      .from("orders")
+      .select("total")
+      .eq("id", orderId)
+      .single();
+    if (!amountOrder || Math.round(parseFloat(body.gross_amount)) !== amountOrder.total) {
+      console.error("[Payment Webhook Error] Amount mismatch", {
+        orderId,
+        gross_amount: body.gross_amount,
+      });
+      return NextResponse.json({ error: "Amount mismatch" }, { status: 400 });
+    }
+
     // Map payment gateway status to our order status
     let orderStatus: string;
     
