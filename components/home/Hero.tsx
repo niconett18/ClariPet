@@ -35,16 +35,18 @@ export function Hero() {
         </div>
         <div style={{ position: "relative" }}>
           <div className="hero-media">
-            <Image src="/images/hero/hero-main.jpg" alt="Poodle & cat with ClariPet products" fill priority style={{ objectFit: "cover" }} />
+            <div style={{ width: "100%", height: "100%", background: "var(--sky-50)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Image src="/images/brand/logo.png" alt="ClariPet" width={200} height={64} className="object-contain" />
+            </div>
           </div>
-          <div className="hero-bottle" style={{ left: "4%", background: "var(--pink)" }}>
-            <Placeholder tone="pink" paw={false} label="" />
+          <div className="hero-bottle" style={{ left: "4%", background: "transparent" }}>
+            <Image src="/images/products/baby-powder.png" alt="Baby Powder" fill style={{ objectFit: "contain" }} />
           </div>
-          <div className="hero-bottle" style={{ left: "34%", bottom: "-12px", background: "var(--sage)" }}>
-            <Placeholder tone="sage" paw={false} label="" />
+          <div className="hero-bottle" style={{ left: "34%", bottom: "-12px", background: "transparent" }}>
+            <Image src="/images/products/smell-clean.png" alt="Smell Clean" fill style={{ objectFit: "contain" }} />
           </div>
-          <div className="hero-bottle" style={{ left: "64%", background: "var(--lavender)" }}>
-            <Placeholder tone="lavender" paw={false} label="" />
+          <div className="hero-bottle" style={{ left: "64%", background: "transparent" }}>
+            <Image src="/images/products/gentle-wash.png" alt="Gentle Wash" fill style={{ objectFit: "contain" }} />
           </div>
         </div>
       </div>

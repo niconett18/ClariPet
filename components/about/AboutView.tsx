@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
@@ -45,7 +46,9 @@ export function AboutView() {
           </p>
         </div>
         <div className="about-media">
-          <Placeholder tone="cream" label="Golden retriever & cat" />
+          <div style={{ width: "100%", height: "100%", background: "var(--cream-50)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Image src="/images/brand/logo.png" alt="ClariPet About Us" width={200} height={64} className="object-contain" />
+          </div>
         </div>
       </div>
 

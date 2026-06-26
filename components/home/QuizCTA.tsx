@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
@@ -32,7 +33,9 @@ export function QuizCTA() {
             </div>
           </div>
           <div className="quiz-cta-media">
-            <Placeholder tone="lavender" label="Happy dog & cat" />
+            <div style={{ width: "100%", height: "100%", background: "var(--lavender-50)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Image src="/images/products/botanica-bloom.png" alt="Find your product" width={200} height={200} className="object-contain" />
+          </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 
@@ -143,11 +144,11 @@ export function ReviewsView() {
                 <div className="result-pair">
                   <div className="result-img">
                     <span className="result-tag">Before</span>
-                    <Placeholder tone="cream" label="Before" />
+                    <div className="ph cream">Before</div>
                   </div>
                   <div className="result-img">
                     <span className="result-tag after">After</span>
-                    <Placeholder tone={r.tone} label="After" />
+                    <div className={"ph " + r.tone}>After</div>
                   </div>
                 </div>
                 <div className="result-name">{r.name}</div>
@@ -174,7 +175,7 @@ export function ReviewsView() {
               </div>
             </div>
             <div className="quiz-cta-media">
-              <Placeholder tone="sky" label="Happy pets" />
+              <div className="ph sky">Happy pets</div>
             </div>
           </div>
         </div>
