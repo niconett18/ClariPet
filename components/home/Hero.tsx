@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
@@ -12,10 +11,12 @@ export function Hero() {
       <div className="wrap hero-grid">
         <div className="hero-copy">
           <div className="eyebrow" style={{ marginBottom: 16 }}>
-            PREMIUM PET CARE FOR CATS & DOGS
+            Premium Pet Care for Cats & Dogs
           </div>
-          <h1 className="h-display">Helping You Help Them.</h1>
-          <p className="lead">Safe, gentle, and effective pet care products made with love in Indonesia.</p>
+          <h1 className="h-display">Helping You Helping Them.</h1>
+          <p className="lead">
+            Merawat hewan peliharaan seharusnya tidak terasa rumit. Karena itu, setiap produk ClariPet dirancang untuk membantu Anda merawat mereka dengan lebih mudah, lebih nyaman, dan lebih percaya diri setiap hari.
+          </p>
           <div className="hero-actions">
             <Link href="/shop" tabIndex={-1} aria-hidden="true">
               <PrimaryButton size="lg" icon="arrowRight" aria-label="Shop Products">
@@ -34,7 +35,7 @@ export function Hero() {
         </div>
         <div style={{ position: "relative" }}>
           <div className="hero-media">
-            <Placeholder tone="sky" label="Poodle & cat with ClariPet products" />
+            <Image src="/images/hero/hero-main.jpg" alt="Poodle & cat with ClariPet products" fill priority style={{ objectFit: "cover" }} />
           </div>
           <div className="hero-bottle" style={{ left: "4%", background: "var(--pink)" }}>
             <Placeholder tone="pink" paw={false} label="" />

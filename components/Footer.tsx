@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { CATEGORIES } from "@/data/categories";
 import { Icon } from "@/components/icons";
 
@@ -10,12 +11,14 @@ export function Footer() {
       <div className="wrap">
         <div className="footer-grid">
           <div>
-            <div className="brand">
-              ClariPet<sup>®</sup>
+            <div className="brand" style={{ marginBottom: "1rem" }}>
+              <Image src="/images/brand/logo.png" alt="ClariPet" width={140} height={46} className="object-contain" />
             </div>
+            <p className="footer-blurb" style={{ fontWeight: 500, marginBottom: 8, color: "var(--text)" }}>
+              Helping You Help Them.
+            </p>
             <p className="footer-blurb">
-              Premium, pet-safe care made with love in Indonesia. Gentle formulas for happy, healthy
-              fur babies.
+              Merawat hewan peliharaan seharusnya tidak terasa rumit.
             </p>
             <div className="socials">
               <a className="social" href="#" aria-label="Facebook">
@@ -57,7 +60,6 @@ export function Footer() {
           <div className="footer-col">
             <h4>Support</h4>
             <ul>
-              <li><Link href="/contact">Contact</Link></li>
               <li><Link href="/faq">FAQ</Link></li>
               <li><Link href="/shipping">Shipping & Delivery</Link></li>
               <li><Link href="/returns">Returns & Refunds</Link></li>
@@ -70,14 +72,15 @@ export function Footer() {
           </div>
         </div>
         <div className="footer-bar">
-          <span>© 2026 ClariPet. All rights reserved.</span>
+          <span>Â© {new Date().getFullYear()} ClariPet. All rights reserved.</span>
           <span className="footer-legal">
-            <Link href="/privacy-policy">Privacy Policy</Link>
-            <span className="sep">·</span>
-            <Link href="/terms">Terms & Conditions</Link>
+            <Link href="/privacy-policy">Kebijakan Privasi</Link>
+            <span className="sep">Â·</span>
+            <Link href="/terms">Syarat & Ketentuan</Link>
           </span>
         </div>
       </div>
     </footer>
   );
 }
+

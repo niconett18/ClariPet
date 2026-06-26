@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -92,7 +93,11 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
           {results.map((p) => (
             <div key={p.slug} className="search-result" onClick={() => goTo(p.slug)} role="link" tabIndex={0}>
               <div className="thumb">
-                <Placeholder tone={p.tone} paw={false} label="" />
+                {p.images?.[0] ? (
+                  <Image src={p.images[0].url} alt={p.images[0].alt || p.name} fill style={{ objectFit: "cover" }} sizes="64px" />
+                ) : (
+                  <Placeholder tone={p.tone} paw={false} label="" />
+                )}
               </div>
               <div>
                 <div style={{ fontWeight: 600, color: "var(--navy)" }}>{p.name}</div>

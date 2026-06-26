@@ -1,23 +1,43 @@
+import Image from 'next/image'
 import type { CSSProperties } from "react";
 import type { Tone } from "@/lib/types";
 
-/**
- * Pastel image placeholder. Swap this component's internals to render a real
- * <Image> once photography is available — every image slot in the app uses it.
- */
-export function Placeholder({
-  tone,
-  label,
-  paw = true,
-  className,
-  style,
-}: {
+interface PlaceholderProps {
   tone?: Tone;
   label?: string;
+  src?: string;
+  alt?: string;
   paw?: boolean;
   className?: string;
   style?: CSSProperties;
-}) {
+  width?: number;
+  height?: number;
+}
+
+export function Placeholder({
+  tone,
+  label,
+  src,
+  alt,
+  paw = true,
+  className,
+  style,
+  width = 400,
+  height = 400,
+}: PlaceholderProps) {
+  if (src) {
+    return (
+      <Image
+        src={src}
+        alt={alt || label || ""}
+        width={width}
+        height={height}
+        className={className}
+        style={style}
+      />
+    );
+  }
+
   return (
     <div
       className={"ph " + (tone ?? "") + " " + (className ?? "")}

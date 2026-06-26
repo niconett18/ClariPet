@@ -9,13 +9,10 @@ export function ShopByCategory() {
       <div className="wrap">
         <div className="sec-head reveal">
           <div>
-            <div className="eyebrow" style={{ marginBottom: 10 }}>
-              Find their match
-            </div>
-            <h2 className="h2">Shop by Category</h2>
+            <h2 className="h2">Find What Your Pet Needs</h2>
           </div>
           <Link className="link" href="/shop">
-            View all <Icon name="arrowRight" size={17} />
+            View All Products <Icon name="arrowRight" size={17} />
           </Link>
         </div>
         <div className="cat-grid">

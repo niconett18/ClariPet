@@ -476,7 +476,13 @@ export function CheckoutView() {
                   <div className="product-list">
                     {cart.detailed.map((item) => (
                       <div className="checkout-item" key={item.slug + item.size}>
-                        <div className="item-thumb"><Placeholder tone={item.product.tone} paw={false} label="" /></div>
+                        <div className="item-thumb">
+                          {item.product.images?.[0] ? (
+                            <Image src={item.product.images[0].url} alt={item.product.images[0].alt || item.product.name} fill style={{ objectFit: "cover" }} sizes="64px" />
+                          ) : (
+                            <Placeholder tone={item.product.tone} paw={false} label="" />
+                          )}
+                        </div>
                         <div>
                           <strong>{item.product.name}</strong>
                           <span>Size {item.size} • Qty {item.qty}</span>

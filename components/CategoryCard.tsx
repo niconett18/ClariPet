@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Category } from "@/lib/types";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
@@ -12,7 +13,11 @@ export function CategoryCard({ cat }: { cat: Category }) {
       aria-label={`Shop ${cat.name} category`}
     >
       <div className="cat-img">
-        <Placeholder tone={cat.tone} label={cat.name} />
+        {cat.image ? (
+          <Image src={cat.image} alt={cat.name} fill style={{ objectFit: "cover" }} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+        ) : (
+          <Placeholder tone={cat.tone} label={cat.name} />
+        )}
       </div>
       <div className="cat-name">{cat.name}</div>
       <div className="cat-arrow">

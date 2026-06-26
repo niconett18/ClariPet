@@ -1,6 +1,7 @@
 export type Tone = "sky" | "sage" | "pink" | "lavender" | "cream" | "peach";
 
 export interface Category {
+  image?: string;
   slug: string;
   name: string;
   tone: Tone;

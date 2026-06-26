@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Icon } from "@/components/icons";
 import { useCart } from "@/context/CartContext";
@@ -33,7 +34,6 @@ export function Navbar() {
   const [search, setSearch] = useState(false);
   const [account, setAccount] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [navMorphing, setNavMorphing] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const accountRef = useRef<HTMLDivElement | null>(null);
@@ -52,14 +52,7 @@ export function Navbar() {
 
   useEffect(() => {
     const onScroll = () => {
-      const nextScrolled = window.scrollY > 8;
-      setScrolled((wasScrolled) => {
-        if (wasScrolled !== nextScrolled) {
-          setNavMorphing(true);
-          window.setTimeout(() => setNavMorphing(false), 460);
-        }
-        return nextScrolled;
-      });
+      setScrolled(window.scrollY > 8);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -123,10 +116,10 @@ export function Navbar() {
   }, [menu]);
 
   return (
-    <header className={"nav" + (scrolled ? " scrolled" : "") + (navMorphing ? " morphing" : "") + (menu ? " menu-open" : "")}>
+    <header className={"nav" + (scrolled ? " scrolled" : "") + (menu ? " menu-open" : "")}>
       <div className="wrap nav-inner">
         <Link className="brand" href="/" aria-label="ClariPet home">
-          ClariPet<sup>®</sup>
+          <Image src="/images/brand/logo.png" alt="ClariPet" width={120} height={40} className="object-contain" priority />
         </Link>
         <nav className="nav-links" aria-label="Main">
           {NAV_ITEMS.map((n) =>
@@ -268,7 +261,7 @@ export function Navbar() {
           <div className="panel" role="dialog" aria-modal="true" aria-label="Menu">
             <div className="panel-header">
               <Link className="brand" href="/" onClick={() => setMenu(false)} aria-label="ClariPet home">
-                ClariPet<sup>®</sup>
+                <Image src="/images/brand/logo.png" alt="ClariPet" width={100} height={32} className="object-contain" />
               </Link>
               <button
                 className="icon-btn"

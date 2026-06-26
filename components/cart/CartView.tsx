@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons";
@@ -52,7 +53,11 @@ export function CartView() {
                 href={`/product/${item.slug}`}
                 aria-label={item.product.name}
               >
-                <Placeholder tone={item.product.tone} paw={false} label="" />
+                {item.product.images?.[0] ? (
+                  <Image src={item.product.images[0].url} alt={item.product.images[0].alt || item.product.name} fill style={{ objectFit: "cover" }} sizes="80px" />
+                ) : (
+                  <Placeholder tone={item.product.tone} paw={false} label="" />
+                )}
               </Link>
               <div>
                 <div className="ci-name">{item.product.name}</div>

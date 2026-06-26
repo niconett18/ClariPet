@@ -133,7 +133,11 @@ export function ProductView({ product }: { product: Product }) {
                     onClick={() => setActiveThumb(i)}
                     aria-label={`View image ${i + 1}`}
                   >
-                    <Placeholder tone={t} paw={i === 0} label="" />
+                    {product.images?.[i] ? (
+                      <Image src={product.images[i].url} alt={product.images[i].alt || product.name} fill style={{ objectFit: "cover" }} sizes="80px" />
+                    ) : (
+                      <Placeholder tone={t} paw={i === 0} label="" />
+                    )}
                   </button>
                 ))}
           </div>

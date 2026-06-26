@@ -1,10 +1,10 @@
-import { Icon } from "@/components/icons";
+﻿import { Icon } from "@/components/icons";
 
 const TRUST = [
   { ic: "shield", tone: "sage", t: "Pet Safe", s: "Formulas" },
-  { ic: "pin", tone: "sky", t: "Made in", s: "Indonesia" },
   { ic: "leaf", tone: "lavender", t: "Premium", s: "Ingredients" },
-  { ic: "users", tone: "pink", t: "Loved by", s: "Thousands" },
+  { ic: "pin", tone: "sky", t: "Made in", s: "Indonesia" },
+  { ic: "users", tone: "pink", t: "Trusted by", s: "Thousands" },
 ];
 
 export function TrustBadges() {
@@ -14,7 +14,7 @@ export function TrustBadges() {
         {TRUST.map((b, i) => (
           <div className="trust-item" key={i}>
             <div className="trust-ic" style={{ background: `var(--${b.tone})` }}>
-              <Icon name={b.ic} size={24} />
+              <Icon name={b.ic as any} size={24} />
             </div>
             <div>
               <div className="t">{b.t}</div>
@@ -26,3 +26,4 @@ export function TrustBadges() {
     </div>
   );
 }
+
