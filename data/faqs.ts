@@ -1,6 +1,7 @@
 ﻿export interface FAQ {
   q: string;
   a: string;
+  icon?: any;
 }
 
 export const FAQS: FAQ[] = [
