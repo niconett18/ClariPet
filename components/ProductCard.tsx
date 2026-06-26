@@ -42,34 +42,34 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
 
   return (
     <div className="prod-card" role="group" aria-label={`Product: ${product.name}`}>
-      <div className="prod-media">
-        {product.bestSeller && <span className="prod-tag tag">Best Seller</span>}
-        <button
-          className={"wishlist" + (isWished ? " active" : "")}
-          aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
-          aria-pressed={isWished}
-          onClick={toggleWish}
-        >
-          <Icon name="heart" size={19} />
-        </button>
-        <Link
-          className="prod-media-link"
-          href={`/product/${product.slug}`}
-          aria-label={`View ${product.name} details`}
-        >
-          {product.images?.[0] ? (
-            <Image
-              src={product.images[0].url}
-              alt={product.images[0].alt ?? product.name}
-              fill
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              style={{ objectFit: "cover" }}
-            />
-          ) : (
-            <Placeholder tone={product.tone} label={product.name} />
-          )}
-        </Link>
-      </div>
+      <div className="prod-media" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden" }}>
+              {product.bestSeller && <span className="prod-tag tag">Best Seller</span>}
+              <button
+                className={"wishlist" + (isWished ? " active" : "")}
+                aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
+                aria-pressed={isWished}
+                onClick={toggleWish}
+              >
+                <Icon name="heart" size={19} />
+              </button>
+              <Link
+                className="prod-media-link"
+                href={`/product/${product.slug}`}
+                aria-label={`View ${product.name} details`}
+              >
+                {product.images?.[0] ? (
+                  <Image
+                    src={product.images[0].url}
+                    alt={product.images[0].alt ?? product.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    style={{ objectFit: "contain", padding: "8%" }}
+                  />
+                ) : (
+                  <Placeholder tone={product.tone} label={product.name} />
+                )}
+              </Link>
+            </div>
       <div className="prod-body">
         <Link className="prod-name" href={`/product/${product.slug}`}>
           {product.name}

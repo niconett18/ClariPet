@@ -119,7 +119,7 @@ export function Navbar() {
     <header className={"nav" + (scrolled ? " scrolled" : "") + (menu ? " menu-open" : "")}>
       <div className="wrap nav-inner">
         <Link className="brand" href="/" aria-label="ClariPet home">
-          <Image src="/images/brand/logo.png" alt="ClariPet" width={120} height={40} className="object-contain" priority />
+          <Image src="/images/brand/logo-light.png" alt="ClariPet" width={100} height={32} className="object-contain" priority />
         </Link>
         <nav className="nav-links" aria-label="Main">
           {NAV_ITEMS.map((n) =>
@@ -261,7 +261,7 @@ export function Navbar() {
           <div className="panel" role="dialog" aria-modal="true" aria-label="Menu">
             <div className="panel-header">
               <Link className="brand" href="/" onClick={() => setMenu(false)} aria-label="ClariPet home">
-                <Image src="/images/brand/logo.png" alt="ClariPet" width={100} height={32} className="object-contain" />
+                <Image src="/images/brand/logo-light.png" alt="ClariPet" width={100} height={32} className="object-contain" />
               </Link>
               <button
                 className="icon-btn"

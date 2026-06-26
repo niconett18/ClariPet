@@ -116,13 +116,14 @@ export function ProductView({ product }: { product: Product }) {
                     className={"pdp-thumb" + (activeThumb === i ? " active" : "")}
                     onClick={() => setActiveThumb(i)}
                     aria-label={`View image ${i + 1}`}
+                    style={{ background: `var(--${product.tone}-50)` }}
                   >
                     <Image
                       src={img.url}
                       alt={img.alt ?? `${product.name} photo ${i + 1}`}
-                      width={80}
-                      height={80}
-                      style={{ objectFit: "cover" }}
+                      fill
+                      style={{ objectFit: "contain", padding: "10%" }}
+                      sizes="80px"
                     />
                   </button>
                 ))
@@ -134,23 +135,22 @@ export function ProductView({ product }: { product: Product }) {
                     aria-label={`View image ${i + 1}`}
                   >
                     {product.images?.[i] ? (
-                      <Image src={product.images[i].url} alt={product.images[i].alt || product.name} fill style={{ objectFit: "cover" }} sizes="80px" />
+                      <Image src={product.images[i].url} alt={product.images[i].alt || product.name} fill style={{ objectFit: "contain", padding: "10%" }} sizes="80px" />
                     ) : (
                       <Placeholder tone={t} paw={i === 0} label="" />
                     )}
                   </button>
                 ))}
           </div>
-          <div className="pdp-main">
+          <div className="pdp-main" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", background: `var(--${product.tone}-50)` }}>
             {hasPhotos ? (
               <Image
                 src={photos[Math.min(activeThumb, photos.length - 1)].url}
                 alt={photos[Math.min(activeThumb, photos.length - 1)].alt ?? product.name}
                 priority
+                fill
                 sizes="(max-width: 768px) 100vw, 800px"
-                width={800}
-                height={800}
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                style={{ objectFit: "contain", padding: "8%" }}
               />
             ) : (
               <Placeholder tone={thumbTones[activeThumb]} label={product.name} />

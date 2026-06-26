@@ -17,7 +17,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     slug: "hygiene",
-    name: "Hygiene & Grooming",
+    name: "Hygiene",
     blurb: "Perawatan gentle untuk hewan peliharaan yang segar, bersih, dan ceria.",
     icon: "batch",
     tone: "sky",
@@ -30,11 +30,25 @@ export const CATEGORIES: Category[] = [
     tone: "sage",
   },
   {
-    slug: "fur-supplements",
-    name: "Fur Care & Supplements",
+    slug: "grooming",
+    name: "Grooming",
+    blurb: "Perawatan mandi agar kulit dan bulu senantiasa bersih.",
+    icon: "droplet",
+    tone: "sky",
+  },
+  {
+    slug: "beauty-coat-care",
+    name: "Beauty & Coat Care",
     blurb: "Untuk bulu yang sehat, berkilau, dan indah",
     icon: "leaf",
     tone: "lavender",
+  },
+  {
+    slug: "beauty-supplement",
+    name: "Beauty Supplement",
+    blurb: "Dukungan nutrisi dari dalam untuk kulit yang sehat.",
+    icon: "heart",
+    tone: "peach",
   },
   {
     slug: "behavior-training",
@@ -44,8 +58,8 @@ export const CATEGORIES: Category[] = [
     tone: "peach",
   },
   {
-    slug: "odor-remover",
-    name: "Odor Remover",
+    slug: "home-environment-care",
+    name: "Home & Environment Care",
     blurb: "Solusi efektif menghilangkan bau tak sedap di rumah",
     icon: "pin",
     tone: "sky",
