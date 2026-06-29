@@ -7,6 +7,7 @@ import {
   useEffect,
   useCallback,
   useMemo,
+  useRef,
   type ReactNode,
 } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -70,8 +71,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [supabase, fetchProfile]);
 
   useEffect(() => {
+    let cancelled = false;
+
+    // Timeout: stop loading after 6 s even if auth never responds (free-tier
+    // Supabase may be paused / unreachable) so the page doesn't stay blank.
+    const timer = setTimeout(() => {
+      if (!cancelled) setLoading(false);
+    }, 6_000);
+
     // Initial load
-    refreshUser().finally(() => setLoading(false));
+    refreshUser().finally(() => {
+      if (!cancelled) {
+        clearTimeout(timer);
+        setLoading(false);
+      }
+    });
 
     // Listen for auth changes
     const {
@@ -86,7 +100,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      subscription.unsubscribe();
+    };
   }, [supabase, fetchProfile, refreshUser]);
 
   const signUp = useCallback(
