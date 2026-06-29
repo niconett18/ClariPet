@@ -13,7 +13,10 @@ import { ARTICLES, getArticle as getStaticArticle, FEATURED_ARTICLE } from "@/da
 import { mapDBProductToProduct } from "@/lib/data/mapProduct";
 import type { Product, Category, Article } from "@/lib/types";
 
-const USE_DATABASE = false;
+const USE_DATABASE = Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_URL !== "your-supabase-url-here",
+);
 
 // ----- PRODUCTS -----
 
