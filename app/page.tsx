@@ -1,7 +1,6 @@
 ﻿import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Hero } from "@/components/home/Hero";
-import { TrustBadges } from "@/components/home/TrustBadges";
 import { SITE_URL } from "@/lib/site";
 
 const ShopByCategory = dynamic(() =>
@@ -68,7 +67,6 @@ export default function HomePage() {
       />
       <main>
         <Hero />
-        <TrustBadges />
         <ShopByCategory />
         <PetParentFavorites />
         <WhyChoose />
