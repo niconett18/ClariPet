@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Icon } from "@/components/icons";
 import { PageHead } from "@/components/PageHead";
 
-const WHATSAPP = "6281234567890";
-const WHATSAPP_DISPLAY = "+62 812-3456-7890";
-const EMAIL = "hello@claripet.com";
+const WHATSAPP = "62881080963188";
+const WHATSAPP_DISPLAY = "0881.0809.63188";
+const EMAIL = "claripetindonesia@gmail.com";
 
 const INQUIRIES = [
   { icon: "bag", t: "Product Questions", d: "Need help choosing the right ClariPet product?" },
@@ -57,9 +57,6 @@ export function ContactView() {
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
             <div className="contact-info">
-              <div style={{ position: "relative", width: "100%", aspectRatio: "3/2", borderRadius: 24, overflow: "hidden", marginBottom: 32 }}>
-                <img src="/images/contact-info.png" alt="Contact Us" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              </div>
             <div className="contact-block">
               <h3 className="h3">Customer Support</h3>
               <a className="contact-line" href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer">
@@ -80,16 +77,15 @@ export function ContactView() {
                 <span className="contact-line-ic"><Icon name="clock" size={18} /></span>
                 <span>
                   <strong>Operating Hours</strong>
-                  <em>Mon–Fri, 09:00–18:00 WIB</em>
+                  <em>Senin–Jumat 09.00–17.00 WIB</em>
                 </span>
               </div>
             </div>
 
             <div className="contact-block">
               <h3 className="h3">Connect With Us</h3>
-              <a className="contact-line" href="#"><span className="contact-line-ic"><Icon name="instagram" size={18} /></span><span><strong>Instagram</strong><em>@claripet.id</em></span></a>
-              <a className="contact-line" href="#"><span className="contact-line-ic"><Icon name="tiktok" size={18} /></span><span><strong>TikTok</strong><em>@claripet.id</em></span></a>
-              <a className="contact-line" href="#"><span className="contact-line-ic"><Icon name="facebook" size={18} /></span><span><strong>Facebook</strong><em>ClariPet Indonesia</em></span></a>
+              <a className="contact-line" href="#"><span className="contact-line-ic"><Icon name="instagram" size={18} /></span><span><strong>Instagram</strong><em>@claripetcare</em></span></a>
+              <a className="contact-line" href="#"><span className="contact-line-ic"><Icon name="tiktok" size={18} /></span><span><strong>TikTok</strong><em>@claripetcare</em></span></a>
             </div>
 
             <div className="contact-block">
@@ -98,7 +94,7 @@ export function ContactView() {
                 <span className="contact-line-ic"><Icon name="pin" size={18} /></span>
                 <span>
                   <strong>Jakarta, Indonesia</strong>
-                  <em>Serving pet parents across Indonesia with love.</em>
+                  <em>Melayani pet parents di seluruh Indonesia.</em>
                 </span>
               </div>
             </div>
