@@ -42,7 +42,7 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
 
   return (
     <div className="prod-card" role="group" aria-label={`Product: ${product.name}`}>
-      <div className="prod-media" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden" }}>
+      <div className="prod-media" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "#FFFFFF" }}>
               {product.bestSeller && <span className="prod-tag tag">Best Seller</span>}
               <button
                 className={"wishlist" + (isWished ? " active" : "")}
@@ -63,7 +63,7 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
                     alt={product.images[0].alt ?? product.name}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    style={{ objectFit: "contain", padding: "8%" }}
+                    style={{ objectFit: "contain" }}
                   />
                 ) : (
                   <Placeholder tone={product.tone} label={product.name} />

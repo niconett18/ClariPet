@@ -116,13 +116,13 @@ export function ProductView({ product }: { product: Product }) {
                     className={"pdp-thumb" + (activeThumb === i ? " active" : "")}
                     onClick={() => setActiveThumb(i)}
                     aria-label={`View image ${i + 1}`}
-                    style={{ background: `var(--${product.tone}-50)` }}
+                    style={{ background: "#FFFFFF" }}
                   >
                     <Image
                       src={img.url}
                       alt={img.alt ?? `${product.name} photo ${i + 1}`}
                       fill
-                      style={{ objectFit: "contain", padding: "10%" }}
+                      style={{ objectFit: "contain" }}
                       sizes="80px"
                     />
                   </button>
@@ -135,14 +135,14 @@ export function ProductView({ product }: { product: Product }) {
                     aria-label={`View image ${i + 1}`}
                   >
                     {product.images?.[i] ? (
-                      <Image src={product.images[i].url} alt={product.images[i].alt || product.name} fill style={{ objectFit: "contain", padding: "10%" }} sizes="80px" />
+                      <Image src={product.images[i].url} alt={product.images[i].alt || product.name} fill style={{ objectFit: "contain" }} sizes="80px" />
                     ) : (
                       <Placeholder tone={t} paw={i === 0} label="" />
                     )}
                   </button>
                 ))}
           </div>
-          <div className="pdp-main" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", background: `var(--${product.tone}-50)` }}>
+          <div className="pdp-main" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "#FFFFFF" }}>
             {hasPhotos ? (
               <Image
                 src={photos[Math.min(activeThumb, photos.length - 1)].url}
@@ -150,7 +150,7 @@ export function ProductView({ product }: { product: Product }) {
                 priority
                 fill
                 sizes="(max-width: 768px) 100vw, 800px"
-                style={{ objectFit: "contain", padding: "8%" }}
+                style={{ objectFit: "contain" }}
               />
             ) : (
               <Placeholder tone={thumbTones[activeThumb]} label={product.name} />
