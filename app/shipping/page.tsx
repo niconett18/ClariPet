@@ -1,54 +1,84 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { LegalView } from "@/components/legal/LegalView";
 
 export const metadata: Metadata = {
-  title: "Shipping & Delivery Policy",
-  description:
-    "Shipping options, delivery times, and order tracking for ClariPet orders.",
+  title: "Shipping Policy | ClariPet",
+  description: "Kebijakan Pengiriman ClariPet.",
   alternates: { canonical: "/shipping" },
-  openGraph: {
-    title: "Shipping & Delivery Policy — ClariPet",
-    description:
-      "Shipping options, delivery times, and order tracking for ClariPet orders.",
-    url: "/shipping",
-    type: "website",
+  robots: {
+    index: false,
+    follow: true,
   },
 };
 
 export default function ShippingPage() {
   return (
     <LegalView
-      title="Shipping & Delivery"
-      intro="How and when your ClariPet order reaches you."
-      updated="June 2026"
+      title="Kebijakan Pengiriman"
+      intro="Terima kasih telah berbelanja di ClariPet. Kami berkomitmen untuk memproses dan mengirimkan pesanan Anda secepat mungkin."
+      updated="Juni 2026"
       sections={[
         {
-          heading: "Processing Time",
+          heading: "Waktu Pemrosesan Pesanan",
           body: [
-            "Orders are processed within 1–2 business days. You'll receive a confirmation and tracking details once your order ships.",
+            "Pesanan akan diproses setelah pembayaran berhasil dikonfirmasi.",
+            "Pesanan umumnya diproses dalam waktu 1â€“3 hari kerja, tidak termasuk hari Sabtu, Minggu, dan hari libur nasional.",
+            "Pada periode promosi, peluncuran produk baru, atau volume pesanan yang tinggi, waktu pemrosesan dapat memerlukan waktu lebih lama dari biasanya.",
           ],
         },
         {
-          heading: "Delivery Areas & Times",
+          heading: "Biaya Pengiriman",
           body: [
-            "We ship across Indonesia. Estimated delivery is 2–5 business days depending on your location.",
-            "Remote areas may require additional time.",
+            "Biaya pengiriman ditanggung oleh pelanggan dan akan dihitung secara otomatis saat proses checkout berdasarkan alamat tujuan, berat paket, serta layanan ekspedisi yang dipilih.",
+            "Mohon pastikan alamat pengiriman yang dimasukkan sudah benar dan lengkap sebelum menyelesaikan pesanan.",
           ],
         },
         {
-          heading: "Shipping Costs",
+          heading: "Pengiriman Pesanan",
           body: [
-            "Shipping is calculated at checkout based on your address and order weight.",
-            "Enjoy free shipping on orders over Rp 300.000.",
+            "Pengiriman dilakukan melalui jasa ekspedisi yang tersedia pada saat checkout.",
+            "Setelah pesanan dikirim, pelanggan akan menerima nomor resi untuk melakukan pelacakan status pengiriman secara langsung melalui pihak ekspedisi.",
           ],
         },
         {
-          heading: "Order Tracking",
+          heading: "Perubahan Alamat Pengiriman",
           body: [
-            "Track your order any time from your My ClariPet account under My Orders, or via the tracking link in your shipping confirmation.",
+            "Pelanggan bertanggung jawab untuk memastikan bahwa nama penerima, alamat, nomor telepon, dan informasi pengiriman lainnya telah diisi dengan benar saat melakukan pemesanan.",
+            "Setelah pesanan diproses dan diserahkan kepada pihak ekspedisi, alamat pengiriman tidak dapat diubah karena paket sudah berada dalam proses pengiriman.",
+          ],
+        },
+        {
+          heading: "Keterlambatan Pengiriman",
+          body: [
+            "Estimasi waktu pengiriman sepenuhnya mengikuti ketentuan dan layanan dari ekspedisi yang dipilih pelanggan.",
+            "Setelah paket diserahkan kepada pihak ekspedisi, proses pengiriman berada di luar kendali ClariPet. Oleh karena itu, ClariPet tidak bertanggung jawab atas keterlambatan, kegagalan pengiriman, atau kendala operasional yang disebabkan oleh pihak ekspedisi.",
+            "Apabila terjadi keterlambatan atau kendala pengiriman, pelanggan dapat langsung menghubungi pihak ekspedisi menggunakan nomor resi yang telah diberikan untuk mendapatkan informasi lebih lanjut mengenai status pengiriman.",
+          ],
+        },
+        {
+          heading: "Paket Hilang atau Bermasalah Dalam Pengiriman",
+          body: [
+            "Apabila terjadi kehilangan paket, keterlambatan yang tidak wajar, atau kendala lain selama proses pengiriman, pelanggan disarankan untuk menghubungi pihak ekspedisi terlebih dahulu karena proses pengiriman berada di bawah tanggung jawab mereka setelah paket diserahkan oleh ClariPet.",
+            "Kami akan membantu memberikan informasi yang kami miliki apabila diperlukan, namun keputusan dan penyelesaian terkait pengiriman tetap mengikuti kebijakan pihak ekspedisi.",
+          ],
+        },
+        {
+          heading: "Pemeriksaan Paket Saat Diterima",
+          body: [
+            "Kami sangat menyarankan pelanggan untuk merekam video unboxing secara jelas dan tanpa jeda saat membuka paket untuk pertama kalinya.",
+            "Video unboxing diperlukan apabila terjadi: Produk salah kirim, Produk rusak, Produk kurang, atau Kendala lain yang memerlukan proses verifikasi.",
+            "Tanpa video unboxing, klaim mungkin tidak dapat diproses.",
+          ],
+        },
+        {
+          heading: "Hubungi Kami",
+          body: [
+            "Apabila Anda memiliki pertanyaan terkait pesanan atau membutuhkan bantuan, silakan menghubungi tim ClariPet melalui WhatsApp atau email yang tersedia pada halaman Contact Us.",
+            "Kami akan membantu semampu kami sesuai informasi yang tersedia.",
           ],
         },
       ]}
     />
   );
 }
+
