@@ -78,7 +78,7 @@
 
 html { scroll-behavior: smooth; }
 
-html, body { overflow-x: hidden; max-width: 100vw; }
+body { overflow-x: hidden; max-width: 100vw; }
 
 body {
   margin: 0;
@@ -287,7 +287,7 @@ select:focus-visible {
 .ph.peach { background: linear-gradient(140deg, var(--peach), #fbe3d6); }
 
 /* ===========================================================
-   NAVBAR
+   NAVBAR — floating pill on scroll
    =========================================================== */
 .nav {
   position: sticky;
@@ -295,26 +295,21 @@ select:focus-visible {
   z-index: 100;
   background: rgba(251, 252, 254, 0.85);
   backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
   border-bottom: 1px solid var(--line-soft);
-  transform: translateY(0) scale(1);
-  transition: top .42s var(--ease), transform .42s var(--ease),
-    background .42s var(--ease), border-color .42s var(--ease),
-    backdrop-filter .42s var(--ease), box-shadow .42s var(--ease);
-}
-.nav.morphing {
-  animation: navMorph .46s cubic-bezier(.16, 1, .3, 1);
-}
-@keyframes navMorph {
-  0% { transform: translateY(-3px) scale(.985); }
-  55% { transform: translateY(2px) scale(1.012); }
-  100% { transform: translateY(0) scale(1); }
+  transition: top .5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform .5s cubic-bezier(0.22, 1, 0.36, 1),
+    background .5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color .5s cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter .5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow .5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 /* Floating pill once the page is scrolled.
-   Keep .nav full-width + transparent so it never becomes the containing
+   .nav stays full-width + transparent so it never becomes the containing
    block for the fixed mobile menu / search overlay. The visible pill lives
    on .nav-inner instead. */
 .nav.scrolled {
-  top: 12px;
+  top: 16px;
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -329,19 +324,27 @@ select:focus-visible {
 .nav.scrolled .nav-inner {
   /* Compact: shrink-wrap to content and center it */
   width: max-content;
-  max-width: calc(100% - 32px);
+  max-width: calc(100% - 40px);
   margin-left: auto;
   margin-right: auto;
-  padding: 0 22px;
+  padding: 0 20px;
   gap: 18px;
+  height: 60px;
   border-radius: var(--r-pill);
-  /* More transparent so page content stays visible behind it */
-  background: rgba(251, 252, 254, 0.6);
-  backdrop-filter: saturate(160%) blur(18px);
-  -webkit-backdrop-filter: saturate(160%) blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 8px 30px rgba(27, 42, 74, 0.1);
+  background: rgba(251, 252, 254, 0.72);
+  backdrop-filter: saturate(160%) blur(20px);
+  -webkit-backdrop-filter: saturate(160%) blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(27, 42, 74, 0.08),
+    0 2px 8px rgba(27, 42, 74, 0.04);
   pointer-events: auto;
+  /* Shrink nav-height smoothly */
+  transition: height .5s cubic-bezier(0.22, 1, 0.36, 1),
+    padding .5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius .5s cubic-bezier(0.22, 1, 0.36, 1),
+    background .5s cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter .5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow .5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 @media (max-width: 860px) {
   .wrap { padding: 0 24px; }
@@ -356,6 +359,7 @@ select:focus-visible {
     max-width: 100%;
     border-radius: 0;
     border: none;
+    height: var(--nav-h);
   }
   .prod-grid.prod-grid-vertical {
     display: grid;
@@ -373,6 +377,8 @@ select:focus-visible {
   .nav.scrolled .nav-inner {
     max-width: calc(100% - 20px);
     border-radius: var(--r-lg, 18px);
+    height: 64px;
+    padding: 0 16px;
   }
 }
 .nav-inner {
@@ -381,6 +387,14 @@ select:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  transition: height .5s cubic-bezier(0.22, 1, 0.36, 1),
+    padding .5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius .5s cubic-bezier(0.22, 1, 0.36, 1),
+    background .5s cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter .5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow .5s cubic-bezier(0.22, 1, 0.36, 1),
+    width .5s cubic-bezier(0.22, 1, 0.36, 1),
+    max-width .5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .brand {
   font-weight: 700;
@@ -1151,6 +1165,7 @@ select:focus-visible {
 .pdp-gallery { display: grid; grid-template-columns: 84px 1fr; gap: 16px; }
 .pdp-thumbs { display: flex; flex-direction: column; gap: 12px; }
 .pdp-thumb {
+  position: relative;
   aspect-ratio: 1;
   border-radius: var(--r-md);
   overflow: hidden;
@@ -2023,7 +2038,8 @@ select:focus-visible {
 @keyframes skelShimmer { to { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) {
   .skel,
-  .nav.morphing,
+  .nav,
+  .nav.scrolled .nav-inner,
   .cart-badge.cart-pop,
   .pay-btn:not(:disabled)::before {
     animation: none;
