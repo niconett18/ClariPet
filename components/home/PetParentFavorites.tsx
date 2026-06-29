@@ -3,7 +3,7 @@ import { Icon } from "@/components/icons";
 import { BEST_SELLERS } from "@/data/products";
 import dynamic from "next/dynamic";
 
-const FavoriteCardBody = dynamic(() => import("./FavoriteCardBody").then(m => m.FavoriteCardBody), { ssr: false });
+const FavoriteCardBody = dynamic(() => import("./FavoriteCardBody").then(m => m.FavoriteCardBody));
 
 const FAVORITE_TAGS = [
   "Most Loved",
@@ -43,14 +43,24 @@ export function PetParentFavorites() {
               objFit = "cover";
               imgPad = "0";
             } else if (p.slug === "claripet-breath") {
-              bg = "#e5f1ec"; // Light tosca green to match the product
+              bg = "#e5f1ec";
               imgSrc = "/images/products/breath-1.png";
+              objFit = "cover";
+              imgPad = "0";
+            } else if (p.slug === "claripet-tear-stain-remover") {
+              bg = "#FBF0E0";
+              imgSrc = "/images/products/tear-stain-1.png";
+              objFit = "cover";
+              imgPad = "0";
+            } else if (p.slug === "claripet-vitabulu-beauty-shampoo") {
+              bg = "#FDE8E8";
+              imgSrc = "/images/products/vitabulu-beauty-shampoo-1.png";
               objFit = "cover";
               imgPad = "0";
             }
 
             return (
-              <div key={p.slug} className={`prod-card reveal reveal-d${Math.min(i + 1, 5)}`} style={{ minWidth: 260, backgroundColor: bg }}>
+              <div key={p.slug} className={`prod-card reveal reveal-d${Math.min(i + 1, 5)}`} style={{ minWidth: 260, backgroundColor: bg, height: "100%" }}>
                 <Link href={`/product/${p.slug}`} className="prod-media" style={{ display: "block", aspectRatio: "1/1", position: "relative", backgroundColor: "transparent" }}>
                   <span className="prod-tag tag" style={{ 
                     position: "absolute", 

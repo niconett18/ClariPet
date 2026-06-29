@@ -33,7 +33,14 @@ export async function getAllProducts(): Promise<Product[]> {
 
     if (error || !data) return PRODUCTS;
 
-    return data.map(mapDBProductToProduct);
+    return data.map((db) => {
+      const p = mapDBProductToProduct(db);
+      if (!p.images?.length) {
+        const fallback = getStaticProduct(p.slug);
+        if (fallback?.images) p.images = fallback.images;
+      }
+      return p;
+    });
   } catch {
     return PRODUCTS;
   }
@@ -53,7 +60,12 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
 
     if (error || !data) return getStaticProduct(slug);
 
-    return mapDBProductToProduct(data);
+    const product = mapDBProductToProduct(data);
+    if (!product.images?.length) {
+      const fallback = getStaticProduct(slug);
+      if (fallback?.images) product.images = fallback.images;
+    }
+    return product;
   } catch {
     return getStaticProduct(slug);
   }
@@ -65,9 +77,6 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
   try {
     const supabase = createClient();
 
-    // Single query: join categories on slug so we avoid the 2-round-trip pattern
-    // (fetch category id → fetch products). PostgREST supports filtering on
-    // nested relations directly via `category!inner(slug)`.
     const { data, error } = await supabase
       .from("products")
       .select(
@@ -79,7 +88,14 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
 
     if (error || !data) return getStaticProductsByCategory(categorySlug);
 
-    return data.map(mapDBProductToProduct);
+    return data.map((db) => {
+      const p = mapDBProductToProduct(db);
+      if (!p.images?.length) {
+        const fallback = getStaticProduct(p.slug);
+        if (fallback?.images) p.images = fallback.images;
+      }
+      return p;
+    });
   } catch {
     return getStaticProductsByCategory(categorySlug);
   }
@@ -99,7 +115,14 @@ export async function getBestSellers(): Promise<Product[]> {
 
     if (error || !data) return PRODUCTS.filter((p) => p.bestSeller);
 
-    return data.map(mapDBProductToProduct);
+    return data.map((db) => {
+      const p = mapDBProductToProduct(db);
+      if (!p.images?.length) {
+        const fallback = getStaticProduct(p.slug);
+        if (fallback?.images) p.images = fallback.images;
+      }
+      return p;
+    });
   } catch {
     return PRODUCTS.filter((p) => p.bestSeller);
   }
