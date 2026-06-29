@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Hero } from "@/components/home/Hero";
 import { TrustBadges } from "@/components/home/TrustBadges";
@@ -6,6 +6,9 @@ import { SITE_URL } from "@/lib/site";
 
 const ShopByCategory = dynamic(() =>
   import("@/components/home/ShopByCategory").then((mod) => mod.ShopByCategory),
+);
+const PetParentFavorites = dynamic(() =>
+  import("@/components/home/PetParentFavorites").then((mod) => mod.PetParentFavorites),
 );
 const WhyChoose = dynamic(() =>
   import("@/components/home/WhyChoose").then((mod) => mod.WhyChoose),
@@ -15,14 +18,14 @@ const QuizCTA = dynamic(() =>
 );
 
 export const metadata: Metadata = {
-  title: "ClariPetAr | Premium Pet Care",
+  title: "ClariPet | Premium Pet Care",
   description:
-    "Safe. Gentle. Effective. Premium, pet-safe care products for cats and dogs, made with love in Indonesia.",
+    "Merawat hewan peliharaan seharusnya tidak terasa rumit. ClariPet dirancang untuk membantu Anda merawat mereka dengan lebih mudah, nyaman, dan percaya diri setiap hari.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "ClariPetAr | Premium Pet Care",
+    title: "ClariPet | Premium Pet Care",
     description:
-      "Safe. Gentle. Effective. Premium, pet-safe care products for cats and dogs, made with love in Indonesia.",
+      "Merawat hewan peliharaan seharusnya tidak terasa rumit. ClariPet dirancang untuk membantu Anda merawat mereka dengan lebih mudah, nyaman, dan percaya diri setiap hari.",
     url: "/",
     type: "website",
   },
@@ -67,9 +70,11 @@ export default function HomePage() {
         <Hero />
         <TrustBadges />
         <ShopByCategory />
+        <PetParentFavorites />
         <WhyChoose />
         <QuizCTA />
       </main>
     </>
   );
 }
+
