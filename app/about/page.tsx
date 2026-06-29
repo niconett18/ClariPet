@@ -1,5 +1,6 @@
 ﻿
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Placeholder } from "@/components/Placeholder";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function AboutPage() {
           </div>
 
           <div className="reveal reveal-d1" style={{ marginBottom: 48, borderRadius: 24, overflow: "hidden" }}>
-             <Placeholder tone="sage" label="Team ClariPet with Pets" style={{ aspectRatio: "16/9" }} />
+             <div style={{ position: "relative", width: "100%", aspectRatio: "16/9" }}><Image src="/images/about-hero.png" alt="Team ClariPet with Pets" fill style={{ objectFit: "cover" }} /></div>
           </div>
 
           <div className="reveal reveal-d2" style={{ display: "flex", flexDirection: "column", gap: 24, fontSize: "1.125rem", lineHeight: 1.8, color: "var(--gray-700)" }}>
