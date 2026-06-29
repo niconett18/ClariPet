@@ -327,9 +327,9 @@ select:focus-visible {
   max-width: calc(100% - 40px);
   margin-left: auto;
   margin-right: auto;
-  padding: 0 20px;
-  gap: 18px;
-  height: 60px;
+  padding: 0 24px;
+  gap: 20px;
+  height: 64px;
   border-radius: var(--r-pill);
   background: rgba(251, 252, 254, 0.72);
   backdrop-filter: saturate(160%) blur(20px);
@@ -377,8 +377,8 @@ select:focus-visible {
   .nav.scrolled .nav-inner {
     max-width: calc(100% - 20px);
     border-radius: var(--r-lg, 18px);
-    height: 64px;
-    padding: 0 16px;
+    height: 68px;
+    padding: 0 18px;
   }
 }
 .nav-inner {

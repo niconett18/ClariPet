@@ -89,11 +89,11 @@ function SignupForm() {
   return (
     <AuthShell
       title="Join the ClariPet family."
-      lead="Create an account for faster checkout, order tracking, and rewards on every purchase."
+      lead="Create an account for faster checkout, order tracking, and let ClariPet help you care for them with ease."
       bullets={[
-        "Gentle, pet-safe formulas made in Indonesia",
-        "Faster checkout with saved addresses",
-        "Earn ClariPet points on every order",
+        "Pet Safe Formulations - Gentle and safe for pets",
+        "Premium Ingredients - Carefully selected for best results",
+        "Made in Indonesia - Proudly made locally with global standards",
       ]}
     >
       <div className="form-head">

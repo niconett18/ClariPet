@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
 
 type Bullet = string;
@@ -30,8 +31,8 @@ export function AuthShell({
           <div className="aside-blob blob-2" aria-hidden="true" />
 
           <div className="aside-top">
-            <Link href="/" className="brand aside-brand">
-              ClariPet<sup>®</sup>
+            <Link href="/" className="brand aside-brand" aria-label="ClariPet home">
+              <Image src="/brand/logo-dark.png" alt="ClariPet" width={120} height={38} className="object-contain" priority />
             </Link>
           </div>
 
@@ -116,7 +117,7 @@ export function AuthShell({
           bottom: -80px; left: -70px;
           background: radial-gradient(circle at 60% 60%, rgba(255,255,255,.4), transparent 70%);
         }
-        .aside-brand { font-size: 24px; color: var(--navy); }
+        .aside-brand { display: flex; }
         .aside-body { max-width: 38ch; }
         .aside-paw {
           display: grid;

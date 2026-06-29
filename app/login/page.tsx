@@ -61,12 +61,12 @@ function LoginForm() {
 
   return (
     <AuthShell
-      title="Care that your pet can feel."
-      lead="Sign in to track orders, save your favorite products, and keep your furry family looking and feeling their best."
+      title="Merawat hewan peliharaan seharusnya tidak terasa rumit."
+      lead="Sign in to track orders, save your favorite products, and let ClariPet help you care for them with ease."
       bullets={[
-        "Gentle, pet-safe formulas made in Indonesia",
-        "Faster checkout with saved addresses",
-        "Earn ClariPet points on every order",
+        "Pet Safe Formulations - Gentle and safe for pets",
+        "Premium Ingredients - Carefully selected for best results",
+        "Made in Indonesia - Proudly made locally with global standards",
       ]}
     >
       <div className="form-head">

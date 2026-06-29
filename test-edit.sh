@@ -1,0 +1,1 @@
+sed -i 's|<div className="hero-media">|<div className="hero-media">\n            <Image src="/images/hero.png" alt="Happy pets with owners" fill className="object-cover" priority sizes="(min-width: 1024px) 50vw, 100vw" />|' components/home/Hero.tsx

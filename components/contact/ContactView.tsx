@@ -56,7 +56,10 @@ export function ContactView() {
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="contact-info">
+            <div className="contact-info">
+              <div style={{ position: "relative", width: "100%", aspectRatio: "3/2", borderRadius: 24, overflow: "hidden", marginBottom: 32 }}>
+                <img src="/images/contact-info.png" alt="Contact Us" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
             <div className="contact-block">
               <h3 className="h3">Customer Support</h3>
               <a className="contact-line" href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer">

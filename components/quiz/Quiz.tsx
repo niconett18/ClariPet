@@ -37,9 +37,9 @@ const QUIZ_STEPS: QuizStep[] = [
     key: "concern",
     q: "What’s your main concern right now?",
     options: [
-      { value: "oral-care", label: "Bad breath", icon: "droplet", tone: "sky" },
-      { value: "tear-stain-care", label: "Tear stains", icon: "sparkle", tone: "lavender" },
-      { value: "grooming", label: "Odour & freshness", icon: "spray", tone: "sage" },
+      { value: "hygiene", label: "Bad breath", icon: "droplet", tone: "sky" },
+      { value: "hygiene", label: "Tear stains", icon: "sparkle", tone: "lavender" },
+      { value: "hygiene", label: "Odour & freshness", icon: "spray", tone: "sage" },
       { value: "general", label: "General care", icon: "heart", tone: "pink" },
     ],
   },
@@ -69,19 +69,19 @@ function recommend(answers: Record<string, string>): Product[] {
   const recs = new Set<string>();
   const byCat = (c: string) => PRODUCTS.filter((p) => p.category === c).forEach((p) => recs.add(p.slug));
 
-  if (answers.concern === "oral-care") byCat("oral-care");
-  else if (answers.concern === "tear-stain-care") byCat("tear-stain-care");
-  else if (answers.concern === "grooming") byCat("grooming");
+  if (answers.concern === "hygiene") byCat("hygiene");
+  else if (answers.concern === "hygiene") byCat("hygiene");
+  else if (answers.concern === "hygiene") byCat("hygiene");
   else {
-    recs.add("daily-wellness-supplement");
-    recs.add("shu-shu-deodorizing-spray");
+    recs.add("claripet-skin-guard-silver-heal");
+    recs.add("claripet-shu-shu-cat");
   }
 
-  if (answers.skin === "sensitive" || answers.skin === "dull") recs.add("soothing-skin-serum");
+  if (answers.skin === "sensitive" || answers.skin === "dull") recs.add("claripet-skin-guard-fungal-spray");
 
-  if (answers.scent === "baby-powder") recs.add("pet-perfume-baby-powder");
-  else if (answers.scent === "lavender") recs.add("lavender-calm-perfume");
-  else if (answers.scent === "fresh") recs.add("shu-shu-deodorizing-spray");
+  if (answers.scent === "baby-powder") recs.add("claripet-baby-powder");
+  else if (answers.scent === "lavender") recs.add("claripet-botanica-bloom");
+  else if (answers.scent === "fresh") recs.add("claripet-shu-shu-cat");
 
   let list = Array.from(recs)
     .map((s) => getProduct(s))

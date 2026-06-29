@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -12,7 +12,7 @@ export function Footer() {
         <div className="footer-grid">
           <div>
             <div className="brand" style={{ marginBottom: "1rem" }}>
-              <Image src="/images/brand/logo.png" alt="ClariPet" width={140} height={46} className="object-contain" />
+              <Image src="/brand/logo-light.png" alt="ClariPet" width={140} height={46} className="object-contain" />
             </div>
             <p className="footer-blurb" style={{ fontWeight: 500, marginBottom: 8, color: "var(--text)" }}>
               Helping You Help Them.
