@@ -28,7 +28,16 @@ function SignupForm() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  if (authLoading) return null;
+  if (authLoading) {
+    return (
+      <main className="auth-page" style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}>
+        <div className="center">
+          <div style={{ width: 40, height: 40, border: "3px solid var(--line)", borderTopColor: "var(--navy)", borderRadius: "50%", animation: "spinner .6s linear infinite", margin: "0 auto 16px" }} />
+          <p className="muted">Loading…</p>
+        </div>
+      </main>
+    );
+  }
   if (user) {
     router.replace(redirect);
     return null;
