@@ -101,7 +101,12 @@ export const PRODUCTS: Product[] = [
     slug: "claripet-tear-stain-remover",
     name: "ClariPet Tear Stain Remover",
     subtitle: "Area mata yang lebih bersih untuk wajah yang lebih cerah.",
-    images: [{url: '/images/products/tear-stain.png', alt: ''}, {url: '/images/products/tear-stain-1.png', alt: ''}, {url: '/images/products/tear-stain-2.png', alt: ''}], category: "hygiene", categoryName: "Hygiene",
+    images: [
+      { url: '/images/products/tear-stain.png', alt: 'ClariPet Tear Stain Remover' },
+      { url: '/images/products/tear-stain-1.png', alt: 'ClariPet Tear Stain Remover Details' },
+      { url: '/images/products/tear-stain-2.png', alt: 'ClariPet Tear Stain Remover Details' }
+    ],
+    category: "hygiene", categoryName: "Hygiene",
     price: 50000, rating: 4.8, reviews: 56,
     tone: "sky" as const, bestSeller: true,
     sizes: ["70ml"],
