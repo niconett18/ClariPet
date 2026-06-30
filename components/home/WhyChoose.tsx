@@ -562,7 +562,8 @@ export function WhyChoose() {
       </div>
 
       {/* Responsive overrides */}
-      <style>{`
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @media (max-width: 1023px) {
           .why-choose-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
           .why-choose-grid-3 { grid-template-columns: 1fr !important; }
@@ -579,7 +580,7 @@ export function WhyChoose() {
         @media (prefers-reduced-motion: reduce) {
           .why-choose-fade { opacity: 1 !important; transform: none !important; transition: none !important; }
         }
-      `}</style>
+      `}} />
     </section>
   );
 }
