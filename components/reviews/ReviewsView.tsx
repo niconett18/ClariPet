@@ -5,13 +5,6 @@ import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 
-const STATS = [
-  { v: "4.9", l: "Average Rating", ic: "star" },
-  { v: "98%", l: "Would Recommend", ic: "heart" },
-  { v: "95%", l: "Repeat Purchase", ic: "sparkle" },
-  { v: "5,000+", l: "Happy Pets", ic: "dog" },
-];
-
 const STORIES = [
   {
     name: "Jessica & Mochi",
@@ -75,20 +68,6 @@ export function ReviewsView() {
       </section>
 
       <section className="section" style={{ paddingTop: 28 }}>
-        <div className="wrap">
-          <div className="review-stats">
-            {STATS.map((s, i) => (
-              <div className="review-stat" key={i}>
-                <span className="review-stat-ic"><Icon name={s.ic} size={22} /></span>
-                <div className="v">{s.v}</div>
-                <div className="l">{s.l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
           <div className="center" style={{ marginBottom: 38 }}>
             <h2 className="h2">Real Stories From Real Pet Parents</h2>

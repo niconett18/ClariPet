@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Caveat } from "next/font/google";
 import dynamic from "next/dynamic";
 import "./globals.css";
 import { Providers } from "./Providers";
@@ -18,6 +18,13 @@ const poppins = Poppins({
   // one font-face download (~20 KB woff2) on every page load.
   weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-caveat",
   display: "swap",
 });
 
@@ -69,7 +76,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={poppins.variable}>
+    <html lang="en" className={`${poppins.variable} ${caveat.variable}`}>
       <body>
         <Providers>
           <FlyToCartProvider>
