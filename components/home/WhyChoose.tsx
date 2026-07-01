@@ -288,7 +288,7 @@ export function WhyChoose() {
       className="relative overflow-hidden"
       style={{
         padding: "84px 0",
-        background: "linear-gradient(180deg, #F5F7FF 0%, #FAFBFF 50%, #F0F4FF 100%)",
+        background: "var(--offwhite)",
       }}
     >
       {/* Decorative doodles — hidden below md */}
@@ -381,7 +381,7 @@ export function WhyChoose() {
                 >
                   <FadeUp delay={i * 0.1}>
                     <div
-                      className={`${feat.bg} flex items-center justify-center`}
+                      className={`${feat.bg} flex items-center justify-center mx-auto`}
                       style={{
                         width: 64,
                         height: 64,
@@ -447,7 +447,7 @@ export function WhyChoose() {
                   }}
                 >
                   <FadeUp delay={i * 0.1}>
-                    <div className="flex" style={{ gap: 16, alignItems: "flex-start" }}>
+                    <div className="flex" style={{ gap: 16, alignItems: "center" }}>
                       <div
                         className="bg-blue-50 flex items-center justify-center flex-shrink-0"
                         style={{

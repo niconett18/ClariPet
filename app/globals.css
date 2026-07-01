@@ -287,99 +287,23 @@ select:focus-visible {
 .ph.peach { background: linear-gradient(140deg, var(--peach), #fbe3d6); }
 
 /* ===========================================================
-   NAVBAR — floating pill on scroll
+   NAVBAR — standard ecommerce sticky header
    =========================================================== */
 .nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(251, 252, 254, 0.85);
+  background: rgba(251, 252, 254, 0.95);
   backdrop-filter: saturate(160%) blur(14px);
   -webkit-backdrop-filter: saturate(160%) blur(14px);
   border-bottom: 1px solid var(--line-soft);
-  transition: top .5s cubic-bezier(0.22, 1, 0.36, 1),
-    transform .5s cubic-bezier(0.22, 1, 0.36, 1),
-    background .5s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color .5s cubic-bezier(0.22, 1, 0.36, 1),
-    backdrop-filter .5s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow .5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: box-shadow .3s ease, background .3s ease;
 }
-/* Floating pill once the page is scrolled.
-   .nav stays full-width + transparent so it never becomes the containing
-   block for the fixed mobile menu / search overlay. The visible pill lives
-   on .nav-inner instead. */
 .nav.scrolled {
-  top: 16px;
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border-bottom: 1px solid transparent;
-  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(27, 42, 74, 0.06);
 }
 .nav.menu-open {
   background: #fff;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-.nav.scrolled .nav-inner {
-  /* Compact: shrink-wrap to content and center it */
-  width: max-content;
-  max-width: calc(100% - 40px);
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 24px;
-  gap: 20px;
-  height: 64px;
-  border-radius: var(--r-pill);
-  background: rgba(251, 252, 254, 0.72);
-  backdrop-filter: saturate(160%) blur(20px);
-  -webkit-backdrop-filter: saturate(160%) blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 8px 32px rgba(27, 42, 74, 0.08),
-    0 2px 8px rgba(27, 42, 74, 0.04);
-  pointer-events: auto;
-  /* Shrink nav-height smoothly */
-  transition: height .5s cubic-bezier(0.22, 1, 0.36, 1),
-    padding .5s cubic-bezier(0.22, 1, 0.36, 1),
-    border-radius .5s cubic-bezier(0.22, 1, 0.36, 1),
-    background .5s cubic-bezier(0.22, 1, 0.36, 1),
-    backdrop-filter .5s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow .5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-@media (max-width: 860px) {
-  .wrap { padding: 0 24px; }
-  .nav.scrolled.menu-open {
-    top: 0;
-    background: #fff;
-  }
-  .nav.scrolled.menu-open .nav-inner {
-    background: #fff;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    max-width: 100%;
-    border-radius: 0;
-    border: none;
-    height: var(--nav-h);
-  }
-  .prod-grid.prod-grid-vertical {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    overflow-x: visible;
-    margin-inline: 0;
-    padding-inline: 0;
-    padding-bottom: 0;
-    scroll-snap-type: none;
-  }
-  .prod-grid.prod-grid-vertical > * {
-    min-width: 0;
-    scroll-snap-align: none;
-  }
-  .nav.scrolled .nav-inner {
-    max-width: calc(100% - 20px);
-    border-radius: var(--r-lg, 18px);
-    height: 68px;
-    padding: 0 18px;
-  }
 }
 .nav-inner {
   height: var(--nav-h);
@@ -387,14 +311,6 @@ select:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  transition: height .5s cubic-bezier(0.22, 1, 0.36, 1),
-    padding .5s cubic-bezier(0.22, 1, 0.36, 1),
-    border-radius .5s cubic-bezier(0.22, 1, 0.36, 1),
-    background .5s cubic-bezier(0.22, 1, 0.36, 1),
-    backdrop-filter .5s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow .5s cubic-bezier(0.22, 1, 0.36, 1),
-    width .5s cubic-bezier(0.22, 1, 0.36, 1),
-    max-width .5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .brand {
   font-weight: 700;
@@ -1672,25 +1588,12 @@ select:focus-visible {
   }
   .nav.menu-open {
     background: #fff;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
   }
   .nav.scrolled {
-    top: 0;
-  }
-  .nav.scrolled .nav-inner {
-    width: 100%;
-    max-width: 100%;
-    border-radius: 0;
-    background: rgba(251, 252, 254, 0.95);
-    backdrop-filter: saturate(160%) blur(14px);
-    -webkit-backdrop-filter: saturate(160%) blur(14px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   }
-  .nav.scrolled.menu-open .nav-inner {
-    background: #fff;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  .nav.scrolled .nav-inner {
+    box-shadow: none;
   }
   .prod-grid { 
     display: flex; 
