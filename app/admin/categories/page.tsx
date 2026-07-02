@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Icon } from "@/components/icons";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { useCart } from "@/context/CartContext";
 
 interface Category {
   id: string;
@@ -20,6 +22,12 @@ export default function AdminCategoriesPage() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
+  const { showToastMsg } = useCart();
+  
+  const [modalState, setModalState] = useState<{ isOpen: boolean; categoryId: string | null }>({
+    isOpen: false,
+    categoryId: null
+  });
 
   const fetchCategories = useCallback(async () => {
     setLoading(true);
@@ -33,9 +41,16 @@ export default function AdminCategoriesPage() {
     fetchCategories();
   }, [fetchCategories]);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this category? Products will lose their category.")) return;
-    await fetch(`/api/admin/categories/${id}`, { method: "DELETE" });
+  const handleDelete = (id: string) => {
+    setModalState({ isOpen: true, categoryId: id });
+  };
+
+  const confirmDelete = async () => {
+    if (!modalState.categoryId) return;
+    setModalState({ isOpen: false, categoryId: null });
+    
+    await fetch(`/api/admin/categories/${modalState.categoryId}`, { method: "DELETE" });
+    showToastMsg("Category deleted successfully");
     fetchCategories();
   };
 
@@ -103,9 +118,25 @@ export default function AdminCategoriesPage() {
         <CategoryForm
           category={editing}
           onClose={() => { setShowForm(false); setEditing(null); }}
-          onSaved={() => { setShowForm(false); setEditing(null); fetchCategories(); }}
+          onSaved={() => { 
+            setShowForm(false); 
+            setEditing(null); 
+            showToastMsg(editing ? "Category updated successfully" : "Category created successfully");
+            fetchCategories(); 
+          }}
         />
       )}
+
+      <ConfirmModal
+        isOpen={modalState.isOpen}
+        title="Delete Category"
+        message="Are you sure you want to delete this category? Products currently in this category will lose their category assignment."
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+        onConfirm={confirmDelete}
+        onCancel={() => setModalState({ isOpen: false, categoryId: null })}
+      />
     </div>
   );
 }

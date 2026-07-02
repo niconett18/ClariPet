@@ -6,19 +6,25 @@ import { ok, error } from "@/lib/helpers/response";
 import { withErrorHandling } from "@/lib/helpers/handler";
 import type { NextRequest } from "next/server";
 
-// GET /api/admin/inventory — low stock report
+// GET /api/admin/inventory — stock report
 export const GET = withErrorHandling(async (req: NextRequest) => {
   await requireAdmin();
   const { searchParams } = new URL(req.url);
-  const threshold = Number(searchParams.get("threshold") ?? 10);
+  const threshold = searchParams.get("threshold");
 
   const supabase = createClient();
 
-  const { data, error: dbError } = await supabase
+  let qb = supabase
     .from("product_sizes")
-    .select("*, product:products(id, slug, name, status)")
-    .lte("stock", threshold)
-    .order("stock", { ascending: true });
+    .select("*, product:products(id, slug, name, status)");
+    
+  if (threshold !== null) {
+      qb = qb.lte("stock", Number(threshold)).order("stock", { ascending: true });
+  } else {
+      qb = qb.order("stock", { ascending: true });
+  }
+
+  const { data, error: dbError } = await qb;
 
   if (dbError) return error(dbError.message, 500);
 

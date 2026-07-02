@@ -73,6 +73,7 @@ export function Navbar() {
         setMenu(false);
         setAccount(false);
         setShopOpen(false);
+        setSearch(false);
       }
     }
     document.addEventListener("mousedown", onClick);
@@ -105,7 +106,7 @@ export function Navbar() {
     pathname === href || (href !== "/" && pathname.startsWith(href));
 
   useEffect(() => {
-    if (menu) {
+    if (menu || search) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -113,7 +114,7 @@ export function Navbar() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [menu]);
+  }, [menu, search]);
 
   return (
     <header className={"nav" + (scrolled ? " scrolled" : "") + (menu ? " menu-open" : "")}>

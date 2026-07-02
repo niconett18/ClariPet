@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/components/icons";
 import { ImageUploader, type ProductImageInput } from "@/components/admin/ImageUploader";
+import { useCart } from "@/context/CartContext";
 
 interface Size {
   label: string;
@@ -39,6 +40,7 @@ export function ProductForm({ product }: { product?: any }) {
   const [categories, setCategories] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { showToastMsg } = useCart();
 
   const [form, setForm] = useState<Product>({
     slug: product?.slug ?? "",
@@ -110,6 +112,7 @@ export function ProductForm({ product }: { product?: any }) {
       return;
     }
 
+    showToastMsg(product?.id ? "Product updated successfully" : "Product created successfully");
     router.push("/admin/products");
     router.refresh();
   };

@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons";
-import { Placeholder } from "@/components/Placeholder";
 import { PageHead } from "@/components/PageHead";
 import { QuantityStepper } from "@/components/ui/QuantityStepper";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
@@ -51,22 +50,24 @@ export function CartView() {
               <Link
                 className="ci-media"
                 href={`/product/${item.slug}`}
-                aria-label={item.product.name}
+                aria-label={item.product?.name || "Product"}
               >
-                {item.product.images?.[0] ? (
-                  <Image src={item.product.images[0].url} alt={item.product.images[0].alt || item.product.name} fill style={{ objectFit: "cover" }} sizes="80px" />
+                {item.product?.images?.[0]?.url ? (
+                  <Image src={item.product.images[0].url} alt={item.product.images[0].alt || item.product.name} fill style={{ objectFit: "contain" }} sizes="80px" />
                 ) : (
-                  <Placeholder tone={item.product.tone} paw={false} label="" />
+                  <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon name="image" size={24} className="muted" />
+                  </div>
                 )}
               </Link>
               <div>
-                <div className="ci-name">{item.product.name}</div>
+                <div className="ci-name">{item.product?.name || "Unknown Product"}</div>
                 <div className="ci-size">Size: {item.size}</div>
                 <div className="ci-actions" style={{ display: "flex", alignItems: "center", gap: 16 }}>
                   <QuantityStepper value={item.qty} onChange={(q) => cart.updateQty(item.slug, item.size, q)} />
                     <button
                       className="ci-remove"
-                      aria-label={`Remove ${item.product.name} from cart`}
+                      aria-label={`Remove ${item.product?.name || "product"} from cart`}
                       onClick={() => cart.remove(item.slug, item.size)}
                       style={{ minWidth: "44px", minHeight: "44px", border: "none", background: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}
                     >
@@ -75,7 +76,7 @@ export function CartView() {
                   </button>
                 </div>
               </div>
-              <div className="ci-price">{formatPrice(item.product.price * item.qty)}</div>
+              <div className="ci-price">{formatPrice((item.product?.price || 0) * item.qty)}</div>
             </div>
           ))}
         </div>
@@ -111,7 +112,7 @@ export function CartView() {
           <Link href="/checkout" className="btn btn-primary cart-checkout-btn" style={{ width: '100%', display: 'block', textAlign: 'center', padding: '16px', fontSize: '16px' }}>
             Proceed to Checkout
           </Link>
-          <Link href="/shop" className="btn btn-outline" style={{ display: 'block', textAlign: 'center', marginTop: 12, padding: '16px', fontSize: '16px' }}>
+          <Link href="/shop" className="btn btn-secondary" style={{ display: 'block', textAlign: 'center', marginTop: 12, padding: '16px', fontSize: '16px' }}>
             Continue Shopping
           </Link>
         </aside>

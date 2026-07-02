@@ -7,7 +7,6 @@ import type { Product, Tone } from "@/lib/types";
 import { PRODUCTS } from "@/data/products";
 import { formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons";
-import { Placeholder } from "@/components/Placeholder";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { StarRating } from "@/components/ui/StarRating";
 import { QuantityStepper } from "@/components/ui/QuantityStepper";
@@ -137,23 +136,27 @@ export function ProductView({ product }: { product: Product }) {
                     {product.images?.[i] ? (
                       <Image src={product.images[i].url} alt={product.images[i].alt || product.name} fill style={{ objectFit: "contain" }} sizes="80px" />
                     ) : (
-                      <Placeholder tone={t} paw={i === 0} label="" />
+                      <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Icon name="image" size={16} className="muted" />
+                      </div>
                     )}
                   </button>
                 ))}
           </div>
           <div className="pdp-main" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "#FFFFFF" }}>
-            {hasPhotos ? (
+            {product.bestSeller && <span className="prod-tag tag" style={{ top: 20, left: 20 }}>Best Seller</span>}
+            {product.images?.[activeThumb] ? (
               <Image
-                src={photos[Math.min(activeThumb, photos.length - 1)].url}
-                alt={photos[Math.min(activeThumb, photos.length - 1)].alt ?? product.name}
-                priority
+                src={product.images[activeThumb].url}
+                alt={product.images[activeThumb].alt || product.name}
                 fill
                 sizes="(max-width: 768px) 100vw, 800px"
                 style={{ objectFit: "contain" }}
               />
             ) : (
-              <Placeholder tone={thumbTones[activeThumb]} label={product.name} />
+              <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Icon name="image" size={48} className="muted" />
+              </div>
             )}
           </div>
         </div>

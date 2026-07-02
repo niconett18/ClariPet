@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/components/icons";
-
+import { ImageUploader, type ProductImageInput } from "@/components/admin/ImageUploader";
+import { useCart } from "@/context/CartContext";
 interface Section {
   h: string;
   p: string;
@@ -27,6 +28,7 @@ export function ArticleForm({ article }: { article?: any }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { showToastMsg } = useCart();
 
   const [form, setForm] = useState<ArticleFormState>({
     slug: article?.slug ?? "",
@@ -71,6 +73,7 @@ export function ArticleForm({ article }: { article?: any }) {
       return;
     }
 
+    showToastMsg(article?.id ? "Article updated successfully" : "Article created successfully");
     router.push("/admin/articles");
     router.refresh();
   };

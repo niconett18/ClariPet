@@ -21,7 +21,23 @@ export const GET = withErrorHandling(
   },
 );
 
-// PUT /api/admin/products/[id]
+// PATCH /api/admin/products/[id] — partial update (e.g. status)
+export const PATCH = withErrorHandling(
+  async (req: Request, { params }: { params: { id: string } }) => {
+    await requireAdmin();
+    const body = await req.json();
+    const supabase = createClient();
+    
+    const { error: updateError } = await supabase
+        .from("products")
+        .update(body)
+        .eq("id", params.id);
+
+    if (updateError) return error(updateError.message, 500);
+
+    return ok({ message: "Updated successfully" });
+  }
+);
 export const PUT = withErrorHandling(
   async (req: Request, { params }: { params: { id: string } }) => {
     await requireAdmin();
@@ -88,18 +104,30 @@ export const PUT = withErrorHandling(
   },
 );
 
-// DELETE /api/admin/products/[id] — soft delete (archive)
+// DELETE /api/admin/products/[id]
 export const DELETE = withErrorHandling(
-  async (_req: Request, { params }: { params: { id: string } }) => {
+  async (req: Request, { params }: { params: { id: string } }) => {
     await requireAdmin();
     const supabase = createClient();
+    const { searchParams } = new URL(req.url);
+    const force = searchParams.get("force") === "true";
 
-    const { error: dbError } = await supabase
-      .from("products")
-      .update({ status: "archived" })
-      .eq("id", params.id);
-
-    if (dbError) return error(dbError.message, 500);
-    return ok({ message: "Product archived" });
+    if (force) {
+      // Hard delete
+      const { error: dbError } = await supabase
+        .from("products")
+        .delete()
+        .eq("id", params.id);
+      if (dbError) return error(dbError.message, 500);
+      return ok({ message: "Product hard deleted" });
+    } else {
+      // Soft delete (archive)
+      const { error: dbError } = await supabase
+        .from("products")
+        .update({ status: "archived" })
+        .eq("id", params.id);
+      if (dbError) return error(dbError.message, 500);
+      return ok({ message: "Product archived" });
+    }
   },
 );

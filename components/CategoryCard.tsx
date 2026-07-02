@@ -1,28 +1,29 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Category } from "@/lib/types";
-import { Icon } from "@/components/icons";
-import { Placeholder } from "@/components/Placeholder";
+
+const IMG: Record<string, string> = {
+  perfumes: "/assets/images/categories/Perfume Card.png",
+  "hygiene-grooming": "/assets/images/categories/Hygiene & Grooming Card.png",
+  "skin-care": "/assets/images/categories/Skin Care Card.png",
+  "fur-care-supplements": "/assets/images/categories/Fur Care & Supplements Card.png",
+  "behavior-training": "/assets/images/categories/Behavior & Training Card.png",
+  "home-environment-care": "/assets/images/categories/Home & Environment Card.png",
+};
 
 export function CategoryCard({ cat }: { cat: Category }) {
+  const src = cat.image || IMG[cat.slug];
   return (
     <Link
       href={`/shop/${cat.slug}`}
-      className={"cat-card ph " + cat.tone}
-      style={{ background: `var(--${cat.tone}-50)` }}
+      className="cat-card"
       aria-label={`Shop ${cat.name} category`}
     >
-      <div className="cat-img">
-        {cat.image ? (
-          <Image src={cat.image} alt={cat.name} fill style={{ objectFit: "contain", padding: "12%" }} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
-        ) : (
-          <Placeholder tone={cat.tone} label={cat.name} />
-        )}
-      </div>
-      <div className="cat-name">{cat.name}</div>
-      <div className="cat-arrow">
-        <Icon name="arrowRight" size={18} />
-      </div>
+      {src ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img src={src} alt={cat.name} className="cat-card-img" />
+      ) : (
+        <span className="cat-card-fallback">{cat.name}</span>
+      )}
     </Link>
   );
 }

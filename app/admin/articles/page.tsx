@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
+import { useCart } from "@/context/CartContext";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
-interface AdminArticle {
+interface Article {
   id: string;
   slug: string;
   title: string;
@@ -15,8 +17,9 @@ interface AdminArticle {
 }
 
 export default function AdminArticlesPage() {
-  const [articles, setArticles] = useState<AdminArticle[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const { showToastMsg } = useCart();
   const [search, setSearch] = useState("");
 
   const fetchArticles = () => {
@@ -37,9 +40,21 @@ export default function AdminArticlesPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this article? This cannot be undone.")) return;
-    await fetch(`/api/admin/articles/${id}`, { method: "DELETE" });
+  const [modalState, setModalState] = useState<{ isOpen: boolean; articleId: string | null }>({
+    isOpen: false,
+    articleId: null
+  });
+
+  const handleDelete = (id: string) => {
+    setModalState({ isOpen: true, articleId: id });
+  };
+
+  const confirmDelete = async () => {
+    if (!modalState.articleId) return;
+    setModalState({ isOpen: false, articleId: null });
+    
+    await fetch(`/api/admin/articles/${modalState.articleId}`, { method: "DELETE" });
+    showToastMsg("Article deleted successfully");
     fetchArticles();
   };
 
@@ -127,11 +142,22 @@ export default function AdminArticlesPage() {
                     </button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table></div>
-        )}
-      </div>
-    </div>
-  );
-}
+                ))}
+                </tbody>
+                </table></div>
+                )}
+                </div>
+        
+                <ConfirmModal
+                isOpen={modalState.isOpen}
+                title="Delete Article"
+                message="Are you sure you want to delete this article? This action cannot be undone."
+                confirmText="Delete"
+                cancelText="Cancel"
+                isDestructive={true}
+                onConfirm={confirmDelete}
+                onCancel={() => setModalState({ isOpen: false, articleId: null })}
+                />
+                </div>
+                );
+                }

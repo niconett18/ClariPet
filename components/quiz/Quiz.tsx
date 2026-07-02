@@ -37,9 +37,9 @@ const QUIZ_STEPS: QuizStep[] = [
     key: "concern",
     q: "What’s your main concern right now?",
     options: [
-      { value: "hygiene", label: "Bad breath", icon: "droplet", tone: "sky" },
-      { value: "hygiene", label: "Tear stains", icon: "sparkle", tone: "lavender" },
-      { value: "hygiene", label: "Odour & freshness", icon: "spray", tone: "sage" },
+      { value: "hygiene-grooming", label: "Bad breath", icon: "droplet", tone: "sky" },
+      { value: "hygiene-grooming", label: "Tear stains", icon: "sparkle", tone: "lavender" },
+      { value: "hygiene-grooming", label: "Odour & freshness", icon: "spray", tone: "sage" },
       { value: "general", label: "General care", icon: "heart", tone: "pink" },
     ],
   },
@@ -69,9 +69,7 @@ function recommend(answers: Record<string, string>): Product[] {
   const recs = new Set<string>();
   const byCat = (c: string) => PRODUCTS.filter((p) => p.category === c).forEach((p) => recs.add(p.slug));
 
-  if (answers.concern === "hygiene") byCat("hygiene");
-  else if (answers.concern === "hygiene") byCat("hygiene");
-  else if (answers.concern === "hygiene") byCat("hygiene");
+  if (answers.concern === "hygiene-grooming") byCat("hygiene-grooming");
   else {
     recs.add("claripet-skin-guard-silver-heal");
     recs.add("claripet-shu-shu-cat");

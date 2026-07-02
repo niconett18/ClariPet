@@ -22,6 +22,7 @@ interface CartContextValue {
   updateQty: (slug: string, size: string, qty: number) => void;
   remove: (slug: string, size: string) => void;
   clear: () => void;
+  showToastMsg: (msg: string) => void;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -315,9 +316,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     [detailed],
   );
 
+  const showToastMsg = useCallback((msg: string) => {
+    showToast(msg);
+  }, [showToast]);
+
   return (
     <CartContext.Provider
-      value={{ items, detailed, count, subtotal, toast, add, updateQty, remove, clear }}
+      value={{ items, detailed, count, subtotal, toast, add, updateQty, remove, clear, showToastMsg }}
     >
       {children}
     </CartContext.Provider>

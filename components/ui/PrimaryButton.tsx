@@ -11,6 +11,7 @@ type BtnProps = {
   type?: "button" | "submit";
   icon?: string;
   disabled?: boolean;
+  className?: string;
   "aria-label"?: string;
 };
 
@@ -22,6 +23,7 @@ export function PrimaryButton({
   type = "button",
   icon,
   disabled,
+  className,
   "aria-label": ariaLabel,
 }: BtnProps) {
   const ref = useRef<HTMLButtonElement>(null);
@@ -29,6 +31,7 @@ export function PrimaryButton({
     "btn btn-primary ripple",
     size === "lg" ? "btn-lg" : size === "sm" ? "btn-sm" : "",
     block ? "btn-block" : "",
+    className
   ]
     .filter(Boolean)
     .join(" ");

@@ -28,7 +28,7 @@ export async function getAllProducts(): Promise<Product[]> {
     const { data, error } = await supabase
       .from("products")
       .select("*, category:categories(*), sizes:product_sizes(label), images:product_images(url, alt, sort_order)")
-      .eq("status", "active")
+      .neq("status", "archived")
       .order("best_seller", { ascending: false });
 
     if (error || !data) return PRODUCTS;
@@ -55,7 +55,7 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
       .from("products")
       .select("*, category:categories(*), sizes:product_sizes(label), images:product_images(url, alt, sort_order)")
       .eq("slug", slug)
-      .eq("status", "active")
+      .neq("status", "archived")
       .single();
 
     if (error || !data) return getStaticProduct(slug);
@@ -83,7 +83,7 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
         "*, category:categories!inner(*), sizes:product_sizes(label), images:product_images(url, alt, sort_order)",
       )
       .eq("category.slug", categorySlug)
-      .eq("status", "active")
+      .neq("status", "archived")
       .order("best_seller", { ascending: false });
 
     if (error || !data) return getStaticProductsByCategory(categorySlug);
@@ -109,7 +109,7 @@ export async function getBestSellers(): Promise<Product[]> {
     const { data, error } = await supabase
       .from("products")
       .select("*, category:categories(*), sizes:product_sizes(label), images:product_images(url, alt, sort_order)")
-      .eq("status", "active")
+      .neq("status", "archived")
       .eq("best_seller", true)
       .order("reviews_count", { ascending: false });
 
@@ -131,21 +131,8 @@ export async function getBestSellers(): Promise<Product[]> {
 // ----- CATEGORIES -----
 
 export async function getAllCategories(): Promise<Category[]> {
-  if (!USE_DATABASE) return CATEGORIES;
-
-  try {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from("categories")
-      .select("*")
-      .order("sort_order", { ascending: true });
-
-    if (error || !data) return CATEGORIES;
-
-    return data.map(mapDBCategoryToCategory);
-  } catch {
-    return CATEGORIES;
-  }
+  // ponytail: static-only — add DB query when categories become dynamic/admin-editable
+  return CATEGORIES;
 }
 
 export async function getCategoryBySlug(slug: string): Promise<Category | undefined> {
@@ -234,7 +221,18 @@ interface DBCategoryRow {
   tone?: Category["tone"] | null;
   icon?: string | null;
   blurb?: string | null;
+  image?: string | null;
 }
+
+// Static category images — these are baked into public/ and not stored in the DB
+const CATEGORY_IMAGES: Record<string, string> = {
+  perfumes: "/assets/images/categories/Perfume Card.png",
+  "hygiene-grooming": "/assets/images/categories/Hygiene & Grooming Card.png",
+  "skin-care": "/assets/images/categories/Skin Care Card.png",
+  "fur-care-supplements": "/assets/images/categories/Fur Care & Supplements Card.png",
+  "behavior-training": "/assets/images/categories/Behavior & Training Card.png",
+  "home-environment-care": "/assets/images/categories/Home & Environment Card.png",
+};
 
 function mapDBCategoryToCategory(db: DBCategoryRow): Category {
   return {
@@ -243,6 +241,7 @@ function mapDBCategoryToCategory(db: DBCategoryRow): Category {
     tone: db.tone ?? "sky",
     icon: db.icon ?? "sparkle",
     blurb: db.blurb ?? "",
+    image: db.image || CATEGORY_IMAGES[db.slug],
   };
 }
 

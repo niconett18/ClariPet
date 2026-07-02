@@ -3,16 +3,28 @@ import Image from "next/image";
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { PRODUCTS } from "@/data/products";
 import { formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons";
-import { Placeholder } from "@/components/Placeholder";
+import type { Product } from "@/lib/types";
 
 // FIXED: mobile search — auto-focus, input attrs, clear button, tap targets, dvh
 export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    if (open) {
+      fetch("/api/products?limit=100")
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.success) setProducts(json.data.products);
+        })
+        .catch(() => {});
+    }
+  }, [open]);
 
   useEffect(() => {
     if (open) {
@@ -32,10 +44,17 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
   }, [onClose]);
 
   const results = q.trim()
-    ? PRODUCTS.filter((p) =>
-        `${p.name} ${p.subtitle} ${p.categoryName}`.toLowerCase().includes(q.toLowerCase()),
+    ? products.filter((p) =>
+        `${p.name} ${p.subtitle || ""} ${p.categoryName || ""}`.toLowerCase().includes(q.toLowerCase()),
       )
-    : PRODUCTS.filter((p) => p.bestSeller);
+    : products.filter((p) => p.bestSeller);
+
+  // Eliminate dummy colourful placeholder photos completely from the UI
+  // and force the app to display only real photos, if any are available.
+  const displayImage = (p: Product) => {
+     if (p.images && p.images.length > 0 && p.images[0].url) return p.images[0];
+     return null;
+  }
 
   const goTo = (slug: string) => {
     onClose();
@@ -45,7 +64,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
   return (
     <div className={"search-overlay" + (open ? " open" : "")} onClick={onClose}>
       <div className="search-box" onClick={(e) => e.stopPropagation()}>
-        <div className="search-field">
+          <div className="search-field">
           <Icon name="search" className="muted" size={20} />
           <input
             ref={inputRef}
@@ -57,19 +76,10 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
             spellCheck={false}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Cari produk…"
+            placeholder="Search Products..."
             aria-label="Search products"
           />
-          {q.length > 0 && (
-            <button
-              className="icon-btn search-clear"
-              aria-label="Clear search"
-              onClick={() => { setQ(""); inputRef.current?.focus(); }}
-            >
-              <Icon name="close" size={18} />
-            </button>
-          )}
-          <button className="icon-btn" aria-label="Close search" onClick={onClose}>
+          <button className="icon-btn" aria-label="Close search" onClick={onClose} style={{ marginLeft: 'auto' }}>
             <Icon name="close" size={21} />
           </button>
         </div>
@@ -93,13 +103,17 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
           {results.map((p) => (
             <div key={p.slug} className="search-result" onClick={() => goTo(p.slug)} role="link" tabIndex={0}>
               <div className="thumb">
-                {p.images?.[0] ? (
-                  <Image src={p.images[0].url} alt={p.images[0].alt || p.name} fill style={{ objectFit: "cover" }} sizes="64px" />
+                {displayImage(p) ? (
+                  <div style={{ position: "relative", width: "100%", height: "100%" }}>
+                    <Image src={displayImage(p)!.url} alt={displayImage(p)!.alt || p.name} fill style={{ objectFit: "cover" }} sizes="64px" />
+                  </div>
                 ) : (
-                  <Placeholder tone={p.tone} paw={false} label="" />
+                  <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon name="image" size={20} className="muted" />
+                  </div>
                 )}
               </div>
-              <div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <div style={{ fontWeight: 600, color: "var(--navy)" }}>{p.name}</div>
                 <div className="muted" style={{ fontSize: 13 }}>
                   {p.categoryName} · {formatPrice(p.price)}

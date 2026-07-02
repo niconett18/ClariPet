@@ -6,6 +6,8 @@ import { ok, error } from "@/lib/helpers/response";
 import { withErrorHandling } from "@/lib/helpers/handler";
 import type { NextRequest } from "next/server";
 
+import { mapDBProductToProduct } from "@/lib/data/mapProduct";
+
 export const GET = withErrorHandling(async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
   const query = productQuerySchema.parse({
@@ -22,10 +24,10 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
   let qb = supabase
     .from("products")
     .select(
-      "*, category:categories(*), sizes:product_sizes(*)",
+      "*, category:categories(*), sizes:product_sizes(*), images:product_images(*)",
       { count: "exact" },
     )
-    .eq("status", "active");
+    .neq("status", "archived");
 
   // Slug filter: fetch only the exact products requested (wishlist / recently-viewed).
   // When slugs= is provided we skip category/search/sort/pagination because
@@ -92,9 +94,12 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
   if (dbError) {
     return error(dbError.message, 500);
   }
+  
+  // Format data using the mapper 
+  const formattedData = (data ?? []).map(mapDBProductToProduct);
 
   return ok({
-    products: data ?? [],
+    products: formattedData,
     total: count ?? 0,
     page: query.page,
     limit: query.limit,

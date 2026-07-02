@@ -21,6 +21,9 @@ export const GET = withErrorHandling(async (req: NextRequest) => {
   const status = searchParams.get("status");
   if (status) qb = qb.eq("status", status);
 
+  const category = searchParams.get("category");
+  if (category) qb = qb.eq("category_id", category);
+
   const search = searchParams.get("search");
   if (search) qb = qb.ilike("name", `%${search}%`);
 

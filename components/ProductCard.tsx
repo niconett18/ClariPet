@@ -7,7 +7,6 @@ import dynamic from "next/dynamic";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { Icon } from "@/components/icons";
-import { Placeholder } from "@/components/Placeholder";
 import { StarRating } from "@/components/ui/StarRating";
 
 const PrimaryButton = dynamic(() => import("@/components/ui/PrimaryButton").then((mod) => mod.PrimaryButton));
@@ -40,6 +39,8 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
     [toggle, product.slug]
   );
 
+  const displayImage = product.images?.[0];
+
   return (
     <div className="prod-card" role="group" aria-label={`Product: ${product.name}`}>
       <div className="prod-media" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "#FFFFFF" }}>
@@ -57,16 +58,18 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
                 href={`/product/${product.slug}`}
                 aria-label={`View ${product.name} details`}
               >
-                {product.images?.[0] ? (
+                {displayImage ? (
                   <Image
-                    src={product.images[0].url}
-                    alt={product.images[0].alt ?? product.name}
+                    src={displayImage.url}
+                    alt={displayImage.alt ?? product.name}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     style={{ objectFit: "contain" }}
                   />
                 ) : (
-                  <Placeholder tone={product.tone} label={product.name} />
+                  <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon name="image" size={32} className="muted" />
+                  </div>
                 )}
               </Link>
             </div>
