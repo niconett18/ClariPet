@@ -8,13 +8,13 @@ export function Hero() {
     <section className="hero" style={{ background: "#ffffff" }}>
       <div className="wrap hero-inner">
         {/* Image sits behind the copy and melts into white on the left edge */}
-        <div className="hero-media" aria-hidden="false">
+        <div className="hero-media" aria-hidden="false" style={{ transform: "translateX(160px)" }}>
           <Image
             src="/images/hero-home.png"
             alt="A happy, healthy pet cared for with ClariPet premium grooming and wellness products"
             fill
             priority
-            sizes="(max-width: 768px) 130vw, 900px"
+            sizes="(max-width: 768px) 160vw, 1600px"
             style={{ objectFit: "contain" }}
             className="hero-img"
           />
@@ -69,11 +69,12 @@ export function Hero() {
       <style dangerouslySetInnerHTML={{
         __html: `
         /* ---------- Layout ---------- */
-        .hero { position: relative; overflow: hidden; }
+        .hero { position: relative; }
         .hero-inner {
           position: relative;
-          display: grid;
-          grid-template-columns: 1fr;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
           padding: 28px 24px 56px;
           min-height: calc(100vh - var(--nav-h, 76px));
         }
@@ -88,15 +89,15 @@ export function Hero() {
         }
         .hero-img {
           /* Default (desktop): fade the left edge into white so the image merges with the copy */
-          -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 35%, black 65%, black 100%);
-          mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 35%, black 65%, black 100%);
+          -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 30%, black 60%, black 100%);
+          mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 30%, black 60%, black 100%);
         }
 
         /* ---------- Copy on top ---------- */
         .hero-copy {
           position: relative;
           z-index: 2;
-          max-width: 640px;
+          max-width: 560px;
           padding-top: 8px;
         }
 
@@ -109,20 +110,20 @@ export function Hero() {
           border: 1px solid rgba(75,159,227,0.22);
           color: #2c7cb8;
           font-weight: 700;
-          font-size: 0.72rem;
+          font-size: 0.66rem;
           letter-spacing: 0.08em;
-          padding: 7px 13px;
+          padding: 6px 11px;
           border-radius: 999px;
-          margin-bottom: 20px;
+          margin-bottom: 16px;
         }
 
         /* ---------- Title ---------- */
-        .hero-title { color: var(--navy); font-weight: 800; line-height: 1.02; margin-bottom: 22px; letter-spacing: -0.02em; }
+        .hero-title { color: var(--navy); font-weight: 800; line-height: 1.02; margin-bottom: 18px; letter-spacing: -0.02em; }
         .hero-title-accent { color: #8eb6dc; }
-        .h-display.hero-title { font-size: clamp(2.6rem, 10vw, 3.5rem); }
+        .h-display.hero-title { font-size: clamp(2.2rem, 8vw, 3rem); }
 
         /* ---------- Subtext ---------- */
-        .hero-sub { color: var(--navy); max-width: 520px; opacity: 0.88; font-size: 1.02rem; line-height: 1.6; margin: 0; }
+        .hero-sub { color: var(--navy); max-width: 480px; opacity: 0.88; font-size: 0.92rem; line-height: 1.55; margin: 0; }
 
         /* ---------- Actions ---------- */
         .hero-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 26px; }
@@ -146,6 +147,7 @@ export function Hero() {
             inset: 0;
             width: 100%;
             height: 100%;
+            transform: none !important;
           }
           .hero-img {
             object-fit: contain !important;
@@ -173,8 +175,8 @@ export function Hero() {
           }
           .hero-mobile-hide { display: none !important; }
           .hero-title {
-            font-size: clamp(2.5rem, 11vw, 3.4rem) !important;
-            margin-bottom: 18px !important;
+            font-size: clamp(2.1rem, 9vw, 2.9rem) !important;
+            margin-bottom: 14px !important;
             text-shadow: 0 2px 24px rgba(255,255,255,0.6);
           }
           .hero-actions {
@@ -188,29 +190,29 @@ export function Hero() {
         /* ---------- Desktop ---------- */
         @media (min-width: 768px) {
           .hero-inner { padding: 48px 28px 64px; }
-          .hero-media { width: 62%; }
-          .hero-eyebrow { font-size: 0.85rem; padding: 8px 15px; margin-bottom: 24px; }
-          .h-display.hero-title { font-size: clamp(3.25rem, 5vw, 5rem); }
-          .hero-sub { font-size: 1.2rem; max-width: 560px; }
-          .hero-actions { flex-direction: row; gap: 14px; margin-top: 32px; }
+          .hero-media { width: 88%; }
+          .hero-eyebrow { font-size: 0.74rem; padding: 7px 13px; margin-bottom: 20px; }
+          .h-display.hero-title { font-size: clamp(2.8rem, 4.2vw, 4rem); }
+          .hero-sub { font-size: 1.05rem; max-width: 520px; }
+          .hero-actions { flex-direction: row; gap: 14px; margin-top: 28px; }
           .hero-action-link { width: auto; }
-          .hero-trust { font-size: 1rem; margin-top: 32px; }
-          .hero-stars { font-size: 1.25rem; }
+          .hero-trust { font-size: 0.92rem; margin-top: 28px; }
+          .hero-stars { font-size: 1.15rem; }
           .hero-copy { padding-top: 12px; }
         }
 
         /* ---------- Large desktop ---------- */
         @media (min-width: 1200px) {
           .hero-inner { padding: 56px 28px 72px; }
-          .h-display.hero-title { font-size: clamp(4rem, 5.2vw, 5.5rem); }
-          .hero-media { width: 58%; }
+          .h-display.hero-title { font-size: clamp(3.4rem, 4.5vw, 4.6rem); }
+          .hero-media { width: 82%; }
         }
 
         /* ---------- Small phones ---------- */
         @media (max-width: 380px) {
-          .hero-eyebrow { font-size: 0.68rem; padding: 6px 11px; }
-          .h-display.hero-title { font-size: 2.35rem; }
-          .hero-sub { font-size: 0.95rem; }
+          .hero-eyebrow { font-size: 0.62rem; padding: 5px 10px; }
+          .h-display.hero-title { font-size: 2rem; }
+          .hero-sub { font-size: 0.86rem; }
         }
         `
       }} />

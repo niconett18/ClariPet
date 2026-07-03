@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/helpers/auth";
-import { updateProductSchema } from "@/lib/validators/product";
+import { updateProductSchema, patchProductSchema } from "@/lib/validators/product";
 import { ok, error, notFound } from "@/lib/helpers/response";
 import { withErrorHandling } from "@/lib/helpers/handler";
 
@@ -21,16 +21,18 @@ export const GET = withErrorHandling(
   },
 );
 
-// PATCH /api/admin/products/[id] — partial update (e.g. status)
+// PATCH /api/admin/products/[id] — partial update of scalar fields only (e.g. status).
+// sizes/images are managed via PUT. Zod-validated to prevent mass-assignment.
 export const PATCH = withErrorHandling(
   async (req: Request, { params }: { params: { id: string } }) => {
     await requireAdmin();
     const body = await req.json();
+    const input = patchProductSchema.parse(body);
     const supabase = createClient();
-    
+
     const { error: updateError } = await supabase
         .from("products")
-        .update(body)
+        .update(input)
         .eq("id", params.id);
 
     if (updateError) return error(updateError.message, 500);

@@ -46,6 +46,18 @@ export const createProductSchema = z.object({
 
 export const updateProductSchema = createProductSchema.partial();
 
+// PATCH-only schema: scalar product fields, NO sizes/images (those are PUT's job).
+// .strict() rejects any unknown key (id, created_at, slug, category_id, sizes, images)
+// to prevent mass-assignment attacks.
+export const patchProductSchema = updateProductSchema
+  .omit({
+    sizes: true,
+    images: true,
+    slug: true,
+    category_id: true,
+  })
+  .strict();
+
 export const productQuerySchema = z.object({
   category: z.string().optional(),
   search: z.string().max(100).optional(),
