@@ -52,6 +52,8 @@ pnpm-workspace.yaml
 /.swarm/
 /.agents/
 /.claude-flow/
+/.claude/
+/CLAUDE.md
 
 # design docs, notes, screenshots
 *.pdf
