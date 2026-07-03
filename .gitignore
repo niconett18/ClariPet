@@ -48,6 +48,11 @@ pnpm-workspace.yaml
 # third-party AI tools
 /.mimocode/
 
+# agent runtime artifacts (auto-generated, not source code)
+/.swarm/
+/.agents/
+/.claude-flow/
+
 # design docs, notes, screenshots
 *.pdf
 c.txt
