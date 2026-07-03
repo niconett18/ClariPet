@@ -18,7 +18,12 @@ function safeRedirectPath(value: string | null): string {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = safeRedirectPath(searchParams.get("redirect"));
+  const redirect = safeRedirectPath(
+    searchParams.get("redirect") || 
+    (typeof sessionStorage !== "undefined" ? sessionStorage.getItem("returnTo") : null) || 
+    "/"
+  );
+  const alertType = searchParams.get("alert");
   const { user, loading: authLoading, signIn } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -38,6 +43,7 @@ function LoginForm() {
     );
   }
   if (user) {
+    if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("returnTo")) sessionStorage.removeItem("returnTo");
     router.replace(redirect);
     return null;
   }
@@ -52,6 +58,7 @@ function LoginForm() {
       setError(err);
       setLoading(false);
     } else {
+      if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("returnTo")) sessionStorage.removeItem("returnTo");
       router.push(redirect);
       router.refresh();
     }
@@ -73,6 +80,13 @@ function LoginForm() {
         <h2 className="h2">Welcome back</h2>
         <p className="muted">Sign in to your ClariPet account</p>
       </div>
+
+      {alertType === "checkout" && (
+        <div className="auth-alert" role="alert" style={{ background: 'var(--brand-mint)', color: 'var(--navy)', padding: '12px 16px', borderRadius: '8px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: 500 }}>
+          <Icon name="info" size={18} />
+          Please sign in or create an account to proceed to checkout.
+        </div>
+      )}
 
       {error && (
         <div className="auth-error" role="alert">

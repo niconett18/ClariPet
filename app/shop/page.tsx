@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAllProducts, getAllCategories } from "@/lib/data";
+import { getAllProducts, getAllCategories, getBestSellers } from "@/lib/data";
 import { PageHead } from "@/components/PageHead";
 import { ProductCard } from "@/components/ProductCard";
 import { CategoryCard } from "@/components/CategoryCard";
@@ -27,9 +27,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  const [products, categories] = await Promise.all([
+  const [products, categories, bestSellers] = await Promise.all([
     getAllProducts(),
     getAllCategories(),
+    getBestSellers(),
   ]);
   const featured = [...products].sort(
     (a, b) => Number(b.bestSeller) - Number(a.bestSeller),
@@ -42,7 +43,28 @@ export default async function ShopPage() {
         subtitle="Everything your pet needs for grooming, wellness, hygiene and everyday care."
       />
 
-      <section className="wrap section-sm" style={{ paddingTop: 0 }}>
+      {/* Mobile: Hot & Trending first (horizontal carousel of best sellers) */}
+      <section className="shop-mobile-featured wrap section-sm" style={{ paddingTop: 0 }}>
+        <div className="sec-head">
+          <div>
+            <div className="eyebrow" style={{ marginBottom: 10 }}>
+              Hot &amp; Trending
+            </div>
+            <h2 className="h2">Featured Products</h2>
+          </div>
+        </div>
+        <div className="prod-grid shop-featured-row">
+          {bestSellers.map((p) => (
+            <ProductCard key={p.slug} product={p} />
+          ))}
+        </div>
+        <Link href="#all-products" className="btn btn-primary btn-block shop-all-btn">
+          View All Products <Icon name="arrowRight" size={18} />
+        </Link>
+      </section>
+
+      {/* Desktop: Categories first (original order) */}
+      <section className="wrap section-sm shop-desktop-categories" style={{ paddingTop: 0 }}>
         <div className="sec-head">
           <div>
             <div className="eyebrow" style={{ marginBottom: 10 }}>
@@ -58,7 +80,24 @@ export default async function ShopPage() {
         </div>
       </section>
 
-      <section className="wrap section-sm" style={{ paddingTop: 0 }}>
+      {/* Mobile: Categories as a small side-scroll carousel */}
+      <section className="shop-mobile-categories wrap section-sm" style={{ paddingTop: 0 }}>
+        <div className="sec-head">
+          <div>
+            <div className="eyebrow" style={{ marginBottom: 10 }}>
+              Browse
+            </div>
+            <h2 className="h2">Shop by Category</h2>
+          </div>
+        </div>
+        <div className="cat-scroll">
+          {categories.map((c) => (
+            <CategoryCard key={c.slug} cat={c} />
+          ))}
+        </div>
+      </section>
+
+      <section id="all-products" className="wrap section-sm" style={{ paddingTop: 0, scrollMarginTop: '90px' }}>
         <div className="sec-head">
           <div>
             <div className="eyebrow" style={{ marginBottom: 10 }}>

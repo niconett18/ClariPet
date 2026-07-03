@@ -26,7 +26,7 @@ export function PetParentFavorites() {
           </Link>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24, overflowX: "auto", paddingBottom: 16 }}>
+        <div className="favorites-grid">
           {FAVORITE_TAGS.map((tag, i) => {
             const p = BEST_SELLERS[i];
             if (!p) return null;
@@ -60,7 +60,7 @@ export function PetParentFavorites() {
             }
 
             return (
-              <div key={p.slug} className={`prod-card reveal reveal-d${Math.min(i + 1, 5)}`} style={{ minWidth: 260, backgroundColor: bg, height: "100%" }}>
+              <div key={p.slug} className={`prod-card reveal reveal-d${Math.min(i + 1, 5)}`} style={{ backgroundColor: bg, height: "100%" }}>
                 <Link href={`/product/${p.slug}`} className="prod-media" style={{ display: "block", aspectRatio: "1/1", position: "relative", backgroundColor: "transparent" }}>
                   <span className="prod-tag tag" style={{ 
                     position: "absolute", 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import type { Product, Category } from "@/lib/types";
 import { Icon } from "@/components/icons";
@@ -42,6 +42,11 @@ export function CollectionView({
   const [petTypes, setPetTypes] = useState<string[]>([]);
   const [concerns, setConcerns] = useState<string[]>([]);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
 
   const petTypeFacet = useMemo(() => uniqueFacet(products, (p) => p.petType), [products]);
   const concernFacet = useMemo(() => uniqueFacet(products, (p) => p.concern), [products]);
@@ -110,13 +115,20 @@ export function CollectionView({
             <Icon name="settings" size={18} /> Filters{activeCount ? ` (${activeCount})` : ""}
           </button>
 
+          <div className={"filter-scrim" + (mobileOpen ? " open" : "")} onClick={() => setMobileOpen(false)} aria-hidden={!mobileOpen} />
+
           <aside className={"filter-panel" + (mobileOpen ? " open" : "")}>
             <div className="filter-panel-head">
               <h3 className="h3" style={{ fontSize: 18 }}>Filter</h3>
               {activeCount > 0 && (
                 <button className="filter-clear" onClick={clearAll}>Clear all</button>
               )}
+              <button className="filter-close mobile-only" aria-label="Close filters" onClick={() => setMobileOpen(false)}>
+                <Icon name="close" size={20} />
+              </button>
             </div>
+
+            <div className="filter-panel-body">
 
             {petTypeFacet.length > 0 && (
               <div className="filter-group">
@@ -183,6 +195,13 @@ export function CollectionView({
               {categories.filter((c) => c.slug !== category.slug).map((c) => (
                 <Link key={c.slug} href={`/shop/${c.slug}`} className="filter-link">{c.name}</Link>
               ))}
+            </div>
+            </div>
+
+            <div className="filter-apply mobile-only">
+              <button className="btn btn-primary btn-block" onClick={() => setMobileOpen(false)}>
+                Show {filtered.length} result{filtered.length !== 1 ? "s" : ""}
+              </button>
             </div>
           </aside>
 

@@ -11,9 +11,21 @@ import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { SecondaryButton } from "@/components/ui/SecondaryButton";
 import { useCart, FREE_SHIPPING_THRESHOLD } from "@/context/CartContext";
 
+import { useAuth } from "@/context/AuthContext";
+
 export function CartView() {
   const cart = useCart();
   const router = useRouter();
+  const { user } = useAuth();
+
+  const handleCheckoutClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!user) {
+      e.preventDefault();
+      // Store current cart page to return to after login
+      sessionStorage.setItem("returnTo", "/checkout");
+      router.push("/login?alert=checkout");
+    }
+  };
 
   if (cart.detailed.length === 0) {
     return (
@@ -109,7 +121,7 @@ export function CartView() {
             <span>Total</span>
             <span>{formatPrice(cart.subtotal)}</span>
           </div>
-          <Link href="/checkout" className="btn btn-primary cart-checkout-btn" style={{ width: '100%', display: 'block', textAlign: 'center', padding: '16px', fontSize: '16px' }}>
+          <Link href="/checkout" className="btn btn-primary cart-checkout-btn" style={{ width: '100%', display: 'block', textAlign: 'center', padding: '16px', fontSize: '16px' }} onClick={handleCheckoutClick}>
             Proceed to Checkout
           </Link>
           <Link href="/shop" className="btn btn-secondary" style={{ display: 'block', textAlign: 'center', marginTop: 12, padding: '16px', fontSize: '16px' }}>
@@ -124,7 +136,7 @@ export function CartView() {
           <span className="mcb-label">Total</span>
           <span className="mcb-value">{formatPrice(cart.subtotal)}</span>
         </div>
-        <Link href="/checkout" className="btn btn-primary mcb-btn">
+        <Link href="/checkout" className="btn btn-primary mcb-btn" onClick={handleCheckoutClick}>
           Checkout
         </Link>
       </div>
