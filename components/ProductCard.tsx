@@ -63,8 +63,9 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
                     src={displayImage.url}
                     alt={displayImage.alt ?? product.name}
                     fill
+                    loading="lazy"
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    style={{ objectFit: "contain" }}
+                    style={{ objectFit: "cover", objectPosition: "50% 45%" }}
                   />
                 ) : (
                   <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -83,11 +84,8 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
             <span className="prod-price">{formatPrice(product.price)}</span>
             <StarRating rating={product.rating} reviews={product.reviews} />
           </div>
-          <button className="mobile-add-btn mobile-only" onClick={handleAddToCart} aria-label="Add to cart">
-            <Icon name="plus" size={18} />
-          </button>
         </div>
-        <div ref={btnRef} className="prod-add desktop-only">
+        <div ref={btnRef} className="prod-add">
           <PrimaryButton block size="sm" type="button" onClick={handleAddToCart} aria-label={`Add ${product.name} to cart`}>
             Add to Cart
           </PrimaryButton>

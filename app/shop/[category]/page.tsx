@@ -7,6 +7,7 @@ import {
   getAllCategories,
 } from "@/lib/data";
 import { CollectionView } from "@/components/shop/CollectionView";
+import { ShopCategoryPills } from "@/components/shop/ShopCategoryPills";
 import { SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -77,6 +78,7 @@ export default async function CollectionPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
+      <ShopCategoryPills />
       <CollectionView
         products={products}
         category={category}

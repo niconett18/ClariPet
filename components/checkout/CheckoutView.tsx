@@ -367,10 +367,10 @@ export function CheckoutView() {
                 <h3>Informasi penerima paket</h3>
                 <div className="two-col">
                   <Field label="Nama Lengkap Penerima" error={fieldErrors.fullName}>
-                    <input value={form.fullName} onChange={(e) => updateForm("fullName", e.target.value)} placeholder="Masukkan nama lengkap" />
+                    <input type="text" autoComplete="name" value={form.fullName} onChange={(e) => updateForm("fullName", e.target.value)} placeholder="Masukkan nama lengkap" />
                   </Field>
                   <Field label="Nomor handphone" error={fieldErrors.phone}>
-                    <input value={form.phone} onChange={(e) => updateForm("phone", e.target.value)} placeholder="Masukkan nomor handphone" inputMode="tel" />
+                    <input type="tel" autoComplete="tel" value={form.phone} onChange={(e) => updateForm("phone", e.target.value)} placeholder="Masukkan nomor handphone" inputMode="tel" />
                   </Field>
                 </div>
                 {user && (
@@ -392,15 +392,16 @@ export function CheckoutView() {
 
                 <h3>Detail Alamat</h3>
                 <Field label="Label Alamat" helper="Contoh: Alamat Rumah, Alamat Kantor" error={fieldErrors.label}>
-                  <input value={form.label} onChange={(e) => updateForm("label", e.target.value)} placeholder="Label Alamat" />
+                  <input type="text" value={form.label} onChange={(e) => updateForm("label", e.target.value)} placeholder="Label Alamat" />
                 </Field>
                 <Field label="Alamat Lengkap" helper="Nama jalan, nomor rumah, RT/RW, kelurahan" error={fieldErrors.address}>
-                  <textarea value={form.address} onChange={(e) => updateForm("address", e.target.value)} placeholder="Contoh: Jl. Melati No. 12, RT 03 RW 05, Kel. Sukamaju" rows={3} />
+                  <textarea autoComplete="street-address" value={form.address} onChange={(e) => updateForm("address", e.target.value)} placeholder="Contoh: Jl. Melati No. 12, RT 03 RW 05, Kel. Sukamaju" rows={3} />
                 </Field>
                 <div className="two-col">
                   <Field label="Provinsi" error={fieldErrors.province}>
                     <select
                       className="select-input"
+                      autoComplete="address-level1"
                       value={form.province}
                       onChange={(e) => {
                         updateForm("province", e.target.value);
@@ -417,6 +418,7 @@ export function CheckoutView() {
                   <Field label="Kota / Kabupaten" error={fieldErrors.city}>
                     <select
                       className="select-input"
+                      autoComplete="address-level2"
                       value={form.city}
                       onChange={(e) => updateForm("city", e.target.value)}
                       disabled={!form.province}
@@ -429,7 +431,7 @@ export function CheckoutView() {
                   </Field>
                 </div>
                 <Field label="Kode Pos" error={fieldErrors.postalCode}>
-                  <input value={form.postalCode} onChange={(e) => updateForm("postalCode", e.target.value)} placeholder="Contoh: 40123" inputMode="numeric" />
+                  <input type="text" autoComplete="postal-code" value={form.postalCode} onChange={(e) => updateForm("postalCode", e.target.value)} placeholder="Contoh: 40123" inputMode="numeric" />
                 </Field>
                 <Field label="Catatan Pengiriman" helper="Patokan rumah, pesan khusus, dll. (opsional)">
                   <textarea value={form.note} onChange={(e) => updateForm("note", e.target.value)} placeholder="Catatan tambahan untuk kurir pengiriman" rows={3} />
@@ -589,6 +591,21 @@ export function CheckoutView() {
             </div>
           </aside>
         </div>
+      </div>
+
+      {/* Sticky pay button for mobile */}
+      <div className="checkout-sticky-pay">
+        <div className="csp-total">
+          <span className="csp-label">Total Tagihan</span>
+          <span className="csp-value">{formatPrice(total)}</span>
+        </div>
+        <button
+          className="csp-btn"
+          disabled={!canPay || isProcessing}
+          onClick={handlePayment}
+        >
+          {isProcessing ? "Memproses..." : "Lanjutkan ke Pembayaran"}
+        </button>
       </div>
 
       <Script

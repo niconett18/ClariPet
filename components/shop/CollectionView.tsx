@@ -111,19 +111,20 @@ export function CollectionView({
 
       <section className="wrap section-sm">
         <div className="collection-layout">
-          <button className="filter-toggle btn btn-secondary" onClick={() => setMobileOpen((v) => !v)}>
+          <button type="button" className="filter-toggle btn btn-secondary" onClick={() => setMobileOpen((v) => !v)}>
             <Icon name="settings" size={18} /> Filters{activeCount ? ` (${activeCount})` : ""}
           </button>
 
-          <div className={"filter-scrim" + (mobileOpen ? " open" : "")} onClick={() => setMobileOpen(false)} aria-hidden={!mobileOpen} />
+          {mobileOpen && <div className={"filter-scrim open"} onClick={() => setMobileOpen(false)} aria-hidden={false} />}
 
-          <aside className={"filter-panel" + (mobileOpen ? " open" : "")}>
+          {mobileOpen && (
+          <aside className="filter-panel open">
             <div className="filter-panel-head">
               <h3 className="h3" style={{ fontSize: 18 }}>Filter</h3>
               {activeCount > 0 && (
-                <button className="filter-clear" onClick={clearAll}>Clear all</button>
+                <button type="button" className="filter-clear" onClick={clearAll}>Clear all</button>
               )}
-              <button className="filter-close mobile-only" aria-label="Close filters" onClick={() => setMobileOpen(false)}>
+              <button type="button" className="filter-close mobile-only" aria-label="Close filters" onClick={() => setMobileOpen(false)}>
                 <Icon name="close" size={20} />
               </button>
             </div>
@@ -178,7 +179,7 @@ export function CollectionView({
                 </label>
               ))}
               {minRating !== null && (
-                <button className="filter-clear" onClick={() => setMinRating(null)}>Any rating</button>
+                <button type="button" className="filter-clear" onClick={() => setMinRating(null)}>Any rating</button>
               )}
             </div>
 
@@ -199,11 +200,12 @@ export function CollectionView({
             </div>
 
             <div className="filter-apply mobile-only">
-              <button className="btn btn-primary btn-block" onClick={() => setMobileOpen(false)}>
+              <button type="button" className="btn btn-primary btn-block" onClick={() => setMobileOpen(false)}>
                 Show {filtered.length} result{filtered.length !== 1 ? "s" : ""}
               </button>
             </div>
           </aside>
+          )}
 
           <div className="collection-main">
             <div className="shop-toolbar">
@@ -234,7 +236,7 @@ export function CollectionView({
                 <div className="ec"><Icon name="search" size={32} /></div>
                 <h3 className="h3" style={{ marginBottom: 8 }}>No products match your filters</h3>
                 <p className="muted" style={{ marginBottom: 18 }}>Try clearing some filters to see more.</p>
-                <button className="btn btn-secondary" onClick={clearAll}>Clear all filters</button>
+                <button type="button" className="btn btn-secondary" onClick={clearAll}>Clear all filters</button>
               </div>
             )}
           </div>

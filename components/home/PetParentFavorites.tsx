@@ -34,28 +34,33 @@ export function PetParentFavorites() {
             // Determine custom styling per product
             let bg = "#fff";
             let imgSrc = p.images?.[0]?.url;
-            let objFit = "contain" as any;
-            let imgPad = "16px";
+            let objFit = "cover" as any;
+            let objPos = "50% 45%";
+            let imgPad = "0";
 
             if (p.slug === "claripet-botanica-bloom") {
               bg = "#fbf6f6";
               imgSrc = "/images/products/botanica-bloom-1.png";
               objFit = "cover";
+              objPos = "50% 45%";
               imgPad = "0";
             } else if (p.slug === "claripet-breath") {
               bg = "#e5f1ec";
               imgSrc = "/images/products/breath-1.png";
               objFit = "cover";
+              objPos = "50% 45%";
               imgPad = "0";
             } else if (p.slug === "claripet-tear-stain-remover") {
               bg = "#FBF0E0";
               imgSrc = "/images/products/tear-stain-1.png";
               objFit = "cover";
+              objPos = "50% 45%";
               imgPad = "0";
             } else if (p.slug === "claripet-vitabulu-beauty-shampoo") {
               bg = "#FDE8E8";
               imgSrc = "/images/products/vitabulu-beauty-shampoo-1.png";
               objFit = "cover";
+              objPos = "50% 45%";
               imgPad = "0";
             }
 
@@ -84,6 +89,7 @@ export function PetParentFavorites() {
                         width: "100%", 
                         height: "100%", 
                         objectFit: objFit, 
+                        objectPosition: objPos,
                         padding: imgPad 
                       }} 
                     />

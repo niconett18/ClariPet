@@ -5,6 +5,7 @@ import { PageHead } from "@/components/PageHead";
 import { ProductCard } from "@/components/ProductCard";
 import { CategoryCard } from "@/components/CategoryCard";
 import { Icon } from "@/components/icons";
+import { ShopCategoryPills } from "@/components/shop/ShopCategoryPills";
 
 export const metadata: Metadata = {
   title: "Shop ClariPet",
@@ -38,6 +39,7 @@ export default async function ShopPage() {
 
   return (
     <main>
+      <ShopCategoryPills />
       <PageHead
         title="Shop ClariPet"
         subtitle="Everything your pet needs for grooming, wellness, hygiene and everyday care."

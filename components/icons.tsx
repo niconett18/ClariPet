@@ -5,7 +5,7 @@ import {
   Dog, Cat, Bone, SprayCan, Facebook, Instagram, Music2,
   AlertCircle, LogOut, Package, MapPinned, Settings, LayoutDashboard,
   Boxes, ShoppingBag, Edit, Save, ArrowLeft, Eye, EyeOff,
-  Mail, Crown, Lightbulb,
+  Mail, Crown, Lightbulb, Home, LayoutGrid, Image,
   type LucideIcon,
 } from "lucide-react";
 
@@ -62,6 +62,9 @@ export const icons: Record<string, LucideIcon> = {
   mail: Mail,
   crown: Crown,
   lightbulb: Lightbulb,
+  home: Home,
+  grid: LayoutGrid,
+  image: Image,
 };
 
 export function Icon({

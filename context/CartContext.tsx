@@ -18,6 +18,8 @@ interface CartContextValue {
   count: number;
   subtotal: number;
   toast: string | null;
+  lastAdded: { product: Product; qty: number; size: string } | null;
+  dismissLastAdded: () => void;
   add: (slug: string, size?: string, qty?: number, product?: Product) => void;
   updateQty: (slug: string, size: string, qty: number) => void;
   remove: (slug: string, size: string) => void;
@@ -41,6 +43,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const { user, loading: authLoading } = useAuth();
   const [items, setItems] = useState<CartItem[]>([]);
   const [toast, setToast] = useState<string | null>(null);
+  const [lastAdded, setLastAdded] = useState<{ product: Product; qty: number; size: string } | null>(null);
+  const lastAddedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hydrated, setHydrated] = useState(false);
   // Resolved product details keyed by slug. Seeded with static products and
   // filled in from the DB for products that aren't bundled (e.g. admin-added).
@@ -214,6 +218,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
           return [...prev, { slug, size: resolvedSize, qty }];
         });
         if (resolved) showToast(`${resolved.name} added to cart`);
+        if (resolved) {
+          if (lastAddedTimer.current) clearTimeout(lastAddedTimer.current);
+          setLastAdded({ product: resolved, qty, size: resolvedSize });
+          lastAddedTimer.current = setTimeout(() => setLastAdded(null), 8000);
+        }
 
         // Sync to DB if logged in; remember the row id for later updates
         if (user && resolvedSize) {
@@ -320,9 +329,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     showToast(msg);
   }, [showToast]);
 
+  const dismissLastAdded = useCallback(() => {
+    setLastAdded(null);
+    if (lastAddedTimer.current) clearTimeout(lastAddedTimer.current);
+  }, []);
+
   return (
     <CartContext.Provider
-      value={{ items, detailed, count, subtotal, toast, add, updateQty, remove, clear, showToastMsg }}
+      value={{ items, detailed, count, subtotal, toast, lastAdded, dismissLastAdded, add, updateQty, remove, clear, showToastMsg }}
     >
       {children}
     </CartContext.Provider>

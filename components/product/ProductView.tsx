@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import type { Product, Tone } from "@/lib/types";
@@ -31,8 +32,35 @@ export function ProductView({ product }: { product: Product }) {
   const isWished = slugs.includes(product.slug);
   const addRef = useRef<HTMLDivElement>(null);
   const [activeThumb, setActiveThumb] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState(product.sizes[0]);
   const [qty, setQty] = useState(1);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Sync mobile carousel scroll with activeThumb state
+  const handleScroll = () => {
+    if (!carouselRef.current) return;
+    const scrollLeft = carouselRef.current.scrollLeft;
+    const width = carouselRef.current.clientWidth;
+    const newIndex = Math.round(scrollLeft / width);
+    if (newIndex !== activeThumb) setActiveThumb(newIndex);
+  };
+
+  // Click a thumbnail/dot: update state AND scroll the main carousel to that slide.
+  // Works for both desktop thumbnails and mobile dots.
+  const goToSlide = (i: number) => {
+    setActiveThumb(i);
+    if (carouselRef.current) {
+      carouselRef.current.scrollTo({
+        left: i * carouselRef.current.clientWidth,
+        behavior: "smooth",
+      });
+    }
+  };
 
   // Track Recently Viewed
   useEffect(() => {
@@ -107,20 +135,21 @@ export function ProductView({ product }: { product: Product }) {
       />
       <div className="wrap product-grid pdp">
         <div className="pdp-gallery">
-          <div className="pdp-thumbs">
-            {hasPhotos
-              ? photos.map((img, i) => (
-                  <button
-                    key={img.url}
-                    className={"pdp-thumb" + (activeThumb === i ? " active" : "")}
-                    onClick={() => setActiveThumb(i)}
-                    aria-label={`View image ${i + 1}`}
-                    style={{ background: "#FFFFFF" }}
-                  >
+          <div className="pdp-thumbs desktop-only">
+              {hasPhotos
+                ? photos.map((img, i) => (
+                    <button
+                      key={img.url}
+                      className={"pdp-thumb" + (activeThumb === i ? " active" : "")}
+                      onClick={() => goToSlide(i)}
+                      aria-label={`View image ${i + 1}`}
+                      style={{ background: "#FFFFFF" }}
+                    >
                     <Image
                       src={img.url}
                       alt={img.alt ?? `${product.name} photo ${i + 1}`}
                       fill
+                      loading="lazy"
                       style={{ objectFit: "contain" }}
                       sizes="80px"
                     />
@@ -134,7 +163,7 @@ export function ProductView({ product }: { product: Product }) {
                     aria-label={`View image ${i + 1}`}
                   >
                     {product.images?.[i] ? (
-                      <Image src={product.images[i].url} alt={product.images[i].alt || product.name} fill style={{ objectFit: "contain" }} sizes="80px" />
+                      <Image src={product.images[i].url} alt={product.images[i].alt || product.name} fill loading="lazy" style={{ objectFit: "contain" }} sizes="80px" />
                     ) : (
                       <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Icon name="image" size={16} className="muted" />
@@ -143,19 +172,44 @@ export function ProductView({ product }: { product: Product }) {
                   </button>
                 ))}
           </div>
-          <div className="pdp-main" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "#FFFFFF" }}>
-            {product.bestSeller && <span className="prod-tag tag" style={{ top: 20, left: 20 }}>Best Seller</span>}
-            {product.images?.[activeThumb] ? (
-              <Image
-                src={product.images[activeThumb].url}
-                alt={product.images[activeThumb].alt || product.name}
-                fill
-                sizes="(max-width: 768px) 100vw, 800px"
-                style={{ objectFit: "contain" }}
-              />
-            ) : (
-              <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Icon name="image" size={48} className="muted" />
+          <div className="pdp-main-wrap">
+            <div className="pdp-main" style={{ background: "#FFFFFF" }}>
+              {product.bestSeller && <span className="prod-tag tag desktop-only" style={{ top: 20, left: 20 }}>Best Seller</span>}
+              
+              <div className="pdp-carousel" ref={carouselRef} onScroll={handleScroll}>
+                {hasPhotos ? (
+                  photos.map((img, i) => (
+                    <div className="pdp-carousel-slide" key={img.url}>
+                      <Image
+                        src={img.url}
+                        alt={img.alt || product.name}
+                        fill
+                        priority={i === 0}
+                        loading={i === 0 ? undefined : "lazy"}
+                        sizes="(max-width: 768px) 100vw, 800px"
+                        style={{ objectFit: "contain" }}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <div className="pdp-carousel-slide">
+                    <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Icon name="image" size={48} className="muted" />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            {hasPhotos && photos.length > 1 && (
+              <div className="pdp-carousel-dots mobile-only">
+                {photos.map((_, i) => (
+                  <button 
+                    key={i} 
+                    className={"pdp-dot" + (activeThumb === i ? " active" : "")} 
+                    aria-label={`Go to slide ${i + 1}`}
+                    onClick={() => goToSlide(i)}
+                  />
+                ))}
               </div>
             )}
           </div>
@@ -172,7 +226,7 @@ export function ProductView({ product }: { product: Product }) {
           <div className="pdp-price">{formatPrice(product.price)}</div>
           <p className="pdp-desc">{product.short}</p>
 
-          <div>
+          <div className="pdp-benefits">
             {product.benefits.map((b, i) => (
               <div className="benefit" key={i}>
                 <span className="benefit-ic">
@@ -196,6 +250,7 @@ export function ProductView({ product }: { product: Product }) {
 
           <div className="pdp-buy" ref={addRef}>
             <div className="pdp-actions-row">
+              <span className="pdp-mobile-price">{formatPrice(product.price)}</span>
               <QuantityStepper value={qty} onChange={setQty} />
               <PrimaryButton
                 size="lg"
@@ -207,7 +262,7 @@ export function ProductView({ product }: { product: Product }) {
                 Add to Cart
               </PrimaryButton>
               <button
-                className={"wishlist" + (isWished ? " active" : "")}
+                className={"wishlist" + (isWished ? " active" : "") + " desktop-only"}
                 style={{ position: "static", width: 50, height: 50, background: "var(--mist)", flexShrink: 0 }}
                 aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
                 aria-pressed={isWished}
@@ -249,6 +304,26 @@ export function ProductView({ product }: { product: Product }) {
           </div>
         </div>
       </section>
+
+      {/* Sticky Add to Cart bar — mobile only */}
+      {mounted && createPortal(
+        <div className="pdp-sticky-bar">
+          <span className="pdp-sticky-price">{formatPrice(product.price)}</span>
+          <div className="pdp-sticky-qty">
+            <QuantityStepper value={qty} onChange={setQty} />
+          </div>
+          <PrimaryButton
+            size="lg"
+            onClick={() => {
+              if (addRef.current) flyToCart(addRef.current);
+              cart.add(product.slug, size, qty, product);
+            }}
+          >
+            Add to Cart
+          </PrimaryButton>
+        </div>,
+        document.body
+      )}
     </main>
   );
 }
