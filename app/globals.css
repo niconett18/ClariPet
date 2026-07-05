@@ -2003,13 +2003,12 @@ select:focus-visible {
 /* ===========================================================
    ADD-TO-CART CONFIRMATION SHEET (mobile only)
    =========================================================== */
-.cart-confirm-sheet-wrap { display: none; }
+.cart-confirm-sheet,
+.ccs-scrim { display: none; }
 
 @media (max-width: 768px) {
-  .cart-confirm-sheet-wrap {
-    display: block;
-  }
   .ccs-scrim {
+    display: block;
     position: fixed;
     inset: 0;
     z-index: 199;
@@ -2023,10 +2022,10 @@ select:focus-visible {
     pointer-events: auto;
   }
   .cart-confirm-sheet {
+    display: flex;
     position: fixed;
     bottom: 0; left: 0; right: 0;
     z-index: 200;
-    display: flex;
     flex-direction: column;
     background: #fff;
     border-top-left-radius: var(--r-lg);
