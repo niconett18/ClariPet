@@ -14,8 +14,6 @@ const Toast = dynamic(
 
 const poppins = Poppins({
   subsets: ["latin"],
-  // 300 (light) is not used anywhere in the design system. Removing it saves
-  // one font-face download (~20 KB woff2) on every page load.
   weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
   display: "swap",

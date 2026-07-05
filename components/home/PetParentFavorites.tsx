@@ -1,4 +1,5 @@
 ﻿import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { BEST_SELLERS } from "@/data/products";
 import dynamic from "next/dynamic";
@@ -82,12 +83,12 @@ export function PetParentFavorites() {
                     {tag}
                   </span>
                   {imgSrc && (
-                    <img 
+                    <Image 
                       src={imgSrc} 
                       alt={p.name} 
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       style={{ 
-                        width: "100%", 
-                        height: "100%", 
                         objectFit: objFit, 
                         objectPosition: objPos,
                         padding: imgPad 

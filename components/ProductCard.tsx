@@ -43,7 +43,7 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
 
   return (
     <div className="prod-card" role="group" aria-label={`Product: ${product.name}`}>
-      <div className="prod-media" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "#FFFFFF" }}>
+      <div className="prod-media" style={{ position: "relative", width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "#f5f5f5", display: "flex", alignItems: "center", justifyItems: "center" }}>
               {product.bestSeller && <span className="prod-tag tag">Best Seller</span>}
               <button
                 className={"wishlist" + (isWished ? " active" : "")}
@@ -57,6 +57,7 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
                 className="prod-media-link"
                 href={`/product/${product.slug}`}
                 aria-label={`View ${product.name} details`}
+                style={{ position: "relative", width: "100%", height: "100%", display: "block" }}
               >
                 {displayImage ? (
                   <Image
@@ -65,10 +66,10 @@ export const ProductCard = memo(function ProductCard({ product }: { product: Pro
                     fill
                     loading="lazy"
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    style={{ objectFit: "cover", objectPosition: "50% 45%" }}
+                    style={{ objectFit: "contain", padding: "16px" }}
                   />
                 ) : (
-                  <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Icon name="image" size={32} className="muted" />
                   </div>
                 )}

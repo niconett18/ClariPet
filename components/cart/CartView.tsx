@@ -31,18 +31,18 @@ export function CartView() {
     return (
       <main>
         <PageHead title="Your Cart" />
-        <div className="wrap empty-state">
+        <div className="wrap empty-state" style={{ paddingBottom: '40px' }}>
           <div className="ec">
             <Icon name="cart" size={36} />
           </div>
           <h3 className="h3" style={{ marginBottom: 10 }}>
             Your cart is empty
           </h3>
-          <p className="muted" style={{ marginBottom: 24 }}>
-            Looks like you haven’t added anything yet.
+          <p className="lead" style={{ marginBottom: 24, color: '#5A6072' }}>
+            Looks like you haven&apos;t added anything yet. Let&apos;s fix that!
           </p>
           <PrimaryButton icon="arrowRight" onClick={() => router.push("/shop")}>
-            Shop Now
+            Shop Best Sellers
           </PrimaryButton>
         </div>
       </main>

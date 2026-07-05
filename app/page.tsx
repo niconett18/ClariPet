@@ -17,14 +17,14 @@ const QuizCTA = dynamic(() =>
 );
 
 export const metadata: Metadata = {
-  title: "ClariPet | Premium Pet Care",
+  title: "ClariPet | Premium Pet Care & Grooming Supplies Indonesia",
   description:
-    "Merawat hewan peliharaan seharusnya tidak terasa rumit. ClariPet dirancang untuk membantu Anda merawat mereka dengan lebih mudah, nyaman, dan percaya diri setiap hari.",
+    "ClariPet menyediakan produk perawatan hewan peliharaan premium (anjing & kucing) yang aman dan efektif. Temukan parfum, vitamin, dan shampoo terbaik untuk sahabat bulu Anda.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "ClariPet | Premium Pet Care",
+    title: "ClariPet | Premium Pet Care & Grooming Supplies Indonesia",
     description:
-      "Merawat hewan peliharaan seharusnya tidak terasa rumit. ClariPet dirancang untuk membantu Anda merawat mereka dengan lebih mudah, nyaman, dan percaya diri setiap hari.",
+      "ClariPet menyediakan produk perawatan hewan peliharaan premium (anjing & kucing) yang aman dan efektif. Temukan parfum, vitamin, dan shampoo terbaik untuk sahabat bulu Anda.",
     url: "/",
     type: "website",
   },

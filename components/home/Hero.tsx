@@ -26,10 +26,11 @@ export function Hero() {
             <span aria-hidden="true">🐾</span>
             PREMIUM PET CARE FOR CATS &amp; DOGS
           </span>
-          <h1 className="h-display hero-title">
+          <h1 className="sr-only">ClariPet - Premium Pet Care, Grooming &amp; Health Products</h1>
+          <h2 className="h-display hero-title">
             Helping You<br />
             Help Them.<span className="hero-title-accent">♡</span>
-          </h1>
+          </h2>
           <p className="lead hero-sub hero-mobile-hide">
             Perawatan hewan peliharaan yang lembut dan efektif untuk memudahkan rutinitas grooming, menjaga kesehatan, dan mempererat ikatan setiap hari.
           </p>
@@ -60,8 +61,21 @@ export function Hero() {
           </div>
 
           <div className="hero-trust hero-mobile-hide" aria-label="Trusted by pet parents across Indonesia.">
-            <span aria-hidden="true" role="img" aria-label="5 stars" className="hero-stars">★★★★★</span>
-            <span className="hero-trust-text">Trusted by pet parents across Indonesia.</span>
+            <div className="flex -space-x-2 mr-3">
+              <div className="w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-gray-100 flex items-center justify-center">
+                <span className="text-xs font-semibold text-gray-500">SI</span>
+              </div>
+              <div className="w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-sky/20 flex items-center justify-center">
+                <span className="text-xs font-semibold text-sky-700">MR</span>
+              </div>
+              <div className="w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-pink/20 flex items-center justify-center">
+                <span className="text-xs font-semibold text-pink-700">DW</span>
+              </div>
+            </div>
+            <div>
+              <span aria-hidden="true" role="img" aria-label="5 stars" className="hero-stars block mb-1">★★★★★</span>
+              <span className="hero-trust-text">&quot;Wanginya tahan lama banget!&quot; <span className="opacity-75">— Sarah, JKT</span></span>
+            </div>
           </div>
         </div>
       </div>

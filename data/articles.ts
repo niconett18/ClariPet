@@ -2,6 +2,22 @@ import type { Article } from "@/lib/types";
 
 export const ARTICLES: Article[] = [
   {
+    slug: 'cara-menghilangkan-tear-stain-noda-air-mata-anjing-kucing',
+    title: 'Cara Menghilangkan Noda Air Mata (Tear Stain) pada Anjing & Kucing',
+    category: 'Grooming', readTime: '7 min', tone: 'lavender', featured: true,
+    excerpt: 'Noda kemerahan di bawah mata anjing atau kucing (tear stain) sering mengganggu penampilan. Pelajari penyebab utamanya dan cara aman membersihkannya agar wajah anabul kembali bersih.',
+    body: [
+      'Bagi para pawrent, terutama pemilik anjing ras berbulu putih seperti Poodle, Pomeranian, atau Shih Tzu, noda kemerahan di bawah mata (tear stain) adalah masalah yang sangat umum. Noda ini disebabkan oleh *porfirin*, senyawa alami yang mengandung zat besi yang dikeluarkan melalui air mata, air liur, dan urine.',
+      'Ketika air mata menumpuk di bulu sekitar mata dan mengering, zat besi tersebut teroksidasi dan meninggalkan bekas berwarna merah kecokelatan. Walaupun umumnya tidak berbahaya bagi kesehatan, tear stain yang dibiarkan menumpuk dapat menjadi tempat berkembang biaknya bakteri atau jamur, yang memicu bau tidak sedap dan iritasi kulit.',
+      'Kunci utama untuk mengatasi tear stain adalah rutinitas pembersihan yang lembut dan konsisten setiap hari menggunakan formula yang aman untuk area sekitar mata (Pet Safe Ingredients). Jangan pernah menggunakan pemutih manusia atau bahan kimia keras pada wajah hewan peliharaan Anda.'
+    ],
+    sections: [
+      { h: 'Penyebab Utama Tear Stain', p: 'Produksi air mata berlebih (epifora), penyumbatan saluran air mata, alergi makanan, atau pergantian gigi pada anak anjing. Ras anjing dengan wajah datar (brachycephalic) juga lebih rentan karena bentuk soket mata mereka.' },
+      { h: 'Langkah Membersihkan yang Aman', p: 'Gunakan ClariPet Tear Stain Remover yang diformulasikan tanpa alkohol. Basahi kapas (cotton pad) secukupnya, lalu usapkan dengan sangat lembut pada area bernoda dari sudut mata ke arah bawah. Hindari menggosok terlalu keras.' },
+      { h: 'Pencegahan Sehari-hari', p: 'Jaga kebersihan area mata setiap hari, pastikan bulu di sekitar mata selalu dipotong rapi agar tidak menusuk bola mata, dan berikan air minum yang disaring (filtered water) untuk mengurangi asupan mineral berlebih.' }
+    ],
+  },
+  {
     slug: 'why-does-my-dog-have-bad-breath',
     title: 'Why Does My Dog Have Bad Breath?',
     category: 'Health', readTime: '6 min', tone: 'sky', featured: true,

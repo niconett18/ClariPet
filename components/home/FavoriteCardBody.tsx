@@ -17,6 +17,7 @@ export const FavoriteCardBody = memo(function FavoriteCardBody({ product }: { pr
 
   const handleAddToCart = useCallback(() => {
     if (btnRef.current) flyToCart(btnRef.current);
+    // The cart.add method handles its own toast dispatch internally via CartContext
     cart.add(product.slug, undefined, 1, product);
   }, [cart, flyToCart, product]);
 
