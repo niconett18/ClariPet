@@ -748,7 +748,7 @@ function CheckoutStyles() {
       .product-list { display:grid; gap:14px; }
       .checkout-item { display:grid; grid-template-columns:68px 1fr auto; gap:14px; align-items:center; padding:12px; border:1px solid #e2e8f0; border-radius:10px; min-width: 0; max-width:100%; }
       .checkout-item > * { min-width: 0; }
-      .item-thumb { height:68px; border-radius:8px; overflow:hidden; }
+      .item-thumb { position:relative; height:68px; border-radius:8px; overflow:hidden; }
       .checkout-item div:nth-child(2) { display:flex; flex-direction: column; gap:4px; min-width: 0; }
       .checkout-item strong { white-space: normal; word-break: break-word; overflow-wrap: break-word; line-height: 1.3; }
       .checkout-item span, .checkout-item em { color:#667085; font-size:13px; font-style:normal; }
