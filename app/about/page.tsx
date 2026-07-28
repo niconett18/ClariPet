@@ -1,84 +1,125 @@
-﻿
 import type { Metadata } from "next";
+import Link from "next/link";
 import Image from "next/image";
-import { Placeholder } from "@/components/Placeholder";
+import { Icon } from "@/components/icons";
+import { BannerDecor } from "@/components/BannerDecor";
 
 export const metadata: Metadata = {
   title: "About Us | ClariPet",
-  description: "ClariPet hadir karena kami percaya bahwa merawat hewan peliharaan tidak seharusnya terasa rumit.",
+  description:
+    "Caring for pets is a journey filled with love, challenges, and countless little moments. ClariPet is here to make that journey easier.",
+  alternates: { canonical: "/about" },
 };
+
+const PROMISE = [
+  { icon: "paw", tone: "sky", label: "Pet Safe Formulations" },
+  { icon: "leaf", tone: "sage", label: "Premium Ingredients" },
+  { icon: "pin", tone: "pink", label: "Made in Indonesia" },
+  { icon: "heart", tone: "cream", label: "Crafted With Care" },
+  { icon: "star", tone: "lavender", label: "Helping You Help Them" },
+] as const;
 
 export default function AboutPage() {
   return (
-    <main className="section" style={{ minHeight: "80vh" }}>
-      <div className="wrap">
-        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <div className="center reveal" style={{ marginBottom: 40 }}>
-            <h1 className="h-display">Tentang ClariPet</h1>
-            <p className="lead" style={{ marginTop: 24 }}>
-              Memiliki hewan peliharaan itu menyenangkan. Merawat mereka tidak selalu demikian.
+    <main>
+      {/* ===== Hero: same tinted panel as the other page banners ===== */}
+      <section className="wrap" style={{ paddingTop: 28 }}>
+        <div className="page-banner page-banner-tall">
+          <BannerDecor />
+          <div className="page-banner-copy about-hero-copy">
+            <span className="about-eyebrow">About ClariPet</span>
+            <h1 className="about-hero-title">
+              Helping You Help Them.<span className="about-heart">♡</span>
+            </h1>
+            <p>
+              Caring for pets is a journey filled with love, challenges, and countless little
+              moments.
             </p>
+            <p>
+              We&apos;re here to make that journey easier with gentle, effective products you can
+              trust every day.
+            </p>
+            <Link href="/shop" className="btn btn-primary btn-lg about-hero-cta">
+              Explore ClariPet <Icon name="arrowRight" size={18} />
+            </Link>
           </div>
-
-          <div className="reveal reveal-d1" style={{ marginBottom: 48, borderRadius: 24, overflow: "hidden" }}>
-             <div style={{ position: "relative", width: "100%", aspectRatio: "16/9" }}><Image src="/images/about-hero.png" alt="Team ClariPet with Pets" fill style={{ objectFit: "cover" }} /></div>
+          <div className="page-banner-media" style={{ aspectRatio: "1500 / 1000" }}>
+            <Image
+              src="/images/about-us.jpg"
+              alt="A pet parent holding her dog and cat close on a soft blanket"
+              fill
+              priority
+              sizes="(max-width: 860px) 92vw, 560px"
+              style={{ objectFit: "cover" }}
+            />
           </div>
-
-          <div className="reveal reveal-d2" style={{ display: "flex", flexDirection: "column", gap: 24, fontSize: "1.125rem", lineHeight: 1.8, color: "var(--gray-700)" }}>
-            <p>
-              Di balik momen-momen lucu dan menyenangkan, ada banyak hal yang harus diperhatikan. Mulai dari kebersihan, kesehatan kulit dan bulu, kebersihan mulut, hingga berbagai kebutuhan lain yang menjadi bagian dari rutinitas sehari-hari seorang pet parent.
-            </p>
-            <p>
-              ClariPet hadir karena kami percaya bahwa merawat hewan peliharaan tidak seharusnya terasa rumit. Kami ingin membantu pet parent menjalani rutinitas perawatan sehari-hari dengan lebih mudah melalui produk-produk yang aman, praktis, dan nyaman digunakan.
-            </p>
-            <p>
-              Setiap produk ClariPet dikembangkan dengan tujuan yang sederhana: membantu mengurangi sedikit beban yang datang bersama tanggung jawab sebagai pet parent. Bukan karena kami percaya merawat hewan peliharaan itu sulit, tetapi karena kami tahu bahwa waktu, energi, dan perhatian adalah hal yang berharga.
-            </p>
-            <p>
-              Kami percaya bahwa kesehatan dan kebahagiaan hewan peliharaan dibangun dari hal-hal kecil yang dilakukan secara konsisten setiap hari. Rutinitas sederhana yang membuat mereka lebih bersih, lebih sehat, lebih nyaman, dan pada akhirnya memiliki kualitas hidup yang lebih baik.
-            </p>
-            <p>
-              Pada akhirnya, ClariPet bukan hanya tentang produk hewan peliharaan. ClariPet adalah tentang membantu orang-orang yang mencintai hewan peliharaan mereka dan ingin memberikan yang terbaik untuk mereka.
-            </p>
-            <p style={{ fontWeight: 600, fontSize: "1.5rem", color: "var(--text)", marginTop: 16 }}>
-              Helping You Help Them.
-            </p>
-          </div>
-
-          <div className="reveal reveal-d3" style={{ marginTop: 80, padding: 48, background: "var(--sky)", borderRadius: 32 }}>
-            <h2 className="h2 center" style={{ marginBottom: 40 }}>Janji Kami</h2>
-            <p className="center" style={{ fontSize: "1.125rem", marginBottom: 48, maxWidth: 600, margin: "0 auto 48px auto" }}>
-              Di ClariPet, kami percaya bahwa produk yang baik bukan hanya tentang apa yang ada di dalam botol, tetapi juga tentang bagaimana produk tersebut membantu kehidupan sehari-hari pet parent menjadi lebih mudah.
-            </p>
-            
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 32 }}>
-              <div style={{ background: "white", padding: 32, borderRadius: 24 }}>
-                <h3 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: 12 }}>Aman dan Nyaman Digunakan</h3>
-                <p style={{ color: "var(--gray-600)" }}>Kami mengutamakan formulasi yang lembut dan nyaman digunakan sebagai bagian dari rutinitas perawatan sehari-hari.</p>
-              </div>
-              <div style={{ background: "white", padding: 32, borderRadius: 24 }}>
-                <h3 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: 12 }}>Praktis dan Mudah Dipahami</h3>
-                <p style={{ color: "var(--gray-600)" }}>Kami percaya bahwa perawatan hewan peliharaan tidak perlu dibuat rumit. Produk yang baik harus mudah digunakan dan mudah dimengerti.</p>
-              </div>
-              <div style={{ background: "white", padding: 32, borderRadius: 24 }}>
-                <h3 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: 12 }}>Dibuat untuk Kebutuhan Nyata</h3>
-                <p style={{ color: "var(--gray-600)" }}>Setiap produk ClariPet lahir dari kebutuhan yang benar-benar dihadapi oleh pet parent dalam kehidupan sehari-hari.</p>
-              </div>
-              <div style={{ background: "white", padding: 32, borderRadius: 24 }}>
-                <h3 style={{ fontSize: "1.25rem", fontWeight: 600, marginBottom: 12 }}>Terus Berkembang Menjadi Lebih Baik</h3>
-                <p style={{ color: "var(--gray-600)" }}>Kami selalu belajar, mendengarkan masukan pelanggan, dan terus melakukan perbaikan agar dapat memberikan produk dan pengalaman yang lebih baik.</p>
-              </div>
-            </div>
-
-            <div className="center" style={{ marginTop: 48 }}>
-              <p style={{ fontWeight: 600, fontSize: "1.25rem", color: "var(--text)" }}>Membantu Anda Merawat Mereka</p>
-              <p style={{ color: "var(--gray-700)", marginTop: 8 }}>Di atas segalanya, tujuan kami tetap sama: membantu pet parent memberikan perawatan terbaik bagi hewan peliharaan yang mereka cintai.</p>
-            </div>
-          </div>
-
         </div>
-      </div>
+      </section>
+
+      {/* ===== Story: photo bleeding off the left edge, copy right ===== */}
+      <section className="about-story">
+        <div className="about-story-media">
+          <Image
+            src="/images/about-story.png"
+            alt="A pet parent at home with her dog, part of an ordinary everyday routine"
+            fill
+            sizes="(max-width: 860px) 100vw, 50vw"
+            style={{ objectFit: "cover" }}
+          />
+        </div>
+
+        <div className="about-story-copy">
+          <h2 className="about-story-title">
+            Because Loving Them Is Easy.
+            <br />
+            Caring For Them Isn&apos;t.<span className="about-heart">♡</span>
+          </h2>
+          <p>
+            Anyone who has ever shared their life with a pet knows the feeling. The late-night
+            cleanups. The worry when something doesn&apos;t seem right. The baths they hate. The
+            medications they refuse. The endless search for products that are safe, gentle, and
+            actually work.
+          </p>
+          <p>
+            Being a pet parent is one of life&apos;s greatest joys. But it can also be challenging,
+            overwhelming, and exhausting at times. And that&apos;s okay.
+          </p>
+          <p className="about-accent">
+            At ClariPet, we believe pet care shouldn&apos;t add to the burden. It should help
+            lighten it.
+          </p>
+          <p>Every product we create is designed around a simple question:</p>
+          <p className="about-accent">How can we make caring for pets easier?</p>
+          <p>
+            So you can spend less time worrying, and more time enjoying life with the pets you
+            love.
+          </p>
+          <p className="about-script">Helping You Help Them. ♡</p>
+          <p>
+            Because behind every happy pet is someone doing their very best. And we&apos;re here to
+            support them, every step of the way.
+          </p>
+        </div>
+      </section>
+
+      {/* ===== Our Promise ===== */}
+      <section className="wrap section-sm" style={{ paddingBottom: 72 }}>
+        <div className="about-promise">
+          <h2 className="about-promise-title">
+            Our Promise<span className="about-heart">♡</span>
+          </h2>
+          <ul className="about-promise-grid">
+            {PROMISE.map((p) => (
+              <li className="about-promise-item" key={p.label}>
+                <span className={`about-promise-ic tone-${p.tone}`}>
+                  <Icon name={p.icon} size={26} />
+                </span>
+                <span className="about-promise-label">{p.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
     </main>
   );
 }
-

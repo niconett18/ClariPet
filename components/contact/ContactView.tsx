@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
-import { PageHead } from "@/components/PageHead";
+import { BannerDecor } from "@/components/BannerDecor";
 
 const WHATSAPP = "62881080963188";
 const WHATSAPP_DISPLAY = "0881.0809.63188";
@@ -27,10 +28,25 @@ export function ContactView() {
 
   return (
     <main>
-      <PageHead
-        title="Let's Talk."
-        subtitle="Whether you have questions about our products, your order, or simply need help finding the right solution for your pet — we're here to help."
-      />
+      <section className="wrap" style={{ paddingTop: 28 }}>
+        <div className="page-banner">
+          <BannerDecor />
+          <div className="page-banner-copy">
+            <h1 className="h1" style={{ marginBottom: 0 }}>Let&apos;s Talk.</h1>
+            <p className="lead">Whether you have questions about our products, your order, or simply need help finding the right solution for your pet — we&apos;re here to help.</p>
+          </div>
+          <div className="page-banner-media" style={{ aspectRatio: "1500 / 867" }}>
+            <Image
+              src="/images/contact-hero.jpg"
+              alt="A pet parent sitting on the floor with his cat, messaging ClariPet support"
+              fill
+              priority
+              sizes="(max-width: 860px) 92vw, 560px"
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+        </div>
+      </section>
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
@@ -110,6 +126,16 @@ export function ContactView() {
               <p className="muted">
                 Fill out the form and our team will get back to you as soon as possible.
               </p>
+              <div className="contact-form-media">
+                <Image
+                  src="/images/contact-message-us.png"
+                  alt="A rabbit dozing against a laptop, waiting on a reply"
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 860px) 100vw, 380px"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
             </div>
             <form
               className="contact-form"

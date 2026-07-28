@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
-import { PageHead } from "@/components/PageHead";
+import Image from "next/image";
+import { BannerDecor } from "@/components/BannerDecor";
 import { FAQS } from "@/data/faqs";
 
 const WHATSAPP = "6281234567890";
@@ -13,10 +14,25 @@ export function FaqView() {
 
   return (
     <main>
-      <PageHead
-        title="Curious About ClariPet?"
-        subtitle="Everything you need to know — what we do, and how we're helping you help them."
-      />
+      <section className="wrap" style={{ paddingTop: 28 }}>
+        <div className="page-banner">
+          <BannerDecor />
+          <div className="page-banner-copy">
+            <h1 className="h1" style={{ marginBottom: 0 }}>Curious About ClariPet?</h1>
+            <p className="lead">Everything you need to know — what we do, and how we&apos;re helping you help them.</p>
+          </div>
+          <div className="page-banner-media" style={{ aspectRatio: "1500 / 962" }}>
+            <Image
+              src="/images/faq-hero.jpg"
+              alt="A curious dog nosing into an open ClariPet Care box"
+              fill
+              priority
+              sizes="(max-width: 860px) 92vw, 560px"
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+        </div>
+      </section>
 
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">

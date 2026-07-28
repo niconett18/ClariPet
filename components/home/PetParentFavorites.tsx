@@ -1,16 +1,22 @@
 ﻿import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@/components/icons";
-import { BEST_SELLERS } from "@/data/products";
+import { getProduct } from "@/data/products";
 import dynamic from "next/dynamic";
 
 const FavoriteCardBody = dynamic(() => import("./FavoriteCardBody").then(m => m.FavoriteCardBody));
 
-const FAVORITE_TAGS = [
-  "Most Loved",
-  "Visible Results",
-  "Customer Favorite",
-  "Everyday Essential",
+/**
+ * Each card's media is the designed artwork from the mockup — a styled product
+ * shot with the award badge already drawn in — so the pairing is fixed to the
+ * product the artwork actually depicts, and no badge is rendered in code.
+ * `bg` matches the artwork's own margin so the card blends into it seamlessly.
+ */
+const FAVORITES = [
+  { slug: "claripet-baby-powder", img: "/images/features/favorite-most-loved.png", alt: "Most Loved", bg: "#f6f4f9" },
+  { slug: "claripet-gentle-wash-shampoo", img: "/images/features/favorite-visible-results.png", alt: "Visible Results", bg: "#f6f6f6" },
+  { slug: "claripet-tear-stain-remover", img: "/images/features/favorite-customer-favorite.png", alt: "Customer Favorite", bg: "#f7f6f6" },
+  { slug: "claripet-breath", img: "/images/features/favorite-everyday-essential.png", alt: "Everyday Essential", bg: "#f5f5f5" },
 ];
 
 export function PetParentFavorites() {
@@ -28,73 +34,35 @@ export function PetParentFavorites() {
         </div>
 
         <div className="favorites-grid">
-          {FAVORITE_TAGS.map((tag, i) => {
-            const p = BEST_SELLERS[i];
+          {FAVORITES.map((fav, i) => {
+            const p = getProduct(fav.slug);
             if (!p) return null;
-            
-            // Determine custom styling per product
-            let bg = "#fff";
-            let imgSrc = p.images?.[0]?.url;
-            let objFit = "cover" as any;
-            let objPos = "50% 45%";
-            let imgPad = "0";
-
-            if (p.slug === "claripet-botanica-bloom") {
-              bg = "#fbf6f6";
-              imgSrc = "/images/products/botanica-bloom-1.png";
-              objFit = "cover";
-              objPos = "50% 45%";
-              imgPad = "0";
-            } else if (p.slug === "claripet-breath") {
-              bg = "#e5f1ec";
-              imgSrc = "/images/products/breath-1.png";
-              objFit = "cover";
-              objPos = "50% 45%";
-              imgPad = "0";
-            } else if (p.slug === "claripet-tear-stain-remover") {
-              bg = "#FBF0E0";
-              imgSrc = "/images/products/tear-stain-1.png";
-              objFit = "cover";
-              objPos = "50% 45%";
-              imgPad = "0";
-            } else if (p.slug === "claripet-vitabulu-beauty-shampoo") {
-              bg = "#FDE8E8";
-              imgSrc = "/images/products/vitabulu-beauty-shampoo-1.png";
-              objFit = "cover";
-              objPos = "50% 45%";
-              imgPad = "0";
-            }
 
             return (
-              <div key={p.slug} className={`prod-card reveal reveal-d${Math.min(i + 1, 5)}`} style={{ backgroundColor: bg, height: "100%" }}>
-                <Link href={`/product/${p.slug}`} className="prod-media" style={{ display: "block", aspectRatio: "1/1", position: "relative", backgroundColor: "transparent" }}>
-                  <span className="prod-tag tag" style={{ 
-                    position: "absolute", 
-                    top: 14, 
-                    left: 14, 
-                    zIndex: 2, 
-                    background: "#FCE7C8", 
-                    color: "#8B6B42", 
-                    padding: "4px 10px", 
-                    borderRadius: 99, 
-                    fontSize: 12, 
-                    fontWeight: 600 
-                  }}>
-                    {tag}
-                  </span>
-                  {imgSrc && (
-                    <Image 
-                      src={imgSrc} 
-                      alt={p.name} 
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      style={{ 
-                        objectFit: objFit, 
-                        objectPosition: objPos,
-                        padding: imgPad 
-                      }} 
-                    />
-                  )}
+              <div
+                key={p.slug}
+                className={`prod-card reveal reveal-d${Math.min(i + 1, 5)}`}
+                style={{ backgroundColor: fav.bg, height: "100%" }}
+              >
+                <Link
+                  href={`/product/${p.slug}`}
+                  className="prod-media"
+                  style={{
+                    display: "block",
+                    // Matches the artwork's own ratio, so the badge is never
+                    // cropped off the top by object-fit.
+                    aspectRatio: "972 / 1133",
+                    position: "relative",
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <Image
+                    src={fav.img}
+                    alt={`${p.name} — ${fav.alt}`}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    style={{ objectFit: "cover" }}
+                  />
                 </Link>
                 <FavoriteCardBody product={p} />
               </div>

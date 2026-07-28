@@ -163,9 +163,13 @@ export function Hero() {
             height: 100%;
             transform: none !important;
           }
+          /* Fill the viewport rather than letterboxing: a landscape photo
+             contained in a portrait hero leaves ~300px of dead white between
+             the image and the headline. The ::after fade below keeps the
+             copy legible over the cropped photo. */
           .hero-img {
-            object-fit: contain !important;
-            object-position: top center !important;
+            object-fit: cover !important;
+            object-position: center !important;
             -webkit-mask-image: none !important;
             mask-image: none !important;
           }
@@ -184,7 +188,9 @@ export function Hero() {
             left: 0; right: 0; bottom: 0;
             z-index: 2;
             max-width: none;
-            padding: 0 24px max(28px, env(safe-area-inset-bottom));
+            /* Clear the fixed .bottom-nav (61px), which otherwise covers the
+               lower third of the Shop Products button. */
+            padding: 0 24px calc(72px + env(safe-area-inset-bottom));
             padding-top: 40px;
           }
           .hero-mobile-hide { display: none !important; }

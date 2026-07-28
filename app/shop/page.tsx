@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { getAllProducts, getAllCategories, getBestSellers } from "@/lib/data";
-import { PageHead } from "@/components/PageHead";
 import { ProductCard } from "@/components/ProductCard";
 import { CategoryCard } from "@/components/CategoryCard";
+import { BannerDecor } from "@/components/BannerDecor";
 import { Icon } from "@/components/icons";
 import { ShopCategoryPills } from "@/components/shop/ShopCategoryPills";
+import { AllProductsBrowser } from "@/components/shop/AllProductsBrowser";
 
 export const metadata: Metadata = {
   title: "Shop ClariPet",
@@ -40,10 +42,28 @@ export default async function ShopPage() {
   return (
     <main>
       <ShopCategoryPills />
-      <PageHead
-        title="Shop ClariPet"
-        subtitle="Everything your pet needs for grooming, wellness, hygiene and everyday care."
-      />
+
+      <section className="wrap shop-hero-section">
+        <div className="shop-hero-banner">
+          <div className="shop-hero-copy">
+            <h1 className="h1" style={{ marginBottom: 12 }}>Shop ClariPet</h1>
+            <p className="lead">
+              Everything your pet needs for grooming, wellness, hygiene and everyday care.
+            </p>
+          </div>
+          <BannerDecor />
+          <div className="shop-hero-art">
+            <Image
+              src="/images/shop-hero.png"
+              alt="A puppy and a kitten playing among ClariPet gift boxes"
+              fill
+              priority
+              sizes="(max-width: 860px) 92vw, 660px"
+              style={{ objectFit: "contain", objectPosition: "center bottom" }}
+            />
+          </div>
+        </div>
+      </section>
 
       {/* Mobile: Hot & Trending first (horizontal carousel of best sellers) */}
       <section className="shop-mobile-featured wrap section-sm" style={{ paddingTop: 0 }}>
@@ -66,7 +86,7 @@ export default async function ShopPage() {
       </section>
 
       {/* Desktop: Categories first (original order) */}
-      <section className="wrap section-sm shop-desktop-categories" style={{ paddingTop: 0 }}>
+      <section className="wrap shop-cat-wide section-sm shop-desktop-categories" style={{ paddingTop: 0 }}>
         <div className="sec-head">
           <div>
             <div className="eyebrow" style={{ marginBottom: 10 }}>
@@ -75,7 +95,7 @@ export default async function ShopPage() {
             <h2 className="h2">Shop by Category</h2>
           </div>
         </div>
-        <div className="cat-grid">
+        <div className="cat-grid cat-grid-row">
           {categories.map((c) => (
             <CategoryCard key={c.slug} cat={c} />
           ))}
@@ -100,27 +120,12 @@ export default async function ShopPage() {
       </section>
 
       <section id="all-products" className="wrap section-sm" style={{ paddingTop: 0, scrollMarginTop: '90px' }}>
-        <div className="sec-head">
-          <div>
-            <div className="eyebrow" style={{ marginBottom: 10 }}>
-              Everything in one place
-            </div>
-            <h2 className="h2">All Products</h2>
-          </div>
-          <span className="muted" style={{ fontSize: 14 }}>
-            {products.length} products
-          </span>
-        </div>
-        <div className="prod-grid prod-grid-vertical">
-          {featured.map((p) => (
-            <ProductCard key={p.slug} product={p} />
-          ))}
-        </div>
+        <AllProductsBrowser products={featured} categories={categories} />
       </section>
 
       <section className="wrap section-sm" style={{ paddingTop: 0 }}>
         <div className="shop-banner">
-          <div>
+          <div className="shop-banner-copy">
             <h2 className="h2" style={{ marginBottom: 10 }}>
               Helping You Help Them.
             </h2>
@@ -131,6 +136,18 @@ export default async function ShopPage() {
             <Link href="/quiz" className="btn btn-primary btn-lg">
               <Icon name="sparkle" size={18} /> Find My Product
             </Link>
+          </div>
+          <BannerDecor />
+
+          {/* Cut-out artwork bleeding across the panel — no frame. */}
+          <div className="shop-banner-art" aria-hidden="true">
+            <Image
+              src="/images/shop-cta-banner.png"
+              alt=""
+              fill
+              loading="lazy"
+              sizes="(max-width: 860px) 100vw, 1200px"
+            />
           </div>
         </div>
       </section>
