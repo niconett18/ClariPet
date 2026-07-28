@@ -11,7 +11,22 @@ import { PRODUCTS, getProduct as getStaticProduct, getProductsByCategory as getS
 import { CATEGORIES, getCategory as getStaticCategory } from "@/data/categories";
 import { ARTICLES, getArticle as getStaticArticle, FEATURED_ARTICLE } from "@/data/articles";
 import { mapDBProductToProduct } from "@/lib/data/mapProduct";
+import { CATEGORY_CARD_IMAGES } from "@/lib/categoryArt";
 import type { Product, Category, Article } from "@/lib/types";
+
+/**
+ * The DB rows carry no merchandising facets (petType / concern) and sometimes
+ * no images, so patch those from the static catalogue by slug. Without this the
+ * shop filter renders empty Pet Type and Concern groups.
+ */
+function hydrateFromStatic(p: Product): Product {
+  const fallback = getStaticProduct(p.slug);
+  if (!fallback) return p;
+  if (!p.images?.length && fallback.images) p.images = fallback.images;
+  if (!p.petType?.length && fallback.petType) p.petType = fallback.petType;
+  if (!p.concern?.length && fallback.concern) p.concern = fallback.concern;
+  return p;
+}
 
 const USE_DATABASE = Boolean(
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
@@ -31,16 +46,12 @@ export async function getAllProducts(): Promise<Product[]> {
       .neq("status", "archived")
       .order("best_seller", { ascending: false });
 
-    if (error || !data) return PRODUCTS;
+    // Empty counts as "not populated", same as an error: the DB catalogue is
+    // currently a partial subset of data/products.ts, and silently serving an
+    // empty list makes whole collections disappear from the storefront.
+    if (error || !data?.length) return PRODUCTS;
 
-    return data.map((db) => {
-      const p = mapDBProductToProduct(db);
-      if (!p.images?.length) {
-        const fallback = getStaticProduct(p.slug);
-        if (fallback?.images) p.images = fallback.images;
-      }
-      return p;
-    });
+    return data.map((db) => hydrateFromStatic(mapDBProductToProduct(db)));
   } catch {
     return PRODUCTS;
   }
@@ -60,12 +71,7 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
 
     if (error || !data) return getStaticProduct(slug);
 
-    const product = mapDBProductToProduct(data);
-    if (!product.images?.length) {
-      const fallback = getStaticProduct(slug);
-      if (fallback?.images) product.images = fallback.images;
-    }
-    return product;
+    return hydrateFromStatic(mapDBProductToProduct(data));
   } catch {
     return getStaticProduct(slug);
   }
@@ -86,16 +92,9 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
       .neq("status", "archived")
       .order("best_seller", { ascending: false });
 
-    if (error || !data) return getStaticProductsByCategory(categorySlug);
+    if (error || !data?.length) return getStaticProductsByCategory(categorySlug);
 
-    return data.map((db) => {
-      const p = mapDBProductToProduct(db);
-      if (!p.images?.length) {
-        const fallback = getStaticProduct(p.slug);
-        if (fallback?.images) p.images = fallback.images;
-      }
-      return p;
-    });
+    return data.map((db) => hydrateFromStatic(mapDBProductToProduct(db)));
   } catch {
     return getStaticProductsByCategory(categorySlug);
   }
@@ -113,16 +112,9 @@ export async function getBestSellers(): Promise<Product[]> {
       .eq("best_seller", true)
       .order("reviews_count", { ascending: false });
 
-    if (error || !data) return PRODUCTS.filter((p) => p.bestSeller);
+    if (error || !data?.length) return PRODUCTS.filter((p) => p.bestSeller);
 
-    return data.map((db) => {
-      const p = mapDBProductToProduct(db);
-      if (!p.images?.length) {
-        const fallback = getStaticProduct(p.slug);
-        if (fallback?.images) p.images = fallback.images;
-      }
-      return p;
-    });
+    return data.map((db) => hydrateFromStatic(mapDBProductToProduct(db)));
   } catch {
     return PRODUCTS.filter((p) => p.bestSeller);
   }
@@ -224,16 +216,6 @@ interface DBCategoryRow {
   image?: string | null;
 }
 
-// Static category images — these are baked into public/ and not stored in the DB
-const CATEGORY_IMAGES: Record<string, string> = {
-  perfumes: "/assets/images/categories/Perfume Card.png",
-  "hygiene-grooming": "/assets/images/categories/Hygiene & Grooming Card.png",
-  "skin-care": "/assets/images/categories/Skin Care Card.png",
-  "fur-care-supplements": "/assets/images/categories/Fur Care & Supplements Card.png",
-  "behavior-training": "/assets/images/categories/Behavior & Training Card.png",
-  "home-environment-care": "/assets/images/categories/Home & Environment Card.png",
-};
-
 function mapDBCategoryToCategory(db: DBCategoryRow): Category {
   return {
     slug: db.slug,
@@ -241,7 +223,7 @@ function mapDBCategoryToCategory(db: DBCategoryRow): Category {
     tone: db.tone ?? "sky",
     icon: db.icon ?? "sparkle",
     blurb: db.blurb ?? "",
-    image: db.image || CATEGORY_IMAGES[db.slug],
+    image: db.image || CATEGORY_CARD_IMAGES[db.slug],
   };
 }
 
@@ -268,5 +250,8 @@ function mapDBArticleToArticle(db: DBArticleRow): Article {
     excerpt: db.excerpt ?? "",
     body: db.body ?? [],
     sections: db.sections ?? [],
+    // Article photos are static assets, not a DB column — carry them over from
+    // the seed so DB-backed articles aren't left with a blank thumbnail.
+    image: ARTICLES.find((a) => a.slug === db.slug)?.image,
   };
 }

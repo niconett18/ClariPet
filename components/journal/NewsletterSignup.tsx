@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
-import { Placeholder } from "@/components/Placeholder";
 
 export function NewsletterSignup() {
   const [email, setEmail] = useState("");
@@ -82,16 +82,23 @@ export function NewsletterSignup() {
             )}
           </div>
 
-          {/* Right: placeholder image */}
+          {/* Right: accompanying photo */}
           <div className="relative">
             <div
-              className="rounded-2xl overflow-hidden flex items-center justify-center"
+              className="relative rounded-2xl overflow-hidden"
               style={{
                 aspectRatio: "4 / 3",
                 background: "linear-gradient(135deg, #EAF2FB, #F5EEF8)",
               }}
             >
-              <Placeholder tone="lavender" paw={false} label="Pets" />
+              <Image
+                src="/images/journal/perfume.png"
+                alt="Two dogs curled up together"
+                fill
+                loading="lazy"
+                sizes="(max-width: 768px) 90vw, 45vw"
+                style={{ objectFit: "cover" }}
+              />
             </div>
           </div>
         </div>

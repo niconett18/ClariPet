@@ -2,9 +2,11 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { Article } from "@/lib/types";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
+import { BannerDecor } from "@/components/BannerDecor";
 import { ArticleCard } from "@/components/journal/ArticleCard";
 import { NewsletterSignup } from "@/components/journal/NewsletterSignup";
 
@@ -49,16 +51,6 @@ function styleForCategory(cat: string, index: number) {
     iconColor: "text-navy",
   };
 }
-
-/* ---------------------------------------------------------------------------
- *  Hero decorative doodles (subtle, desktop only)
- * ------------------------------------------------------------------------- */
-
-const HERO_DECOR = [
-  { icon: "paw", size: 28, style: { top: "14%", left: "8%" } as const },
-  { icon: "heart", size: 22, style: { bottom: "16%", left: "20%" } as const },
-  { icon: "paw", size: 24, style: { top: "20%", right: "40%", opacity: 0.5 } as const },
-];
 
 export function JournalView({
   articles,
@@ -107,66 +99,29 @@ export function JournalView({
   return (
     <main>
       {/* ===== Hero banner ===== */}
-      <section className="wrap" style={{ paddingTop: 32 }}>
-        <div
-          className="rounded-3xl overflow-hidden relative"
-          style={{
-            background:
-              "linear-gradient(135deg, #dce8f5 0%, #EAF2FB 55%, #f0f6ff 100%)",
-          }}
-        >
-          {/* Decorative outline icons */}
-          {HERO_DECOR.map((d, i) => (
-            <span
-              key={i}
-              className="hidden md:block absolute text-navy/15 pointer-events-none"
-              style={d.style}
-              aria-hidden="true"
-            >
-              <Icon name={d.icon} size={d.size} strokeWidth={1.5} />
-            </span>
-          ))}
-
-          <div className="p-8 md:p-12 lg:p-16">
-            <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-              {/* Left: copy */}
-              <div className="space-y-4">
-                <h1
-                  className="text-navy font-bold leading-tight flex items-center gap-2"
-                  style={{ fontSize: "clamp(1.75rem, 4vw, 2.5rem)" }}
-                >
-                  Pet Care Journal
-                  <Icon
-                    name="heart"
-                    size={22}
-                    className="text-pink -mt-1 align-middle"
-                    strokeWidth={2}
-                  />
-                </h1>
-                <p
-                  className="text-[#5A6072] leading-relaxed max-w-md"
-                  style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)" }}
-                >
-                  Tips, guides, and insights for happier, healthier pets.
-                </p>
-              </div>
-
-              {/* Right: placeholder image */}
-              <div className="relative">
-                <div
-                  className="rounded-2xl overflow-hidden flex items-center justify-center"
-                  style={{
-                    aspectRatio: "5 / 3",
-                    background: "linear-gradient(135deg, #dce8f5, #f0f6ff)",
-                  }}
-                >
-                  <Placeholder tone="sky" paw={false} label="Pets with book" />
-                </div>
-              </div>
-            </div>
+      <section className="wrap" style={{ paddingTop: 28 }}>
+        <div className="page-banner">
+          <BannerDecor />
+          <div className="page-banner-copy">
+            <h1 className="h1" style={{ marginBottom: 0 }}>
+              Pet Care Journal
+              <Icon name="heart" size={22} className="inline-block ml-2 text-pink align-middle" strokeWidth={2} />
+            </h1>
+            <p className="lead">Tips, guides, and insights for happier, healthier pets.</p>
+          </div>
+          <div className="page-banner-media" style={{ aspectRatio: "1800 / 600" }}>
+            <Image
+              src="/images/journal-hero.jpg"
+              alt="A puppy and a cat dozing over an open pet care journal"
+              fill
+              priority
+              sizes="(max-width: 860px) 92vw, 560px"
+              style={{ objectFit: "cover" }}
+            />
           </div>
         </div>
       </section>
+
 
       {/* ===== Category filter strip — overlaps hero bottom ===== */}
       <section className="wrap" style={{ paddingTop: 0 }}>
@@ -233,13 +188,25 @@ export function JournalView({
                 className="block bg-mist overflow-hidden"
                 aria-label={featured.title}
               >
-                <Placeholder
-                  tone={featured.tone}
-                  paw={false}
-                  label={featured.title}
-                  className="!w-full !h-full"
-                  style={{ aspectRatio: "4 / 3", height: "auto" }}
-                />
+                {featured.image ? (
+                  <span className="relative block h-full" style={{ aspectRatio: "4 / 3" }}>
+                    <Image
+                      src={featured.image}
+                      alt=""
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </span>
+                ) : (
+                  <Placeholder
+                    tone={featured.tone}
+                    paw={false}
+                    label={featured.title}
+                    className="!w-full !h-full"
+                    style={{ aspectRatio: "4 / 3", height: "auto" }}
+                  />
+                )}
               </Link>
               {/* Content */}
               <div className="p-8 md:p-10 flex flex-col justify-center gap-4">

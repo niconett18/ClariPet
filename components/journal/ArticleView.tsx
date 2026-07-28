@@ -2,6 +2,7 @@
 
 import { Fragment } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import type { Article } from "@/lib/types";
 import { Placeholder } from "@/components/Placeholder";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -28,8 +29,19 @@ export function ArticleView({
           <span>{article.readTime} read</span>
         </div>
         <h1 className="h1">{article.title}</h1>
-        <div className="hero-img">
-          <Placeholder tone={article.tone} label={article.title} />
+        <div className="hero-img" style={{ position: "relative", aspectRatio: "16 / 9", overflow: "hidden" }}>
+          {article.image ? (
+            <Image
+              src={article.image}
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 860px) 100vw, 800px"
+              style={{ objectFit: "cover" }}
+            />
+          ) : (
+            <Placeholder tone={article.tone} label={article.title} />
+          )}
         </div>
         {article.body.map((p, i) => (
           <p key={i}>{p}</p>

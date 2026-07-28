@@ -15,7 +15,7 @@ export function ShopByCategory() {
             View All Products <Icon name="arrowRight" size={17} />
           </Link>
         </div>
-        <div className="cat-grid cat-scroll-mobile">
+        <div className="cat-grid cat-grid-row cat-scroll-mobile">
           {CATEGORIES.map((c, i) => (
             <div key={c.slug} className={`reveal reveal-d${Math.min(i + 1, 5)}`}>
               <CategoryCard cat={c} />

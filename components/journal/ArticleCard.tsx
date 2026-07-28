@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 import type { Article, Tone } from "@/lib/types";
@@ -28,13 +29,25 @@ export function ArticleCard({
         className="block rounded-xl overflow-hidden mb-3 bg-mist transition-transform duration-300 group-hover:-translate-y-1"
         aria-label={article.title}
       >
-        <Placeholder
-          tone={article.tone}
-          paw={false}
-          label=""
-          className="!w-full"
-          style={{ aspectRatio: "4 / 3", height: "auto" }}
-        />
+        {article.image ? (
+          <span className="relative block" style={{ aspectRatio: "4 / 3" }}>
+            <Image
+              src={article.image}
+              alt=""
+              fill
+              sizes="(max-width: 768px) 90vw, 320px"
+              style={{ objectFit: "cover" }}
+            />
+          </span>
+        ) : (
+          <Placeholder
+            tone={article.tone}
+            paw={false}
+            label=""
+            className="!w-full"
+            style={{ aspectRatio: "4 / 3", height: "auto" }}
+          />
+        )}
       </Link>
 
       <span

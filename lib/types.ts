@@ -51,6 +51,8 @@ export interface Article {
   excerpt: string;
   body: string[];
   sections: ArticleSection[];
+  /** Thumbnail/hero photo. Empty → illustrated tone placeholder. */
+  image?: string;
 }
 
 export interface CartItem {

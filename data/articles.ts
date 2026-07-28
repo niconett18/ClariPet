@@ -3,6 +3,7 @@ import type { Article } from "@/lib/types";
 export const ARTICLES: Article[] = [
   {
     slug: 'cara-menghilangkan-tear-stain-noda-air-mata-anjing-kucing',
+    image: '/images/journal/tear-stain.png',
     title: 'Cara Menghilangkan Noda Air Mata (Tear Stain) pada Anjing & Kucing',
     category: 'Grooming', readTime: '7 min', tone: 'lavender', featured: true,
     excerpt: 'Noda kemerahan di bawah mata anjing atau kucing (tear stain) sering mengganggu penampilan. Pelajari penyebab utamanya dan cara aman membersihkannya agar wajah anabul kembali bersih.',
@@ -19,6 +20,7 @@ export const ARTICLES: Article[] = [
   },
   {
     slug: 'why-does-my-dog-have-bad-breath',
+    image: '/images/journal/oral.png',
     title: 'Why Does My Dog Have Bad Breath?',
     category: 'Health', readTime: '6 min', tone: 'sky', featured: true,
     excerpt: 'Bad breath is more than an unpleasant smell \u2014 it\u2019s often the first sign of a dental issue. Here\u2019s what causes it and how to keep your dog\u2019s mouth fresh and healthy.',
@@ -35,6 +37,7 @@ export const ARTICLES: Article[] = [
   },
   {
     slug: 'how-to-remove-tear-stains',
+    image: '/images/journal/tear-stain.png',
     title: 'How to Remove Tear Stains from Dogs and Cats',
     category: 'Care Tips', readTime: '5 min', tone: 'lavender', featured: false,
     excerpt: 'Those reddish-brown marks below the eyes are common in light-coated breeds. Learn what causes them and the gentle way to keep faces clean and bright.',
@@ -49,6 +52,7 @@ export const ARTICLES: Article[] = [
   },
   {
     slug: 'how-often-bathe-dog-cat',
+    image: '/images/journal/grooming.png',
     title: 'How Often Should You Bathe Your Dog or Cat?',
     category: 'Grooming', readTime: '4 min', tone: 'sage', featured: false,
     excerpt: 'Over-bathing can strip natural oils, while under-bathing leaves coats dull. Here\u2019s how to find the right rhythm for your pet.',
@@ -63,6 +67,7 @@ export const ARTICLES: Article[] = [
   },
   {
     slug: 'understanding-skin-and-coat-health',
+    image: '/images/journal/skin.png',
     title: 'Understanding Your Pet\u2019s Skin and Coat Health',
     category: 'Health', readTime: '6 min', tone: 'pink', featured: false,
     excerpt: 'A shiny coat starts with healthy skin. Discover the everyday factors that influence your pet\u2019s skin and how to support it from the outside in.',
@@ -77,6 +82,7 @@ export const ARTICLES: Article[] = [
   },
   {
     slug: 'natural-ingredients-that-matter',
+    image: '/images/journal/beauty.png',
     title: 'Natural Ingredients That Actually Matter',
     category: 'Ingredients', readTime: '5 min', tone: 'cream', featured: false,
     excerpt: '\u201cNatural\u201d is everywhere on pet labels \u2014 but which ingredients earn their place? A look at the gentle, effective ones we love.',
@@ -91,6 +97,7 @@ export const ARTICLES: Article[] = [
   },
   {
     slug: 'making-grooming-stress-free',
+    image: '/images/journal/perfume.png',
     title: 'Making Grooming a Stress-Free Ritual',
     category: 'Lifestyle', readTime: '4 min', tone: 'sky', featured: false,
     excerpt: 'Grooming doesn\u2019t have to be a battle. Small changes can turn it into a calm, bonding part of your day.',

@@ -3,9 +3,12 @@
 import { useMemo, useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import type { Product, Category } from "@/lib/types";
+import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { Placeholder } from "@/components/Placeholder";
 import { ProductCard } from "@/components/ProductCard";
+import { BannerDecor } from "@/components/BannerDecor";
+import { getCategoryBanner } from "@/lib/categoryArt";
 
 type SortKey = "featured" | "price-low" | "price-high" | "rating";
 
@@ -84,6 +87,8 @@ export function CollectionView({
   const activeCount =
     prices.length + petTypes.length + concerns.length + (minRating !== null ? 1 : 0) + (bestOnly ? 1 : 0);
 
+  const banner = getCategoryBanner(category.slug, category.image);
+
   return (
     <main>
       <div className="wrap">
@@ -97,15 +102,44 @@ export function CollectionView({
       </div>
 
       <section className="wrap">
-        <div className={"collection-banner " + category.tone} style={{ background: `var(--${category.tone}-50)` }}>
+        <div
+          className={
+            "collection-banner " + category.tone + (banner?.fullBleed ? " has-art" : "")
+          }
+          style={{ background: `var(--${category.tone}-50)` }}
+        >
           <div className="collection-banner-copy">
             <div className="eyebrow" style={{ marginBottom: 12 }}>Collection</div>
             <h1 className="h1" style={{ marginBottom: 12 }}>{category.name}</h1>
             <p className="lead">{category.blurb}</p>
           </div>
-          <div className="collection-banner-media">
-            <Placeholder tone={category.tone} label={category.name} />
-          </div>
+
+          <BannerDecor />
+
+          {banner?.fullBleed ? (
+            // Transparent artwork bleeding across the banner — no frame, the
+            // empty left half of the source is what clears the copy.
+            <div className="collection-banner-art" aria-hidden="true">
+              {/* fit/position live in CSS, not inline, so the mobile breakpoint
+                  can crop to the animals instead of showing the empty half. */}
+              <Image src={banner.src} alt="" fill priority sizes="(max-width: 768px) 100vw, 1200px" />
+            </div>
+          ) : (
+            <div className="collection-banner-media is-contain">
+              {banner ? (
+                <Image
+                  src={banner.src}
+                  alt={`${category.name} products for cats and dogs`}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 60vw, 40vw"
+                  style={{ objectFit: "contain" }}
+                />
+              ) : (
+                <Placeholder tone={category.tone} label={category.name} />
+              )}
+            </div>
+          )}
         </div>
       </section>
 

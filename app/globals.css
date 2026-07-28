@@ -1286,22 +1286,146 @@ select:focus-visible {
 /* ===========================================================
    ABOUT
    =========================================================== */
-.about-hero {
+/* ---------- About: hero copy (inside the shared .page-banner) ---------- */
+.about-hero-copy p {
+  color: var(--text-soft);
+  line-height: 1.75;
+  margin: 0 auto 14px;
+  max-width: 52ch;
+}
+.about-eyebrow {
+  display: inline-block;
+  background: #fff;
+  color: #2c7cb8;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+.about-hero-title {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  margin-bottom: 18px;
+}
+.about-heart { color: #8eb6dc; margin-left: 10px; }
+.about-hero-cta { margin-top: 18px; }
+
+/* ---------- About: story (photo bleeds off the left viewport edge) ---------- */
+.about-story {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
-  padding: 40px 0 64px;
+  gap: 56px;
+  margin: 72px 0;
+  padding-right: 24px;
 }
-.about-hero .story p { color: var(--text-soft); margin-bottom: 18px; line-height: 1.8; }
-.about-media { aspect-ratio: 1/1; border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--shadow-lg); }
-.promise {
-  background: var(--sage-50);
+.about-story-media {
+  position: relative;
+  height: clamp(320px, 38vw, 520px);
+  border-radius: 0 var(--r-xl) var(--r-xl) 0;
+  overflow: hidden;
+}
+.about-story-copy { max-width: 620px; }
+.about-story-title {
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--navy);
+  margin-bottom: 20px;
+}
+.about-story-copy p {
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin-bottom: 14px;
+}
+.about-story-copy .about-accent { color: #2f7fc4; font-weight: 600; }
+.about-story-copy .about-script {
+  font-family: var(--font-caveat), cursive;
+  font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+  color: #2f7fc4;
+  line-height: 1.3;
+  margin: 22px 0 14px;
+}
+
+/* ---------- About: our promise ---------- */
+.about-promise {
+  background: #fff;
+  border: 1px solid var(--line-soft);
   border-radius: var(--r-xl);
-  padding: 56px 44px;
-  border: 1px solid #dde9de;
+  box-shadow: var(--shadow-sm);
+  padding: 40px 28px;
 }
-.promise-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 28px; margin-top: 40px; }
+.about-promise-title {
+  text-align: center;
+  font-family: var(--font-caveat), cursive;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  color: var(--navy);
+  margin-bottom: 34px;
+}
+.about-promise-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.about-promise-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 6px 16px;
+}
+.about-promise-item + .about-promise-item { border-left: 1px solid var(--line-soft); }
+.about-promise-ic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.about-promise-ic.tone-sky { background: var(--sky-50); color: #4b8fd0; }
+.about-promise-ic.tone-sage { background: var(--sage-50); color: #5f9469; }
+.about-promise-ic.tone-pink { background: var(--pink-50); color: #d97a8c; }
+.about-promise-ic.tone-cream { background: var(--cream-50); color: #d19a3c; }
+.about-promise-ic.tone-lavender { background: var(--lavender-50); color: #9878b4; }
+.about-promise-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: var(--navy);
+}
+
+@media (max-width: 860px) {
+
+  .about-story {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    margin: 48px 0;
+    padding: 0 24px;
+  }
+  .about-story-media { height: 260px; border-radius: var(--r-xl); }
+  .about-story-copy { max-width: none; }
+
+  .about-promise-grid { grid-template-columns: repeat(2, 1fr); gap: 26px 8px; }
+  .about-promise-item + .about-promise-item { border-left: none; }
+}
+
+/* Only collapse to one column on the narrowest phones — two columns keeps the
+   five promises to roughly one screenful instead of a long scroll. */
+@media (max-width: 340px) {
+  .about-promise-grid { grid-template-columns: 1fr; }
+}
 .made-in {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1520,7 +1644,7 @@ select:focus-visible {
    =========================================================== */
 @media (max-width: 1024px) {
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-  .why-grid, .promise-grid { grid-template-columns: repeat(3, 1fr); row-gap: 32px; }
+  .why-grid { grid-template-columns: repeat(3, 1fr); row-gap: 32px; }
   .trust { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 860px) {
@@ -1589,7 +1713,7 @@ select:focus-visible {
   }
   .favorites-grid > * { min-width: 0 !important; }
   .pdp { grid-template-columns: 1fr; gap: 32px; }
-  .quiz-cta, .made-in, .about-hero { grid-template-columns: 1fr; padding: 36px; }
+  .quiz-cta, .made-in, .shop-banner { grid-template-columns: 1fr; padding: 36px; }
   .journal-grid, .cart-layout { grid-template-columns: 1fr; }
   .section { padding: 56px 0; }
   .prod-add { position: static; transform: none; opacity: 1; margin-top: 12px; }
@@ -1727,7 +1851,7 @@ select:focus-visible {
     flex: 1;
     padding-bottom: 96px;
   }
-  .why-grid, .promise-grid, .trust { grid-template-columns: 1fr 1fr; }
+  .why-grid, .trust { grid-template-columns: 1fr 1fr; }
   .quiz-options { grid-template-columns: 1fr; }
   .feature-row { grid-template-columns: 1fr 1fr; gap: 18px; }
   .footer-grid { grid-template-columns: 1fr; }
@@ -1867,7 +1991,7 @@ select:focus-visible {
   .trust { grid-template-columns: 1fr; gap: 16px; padding: 22px; }
 
   /* Feature rows & why grids: single column */
-  .feature-row, .why-grid, .promise-grid { grid-template-columns: 1fr; }
+  .feature-row, .why-grid { grid-template-columns: 1fr; }
 
   /* Category grid: keep carousel on very small screens */
   .cat-scroll-mobile { margin-inline: -16px; padding-inline: 16px; }
@@ -2160,12 +2284,16 @@ select:focus-visible {
   transform: none;
   filter: none;
   transition: opacity .34s var(--ease), transform .34s var(--ease), filter .34s var(--ease);
-  will-change: opacity, transform, filter;
 }
+/* will-change only while the transition is actually running. Left on
+   permanently it makes this wrapper a containing block for every
+   position: fixed descendant, so drawers and overlays inside the page stop
+   being viewport-relative (and it pins a compositing layer for the whole app). */
 .page-transition.page-entering {
   opacity: .001;
   transform: translateY(14px) scale(.992);
   filter: blur(6px);
+  will-change: opacity, transform, filter;
 }
 
 /* Scroll reveal - add .reveal / .reveal-left / .reveal-right / .reveal-scale to elements */
@@ -2640,6 +2768,8 @@ select:focus-visible {
    COLLECTION PAGE
    =========================================================== */
 .collection-banner {
+  position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 1.3fr 1fr;
   gap: 32px;
@@ -2649,7 +2779,51 @@ select:focus-visible {
   border: 1px solid var(--line-soft);
   margin-top: 8px;
 }
-.collection-banner-media { aspect-ratio: 16/10; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+
+/* Two-column variant: the copy is vertically centred, so the strips above and
+   below it are the free space. */
+.collection-banner .deco-paw { width: 46px; height: 46px; top: 16px; left: 5%; }
+.collection-banner .deco-heart { width: 32px; height: 32px; top: 20px; left: 23%; }
+.collection-banner .deco-sparkle { width: 56px; height: 56px; bottom: 14px; left: 5%; }
+.collection-banner .deco-trail { width: 66px; height: 66px; bottom: 10px; left: 23%; }
+
+/* Full-bleed variant: the animals reach in to about 53%, so anything past that
+   disappears behind them. The marks sit in the band between the copy text and
+   the artwork, split across the top and bottom strips. */
+.collection-banner.has-art .deco-paw { top: 16px; left: 50%; }
+.collection-banner.has-art .deco-heart { top: 22px; left: 34%; }
+.collection-banner.has-art .deco-sparkle { bottom: 16px; left: 50%; }
+.collection-banner.has-art .deco-trail { bottom: 12px; left: 34%; }
+.collection-banner-media { position: relative; aspect-ratio: 16/10; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+/* Categories with no banner artwork fall back to their illustrated card, which
+   carries its own rounded background — so it floats on the banner tint rather
+   than sitting in a second shadowed frame. */
+.collection-banner-media.is-contain { box-shadow: none; }
+
+/* Categories that do have banner artwork drop the two-column split entirely:
+   the transparent PNG bleeds across the whole banner and the copy sits over
+   its empty left half. */
+.collection-banner.has-art {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  min-height: 260px;
+}
+.collection-banner.has-art .collection-banner-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 48%;
+}
+.collection-banner-art {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.collection-banner-art img {
+  object-fit: contain;
+  object-position: right bottom;
+}
 .collection-layout { display: flex; gap: 32px; align-items: start; width: 100%; }
 .filter-panel {
   width: 248px;
@@ -2728,13 +2902,285 @@ select:focus-visible {
    SHOP LANDING BANNER
    =========================================================== */
 .shop-banner {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-height: 280px;
   background: linear-gradient(120deg, var(--sky-50), var(--lavender-50));
   border: 1px solid var(--line-soft);
   border-radius: var(--r-xl);
   padding: 48px;
-  text-align: center;
 }
-.shop-banner .lead { margin-left: auto; margin-right: auto; }
+.shop-banner-copy { position: relative; z-index: 2; max-width: 54%; }
+
+/* Cut-out artwork, unframed. The source is trimmed to the animals (377x440),
+   so it can simply be anchored to the bottom-right of the panel at an explicit
+   height — they sit on the panel edge the way the artwork was cropped. */
+.shop-banner-art {
+  position: absolute;
+  right: 5%;
+  bottom: 0;
+  top: auto;
+  left: auto;
+  height: 88%;
+  aspect-ratio: 377 / 440;
+  z-index: 1;
+  pointer-events: none;
+}
+.shop-banner-art img {
+  object-fit: contain;
+  object-position: bottom;
+}
+
+/* Decorative icon-pack marks — shared base, positioned per banner below.
+   Uses the asset pack's recommended icon colour (#7DB1FF) rather than the
+   --sky token: that pastel is so close to the panel tint that the marks stay
+   invisible at any opacity. Colour carries the contrast, opacity keeps them
+   secondary to the copy. */
+.banner-deco {
+  position: absolute;
+  z-index: 0;
+  color: #7db1ff;
+  opacity: 0.85;
+  pointer-events: none;
+  line-height: 0;
+}
+.banner-deco svg { width: 100%; height: 100%; }
+.banner-deco.deco-sparkle { color: #a884d0; }
+.banner-deco.deco-heart { color: #ee8fa4; }
+.banner-deco.deco-trail { opacity: 0.7; }
+
+/* CTA banner: kept to the band between the copy (max 54%) and the artwork
+   (~73%+) so they never sit under the heading or the button. */
+.shop-banner .deco-paw { width: 54px; height: 54px; top: 26px; left: 60%; }
+.shop-banner .deco-sparkle { width: 68px; height: 68px; top: 44%; left: 56%; }
+.shop-banner .deco-heart { width: 38px; height: 38px; bottom: 40px; left: 66%; }
+.shop-banner .deco-trail { width: 78px; height: 78px; bottom: 14px; left: 56%; }
+
+/* ===========================================================
+   PAGE BANNER (journal / about / faq / contact)
+   Same tinted panel as the shop banners, but with no artwork —
+   the pack ships no cut-out for these pages, so the copy is
+   centred and the icon-pack marks carry the decoration.
+   =========================================================== */
+.page-banner {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 36px;
+  align-items: center;
+  background: linear-gradient(120deg, var(--sky-50), var(--lavender-50));
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-xl);
+  padding: 44px 48px;
+}
+.page-banner-copy { position: relative; z-index: 2; }
+.page-banner-copy .lead { max-width: 46ch; margin: 12px 0 0; }
+/* Each page sets its own aspect-ratio inline, matching its photo, so nothing
+   is cropped. Unframed — no radius, no shadow, no clipping; the edges are
+   masked away instead so the photo melts into the panel beside the copy. */
+.page-banner-media {
+  position: relative;
+  z-index: 1;
+}
+.page-banner-media img {
+  /* Two masks intersected so every edge dissolves. The left falls away
+     furthest, since that is the side facing the copy. */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 14%, #000 40%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 12%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 14%, #000 40%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 12%, #000 86%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* Marks live in the strips above and below the copy, which is vertically
+   centred beside the photo. */
+.page-banner .deco-paw { width: 48px; height: 48px; top: 18px; left: 4%; }
+.page-banner .deco-heart { width: 32px; height: 32px; top: 22px; left: 34%; }
+.page-banner .deco-sparkle { width: 58px; height: 58px; bottom: 16px; left: 4%; }
+.page-banner .deco-trail { width: 68px; height: 68px; bottom: 14px; left: 32%; }
+
+@media (max-width: 860px) {
+  .page-banner {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 32px 24px 24px;
+    text-align: center;
+  }
+  .page-banner-copy .lead { margin-inline: auto; }
+  /* Stacked: the photo sits below the copy, so the top edge is the one facing
+     it and takes the long fade instead of the left. */
+  .page-banner-media img {
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.45) 12%, #000 34%, #000 90%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.45) 12%, #000 34%, #000 90%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    mask-composite: intersect;
+  }
+  .page-banner .deco-paw { width: 36px; height: 36px; top: 10px; left: 4%; }
+  .page-banner .deco-trail { width: 50px; height: 50px; bottom: 8px; left: auto; right: 5%; }
+  /* No clear margin for the inner pair once the copy is full width. */
+  .page-banner .deco-sparkle,
+  .page-banner .deco-heart { display: none; }
+}
+
+/* ===========================================================
+   SHOP PAGE HERO BANNER
+   Copy and artwork side by side inside one tinted panel.
+   =========================================================== */
+.shop-hero-section { padding-top: 12px; padding-bottom: 0; }
+.shop-hero-banner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 28px;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(120deg, var(--sky-50), var(--lavender-50));
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-xl);
+  padding: 44px 48px;
+}
+.shop-hero-copy { position: relative; z-index: 2; }
+.shop-hero-copy .lead { margin: 0; max-width: 38ch; }
+/* Transparent artwork sits straight on the tint — no frame. */
+.shop-hero-art {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 2000 / 1037;
+}
+
+.shop-hero-banner .deco-paw { width: 50px; height: 50px; top: 22px; left: 6%; }
+.shop-hero-banner .deco-sparkle { width: 62px; height: 62px; bottom: 16%; left: 3%; }
+/* Was at right:3%, which put it behind the artwork where it never showed. */
+.shop-hero-banner .deco-heart { width: 36px; height: 36px; bottom: 14%; left: 28%; }
+.shop-hero-banner .deco-trail { width: 74px; height: 74px; bottom: 10px; left: 40%; }
+
+@media (max-width: 860px) {
+  .shop-hero-banner {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 30px 24px 24px;
+    text-align: center;
+  }
+  .shop-hero-copy .lead { margin-inline: auto; }
+  /* No free margin for scattered marks once the copy is full width. */
+  .shop-hero-banner .deco-paw,
+  .shop-hero-banner .deco-sparkle,
+  .shop-hero-banner .deco-heart { display: none; }
+  .shop-hero-banner .deco-trail { left: 14px; bottom: 6px; width: 58px; height: 58px; opacity: 0.25; }
+}
+
+@media (max-width: 860px) {
+  .shop-banner { min-height: 0; }
+  .shop-banner-copy { max-width: 100%; }
+  /* Stack instead of overlap. The source is 5.4:1 with the animals in a narrow
+     band, so it is cropped to them rather than shown as a near-empty strip. */
+  .shop-banner-art {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    height: auto;
+    width: 62%;
+    max-width: 240px;
+    margin: 18px auto 0;
+  }
+  .shop-banner-art img { object-fit: contain; object-position: bottom; }
+  /* Too little room for scattered marks once the copy is full width. */
+  .deco-paw,
+  .deco-sparkle,
+  .deco-heart { display: none; }
+  .deco-trail { left: 18px; bottom: 4px; width: 70px; height: 70px; opacity: 0.28; }
+}
+
+/* ===========================================================
+   QUIZ CTA (home)
+   Unframed: the photograph sits directly on the page and its
+   inner edge is masked away, so it reads as merged with the
+   copy rather than parked in a tinted panel.
+   =========================================================== */
+.quiz-photo-section { padding-top: 0; padding-bottom: 8px; }
+.quiz-photo {
+  position: relative;
+  aspect-ratio: 1500 / 1028;
+}
+/* Give the photo the larger share of the row — the copy only needs ~45ch,
+   so the remaining width is better spent on the image. */
+@media (min-width: 768px) {
+  .quiz-photo-grid { grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr); }
+}
+.quiz-photo-img {
+  /* Two masks intersected so every edge dissolves — a hard right or bottom
+     edge still reads as a photo box even once the panel is gone. The left
+     falls away furthest, since that is the side facing the copy. */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 16%, #000 42%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 10%, #000 84%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.45) 16%, #000 42%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 10%, #000 84%, transparent 100%);
+  mask-composite: intersect;
+}
+.quiz-photo-steps {
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  background: #fff;
+}
+
+@media (max-width: 767px) {
+  /* Stacked: the photo sits below the copy, so the top edge is the one facing
+     it and gets the long fade instead of the left. */
+  .quiz-photo-img {
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 14%, #000 38%, #000 88%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 14%, #000 38%, #000 88%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    mask-composite: intersect;
+  }
+}
+
+/* ===========================================================
+   PAGE HERO IMAGERY (shop / contact / faq)
+   =========================================================== */
+
+/* Transparent artwork, so `contain` letterboxes invisibly against the page
+   and the aspect can stay fixed across breakpoints without cropping. */
+
+/* Portrait companion image beside the contact form. Hidden on mobile so the
+   stacked layout doesn't push the form itself below a second screenful. */
+.contact-form-media { display: none; }
+@media (min-width: 861px) {
+  /* Unframed — no radius, shadow or clipping. The edges are masked away so the
+     photo dissolves into the white form card instead of sitting in a box. */
+  .contact-form-media {
+    display: block;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    margin-top: 16px;
+  }
+  /* The copy sits directly above, so the top edge takes the long fade. */
+  .contact-form-media img {
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.45) 12%, #000 34%, #000 88%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.45) 12%, #000 34%, #000 88%, transparent 100%),
+      linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
+    mask-composite: intersect;
+  }
+}
 
 /* Mobile-only shop sections — hidden on desktop */
 .shop-mobile-featured,
@@ -2795,6 +3241,24 @@ select:focus-visible {
 
 @media (max-width: 768px) {
   .collection-banner { grid-template-columns: 1fr; padding: 32px; }
+  /* Stacked copy leaves no clear band, and the art fills the lower half. */
+  .collection-banner .banner-deco { display: none; }
+  /* Stack instead of overlapping: the copy takes the full width and the art
+     drops below it, cropped to the animals so it isn't a mostly-empty strip
+     (the source is 4.3:1 with the left half intentionally blank). */
+  .collection-banner.has-art { min-height: 0; }
+  .collection-banner.has-art .collection-banner-copy { max-width: 100%; }
+  .collection-banner-art {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-top: 18px;
+  }
+  .collection-banner-art img {
+    object-fit: cover;
+    object-position: right center;
+  }
   .collection-layout { grid-template-columns: 1fr; }
   .filter-toggle { display: inline-flex; width: 100%; justify-content: center; padding: 14px; position: relative; z-index: 295; }
   .filter-scrim { display: none; }
@@ -2915,4 +3379,126 @@ select:focus-visible {
 @media (max-width: 560px) {
   .pets-grid { grid-template-columns: 1fr; }
   .rewards-meta { text-align: left; }
+}
+
+/* About's copy fills its column top to bottom, leaving no free strips — the two
+   marks that would sit under the eyebrow and the CTA move into the gap beside
+   the text instead. */
+.page-banner-tall .deco-paw { top: 12px; left: 38%; }
+.page-banner-tall .deco-trail { bottom: 12px; left: 38%; }
+.page-banner-tall .deco-heart,
+.page-banner-tall .deco-sparkle { display: none; }
+
+/* ===========================================================
+   SHOP · ALL PRODUCTS FILTER SIDEBAR
+   Persistent on desktop; reuses the collection drawer on mobile.
+   =========================================================== */
+.filter-count {
+  margin-left: auto;
+  font-style: normal;
+  font-size: 12px;
+  color: var(--text-soft);
+  opacity: 0.8;
+}
+.filter-check { display: flex; align-items: center; gap: 10px; }
+
+/* Price range slider */
+.filter-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--mist);
+  outline: none;
+  margin: 6px 0 10px;
+}
+.filter-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #4b8fd0;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(27, 42, 74, 0.3);
+  cursor: pointer;
+}
+.filter-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #4b8fd0;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(27, 42, 74, 0.3);
+  cursor: pointer;
+  border: none;
+}
+.filter-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+/* Reassurance block at the foot of the panel */
+.filter-trust {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--line-soft);
+  display: grid;
+  gap: 12px;
+}
+.filter-trust li { display: flex; align-items: center; gap: 10px; }
+.filter-trust-ic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--sky-50);
+  color: #4b8fd0;
+  flex-shrink: 0;
+}
+.filter-trust strong { display: block; font-size: 13px; color: var(--navy); }
+.filter-trust em { font-style: normal; font-size: 11.5px; color: var(--text-soft); }
+
+.collection-main { flex: 1; min-width: 0; }
+
+@media (max-width: 768px) {
+  /* The panel is always rendered for this section, so it must stay hidden
+     until opened — the shared .filter-panel drawer only slides in on .open. */
+  .shop-filter-panel:not(.open) { display: none; }
+}
+
+/* This section keeps its panel on screen at desktop, so the drawer toggle is
+   not needed there. Scoped: the collection page hides its panel instead and
+   still relies on the toggle being visible. */
+@media (min-width: 769px) {
+  .shop-all-layout .filter-toggle { display: none; }
+}
+
+/* Home "Find What Your Pet Needs": all six categories on one row, as designed.
+   Scoped to this section — the shop page keeps its 3-up grid. Below 861px the
+   .cat-scroll-mobile carousel takes over, so this only governs desktop. */
+.cat-grid.cat-grid-row {
+  grid-template-columns: repeat(6, 1fr);
+  max-width: none;
+  gap: 16px;
+}
+
+/* Shop page "Shop by Category": six across, but allowed past the 1200px wrap so
+   the cards stay a usable size — at the standard width six columns would leave
+   them ~177px, well under the 260px they get in the 3-up grid. */
+.shop-cat-wide {
+  max-width: 1480px;
+  padding-inline: 24px;
+}
+.shop-cat-wide .cat-grid.cat-grid-row {
+  gap: 18px;
+}
+.shop-cat-wide .cat-card {
+  max-width: none; /* the 6-col track is the constraint, not this cap */
 }

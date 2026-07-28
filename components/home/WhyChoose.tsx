@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   ShieldCheck,
   FlaskConical,
@@ -9,7 +10,6 @@ import {
   HandHeart,
   Sparkles,
   CalendarHeart,
-  MapPin,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -67,33 +67,50 @@ const BOTTOM_FEATURES = [
 
 /* ------------------------------------------------------------------ */
 /*  Decorative doodle SVGs                                             */
+/*  Paw / heart / sparkle come from the ClariPet decorative asset pack  */
+/*  (128x128 viewBox, currentColor, round caps) so they match the       */
+/*  hand-drawn brand style rather than being redrawn ad hoc.            */
 /* ------------------------------------------------------------------ */
+
+const DOODLE_TINT = { color: "#818cf8", opacity: 0.2 } as const;
 
 function DoodlePaw() {
   return (
-    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" className="select-none pointer-events-none" aria-hidden>
-      <ellipse cx="34" cy="40" rx="10" ry="9" stroke="#818cf8" strokeWidth="1.5" fill="none" opacity="0.18" />
-      <ellipse cx="21" cy="28" rx="5" ry="6" stroke="#818cf8" strokeWidth="1.5" fill="none" opacity="0.18" />
-      <ellipse cx="34" cy="22" rx="5" ry="6" stroke="#818cf8" strokeWidth="1.5" fill="none" opacity="0.18" />
-      <ellipse cx="47" cy="28" rx="5" ry="6" stroke="#818cf8" strokeWidth="1.5" fill="none" opacity="0.18" />
-      <ellipse cx="48" cy="44" rx="4" ry="5" stroke="#818cf8" strokeWidth="1.5" fill="none" opacity="0.18" />
+    <svg width="64" height="64" viewBox="0 0 128 128" fill="none" className="select-none pointer-events-none" aria-hidden style={DOODLE_TINT}>
+      <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.8">
+        <g transform="rotate(4 64 64)">
+          <path d="M46 70C37 74 31 83 33 93C35 103 44 107 53 103C61 99 68 100 76 104" />
+          <path d="M80 104C90 107 98 101 97 91C96 81 90 73 81 70C70 66 58 66 46 70" />
+          <path d="M39 56C32 57 28 52 28 46C28 39 32 34 38 34C44 34 48 40 47 46C46 52 43 55 39 56" />
+          <path d="M61 49C55 48 51 43 52 36C53 29 58 25 64 25C70 26 73 32 72 38C71 44 67 48 61 49" />
+          <path d="M87 56C81 57 76 53 76 47C75 40 80 35 86 35C92 35 96 41 95 47C94 53 91 55 87 56" />
+        </g>
+      </g>
     </svg>
   );
 }
 
 function DoodleHeartLine() {
   return (
-    <svg width="80" height="64" viewBox="0 0 80 64" fill="none" className="select-none pointer-events-none" aria-hidden>
-      <path d="M8 44 Q28 8 48 32 Q60 18 72 28" stroke="#818cf8" strokeWidth="1.5" strokeDasharray="4 3" fill="none" opacity="0.18" />
-      <path d="M66 24 C66 18 72 14 74 18 C76 14 82 18 82 24 C82 30 74 36 74 36 C74 36 66 30 66 24Z" stroke="#818cf8" strokeWidth="1.3" fill="none" opacity="0.18" transform="translate(-6,0)" />
+    <svg width="72" height="72" viewBox="0 0 128 128" fill="none" className="select-none pointer-events-none" aria-hidden style={DOODLE_TINT}>
+      <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        <path strokeWidth="3.4" d="M65 101C52 89 31 78 28 60C26 47 35 37 46 38C56 39 61 46 64 54" />
+        <path strokeWidth="3.4" d="M67 51C72 43 79 39 87 40C99 42 105 53 100 66C95 79 80 91 69 100" />
+        <path strokeWidth="2.4" d="M58 95C47 85 36 74 33 63" />
+      </g>
     </svg>
   );
 }
 
 function DoodleSparkle() {
   return (
-    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="select-none pointer-events-none" aria-hidden>
-      <path d="M24 4 L26 18 L40 20 L26 22 L24 36 L22 22 L8 20 L22 18 Z" stroke="#818cf8" strokeWidth="1.3" fill="none" opacity="0.18" />
+    <svg width="52" height="52" viewBox="0 0 128 128" fill="none" className="select-none pointer-events-none" aria-hidden style={DOODLE_TINT}>
+      <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.6">
+        <path d="M64 18C66 40 73 52 95 61" />
+        <path d="M99 64C76 70 67 83 64 108" />
+        <path d="M61 103C58 81 50 72 30 65" />
+        <path d="M33 61C52 54 60 43 62 23" />
+      </g>
     </svg>
   );
 }
@@ -150,41 +167,6 @@ function BotanicalRight() {
       <ellipse cx="150" cy="305" rx="10" ry="3.5" stroke="#A8C8A8" strokeWidth="1.3" fill="none" opacity="0.2" transform="rotate(12 150 305)" />
       <ellipse cx="170" cy="280" rx="11" ry="4" stroke="#A8C8A8" strokeWidth="1.3" fill="none" opacity="0.2" transform="rotate(-20 170 280)" />
       <ellipse cx="152" cy="270" rx="10" ry="3.5" stroke="#A8C8A8" strokeWidth="1.3" fill="none" opacity="0.18" transform="rotate(15 152 270)" />
-    </svg>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Bottom banner SVG illustration                                     */
-/* ------------------------------------------------------------------ */
-
-function BannerIllustration() {
-  return (
-    <svg width="280" height="200" viewBox="0 0 280 200" fill="none" className="w-full h-auto max-w-[260px]" aria-hidden>
-      <rect x="50" y="90" width="80" height="70" rx="3" fill="white" fillOpacity="0.3" stroke="white" strokeWidth="1.5" />
-      <rect x="60" y="100" width="25" height="30" rx="2" fill="white" fillOpacity="0.25" stroke="white" strokeWidth="1" />
-      <rect x="95" y="100" width="25" height="30" rx="2" fill="white" fillOpacity="0.25" stroke="white" strokeWidth="1" />
-      <rect x="60" y="140" width="60" height="20" rx="2" fill="white" fillOpacity="0.2" stroke="white" strokeWidth="1" />
-      <path d="M40 95 L90 70 L140 95" stroke="white" strokeWidth="1.5" fill="white" fillOpacity="0.15" />
-      <rect x="72" y="75" width="36" height="12" rx="2" fill="white" fillOpacity="0.2" />
-      <text x="90" y="84" textAnchor="middle" fill="white" fontSize="6" fontWeight="600" opacity="0.7">ClariPet</text>
-      <ellipse cx="190" cy="50" rx="28" ry="14" fill="white" fillOpacity="0.2" />
-      <ellipse cx="205" cy="46" rx="20" ry="12" fill="white" fillOpacity="0.15" />
-      <ellipse cx="60" cy="35" rx="22" ry="11" fill="white" fillOpacity="0.15" />
-      <ellipse cx="72" cy="32" rx="16" ry="9" fill="white" fillOpacity="0.12" />
-      <path d="M170 160 L175 130 L180 160Z" fill="white" fillOpacity="0.2" />
-      <path d="M220 160 L226 120 L232 160Z" fill="white" fillOpacity="0.18" />
-      <rect x="178" y="160" width="4" height="10" fill="white" fillOpacity="0.15" />
-      <rect x="228" y="160" width="4" height="10" fill="white" fillOpacity="0.13" />
-      <ellipse cx="140" cy="170" rx="130" ry="12" fill="white" fillOpacity="0.1" />
-    </svg>
-  );
-}
-
-function IndonesiaMap() {
-  return (
-    <svg width="140" height="100" viewBox="0 0 140 100" fill="none" className="select-none pointer-events-none" aria-hidden>
-      <path d="M10 55 Q20 48 35 50 Q45 45 55 48 Q60 42 70 45 Q80 40 90 44 Q95 38 105 42 Q110 36 120 40 Q125 35 130 38 L132 42 Q125 48 115 46 Q105 50 95 48 Q85 52 75 50 Q65 54 55 52 Q45 56 35 54 Q25 58 15 56Z" fill="#3669c9" fillOpacity="0.15" stroke="#3669c9" strokeWidth="1.2" strokeOpacity="0.25" />
     </svg>
   );
 }
@@ -350,6 +332,21 @@ export function WhyChoose() {
             overflow: "hidden",
           }}
         >
+          {/* Seamless grain tile from the brand asset pack; its README calls
+              for 5–8% opacity, which keeps the card from reading as flat white. */}
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              backgroundImage: "url('/images/texture/grain.png')",
+              backgroundRepeat: "repeat",
+              backgroundSize: "512px 512px",
+              opacity: 0.06,
+              pointerEvents: "none",
+              zIndex: 0,
+            }}
+          />
+
           {/* Botanicals bleeding in from edges — hidden below md */}
           <div className="hidden md:block absolute left-0 top-0 h-full" style={{ zIndex: 0, width: 200, pointerEvents: "none" }}>
             <div className="absolute" style={{ bottom: 0, left: 0 }}>
@@ -494,70 +491,29 @@ export function WhyChoose() {
           </div>
         </div>
 
-        {/* ---- Bottom banner ---- */}
-        <div
-          className="relative overflow-hidden flex flex-col md:flex-row items-center"
-          style={{
-            marginTop: 40,
-            borderRadius: 24,
-            background: "linear-gradient(135deg, #C9D6F5 0%, #9FB3E8 100%)",
-            minHeight: 160,
-            padding: "36px 48px",
-          }}
-        >
-          {/* Left illustration */}
-          <div className="flex-shrink-0 mb-6 md:mb-0 md:mr-8">
-            <BannerIllustration />
-          </div>
-
-          {/* Center text */}
-          <div className="flex-1 text-center md:text-left" style={{ zIndex: 1 }}>
-            <h3
-              className="font-bold"
-              style={{
-                fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)",
-                color: "#1B2A4A",
-                marginBottom: 4,
-              }}
-            >
-              Made in Indonesia
-            </h3>
-            <p
-              style={{
-                fontFamily: "var(--font-caveat)",
-                fontSize: "clamp(1.2rem, 2vw, 1.5rem)",
-                color: "#3669c9",
-                marginBottom: 4,
-              }}
-            >
-              Loved Everywhere. ♡
-            </p>
-            <p
-              style={{
-                fontSize: "0.85rem",
-                color: "#5A6072",
-              }}
-            >
-              Local pride, global love.
-            </p>
-          </div>
-
-          {/* Right — Indonesia map with pin */}
-          <div className="relative flex-shrink-0 mt-4 md:mt-0">
-            <IndonesiaMap />
-            <MapPin
-              size={22}
-              className="text-blue-600 absolute"
-              style={{
-                fill: "#3669c9",
-                color: "#3669c9",
-                left: "48%",
-                top: "48%",
-                transform: "translate(-50%, -50%)",
-              }}
-              aria-hidden
-            />
-          </div>
+        {/* ---- Bottom banner ----
+             Finished artwork with the copy baked into the image, so the
+             wording lives in alt text / an sr-only heading.  The 6.7:1 strip
+             renders ~56px tall on a 375px phone, where the baked-in type is
+             illegible — hence the squarer crop below md. */}
+        <div className="relative overflow-hidden" style={{ marginTop: 40, borderRadius: 24 }}>
+          <h3 className="sr-only">Made in Indonesia, Loved Everywhere. Local pride, global love.</h3>
+          <Image
+            src="/images/made-in-indonesia-wide.png"
+            alt="Made in Indonesia, Loved Everywhere — local pride, global love"
+            width={2400}
+            height={360}
+            sizes="(min-width: 768px) 1200px, 1px"
+            className="hidden md:block w-full h-auto"
+          />
+          <Image
+            src="/images/made-in-indonesia-narrow.png"
+            alt=""
+            width={1600}
+            height={683}
+            sizes="(max-width: 767px) 100vw, 1px"
+            className="block md:hidden w-full h-auto"
+          />
         </div>
       </div>
 

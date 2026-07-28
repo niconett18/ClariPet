@@ -16,6 +16,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Stabilizer Complex, Aromatic Blend, Glycerin, Aloe Vera Extract",
     howto: "Semprotkan secukupnya pada area tubuh hewan peliharaan dari jarak sekitar 10–15cm. Hindari area mata, hidung, mulut, dan telinga bagian dalam.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Freshness"],
   },
   {
     slug: "claripet-botanica-bloom",
@@ -32,6 +33,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Stabilizer Complex, Aromatic Blend, Glycerin, Aloe Vera Extract",
     howto: "Semprotkan secukupnya pada area tubuh hewan peliharaan dari jarak sekitar 15–20 cm. Hindari area mata, hidung, mulut, dan telinga bagian dalam.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Freshness"],
   },
   {
     slug: "claripet-baby-powder",
@@ -48,6 +50,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Stabilizer Complex, Aromatic Blend, Glycerin, Aloe Vera Extract",
     howto: "Semprotkan secukupnya pada area tubuh hewan peliharaan dari jarak sekitar 15–20 cm. Hindari area mata, hidung, mulut, dan telinga bagian dalam.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Freshness"],
   },
   {
     slug: "claripet-warm-vanilla",
@@ -64,6 +67,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Stabilizer Complex, Aromatic Blend, Glycerin, Aloe Vera Extract",
     howto: "Semprotkan secukupnya pada area tubuh hewan peliharaan dari jarak sekitar 15–20 cm. Hindari area mata, hidung, mulut, dan telinga bagian dalam.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Freshness"],
   },
   {
     slug: "claripet-milky-moo",
@@ -80,6 +84,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Stabilizer Complex, Aromatic Blend, Glycerin, Aloe Vera Extract",
     howto: "Semprotkan secukupnya pada area tubuh hewan peliharaan dari jarak sekitar 15–20 cm. Hindari area mata, hidung, mulut, dan telinga bagian dalam.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Freshness"],
   },
   {
     slug: "claripet-breath",
@@ -96,6 +101,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Glycerin, Aloe Vera Extract, Proteolytic Enzyme, Sodium Bicarbonate, Sodium Hyaluronate, Natural Hydrosol, Mint Flavor, Pet-Safe Preservative, Citric Acid.",
     howto: "Teteskan 2–3 tetes pada area gusi bagian kiri dan kanan SETELAH makan & minum atau sebelum tidur. Hindari pemberian makanan dan minuman selama 10–15 menit setelah penggunaan untuk hasil yang optimal.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Freshness"],
   },
   {
     slug: "claripet-tear-stain-remover",
@@ -117,6 +123,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Aqua, Aloe Vera Extract, Cucumber Extract, Chamomile Extract, Preservative System.",
     howto: "Kocoak terlebih dahulu,  dan basahi kapas atau cotton pad dengan produk, lalu usapkan secara lembut pada area sekitar mata. Gunakan kapas yang berbeda untuk setiap mata dan hindari kontak langsung dengan bola mata.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Tear Stain"],
   },
   {
     slug: "claripet-magic-ear-cleaner",
@@ -142,6 +149,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Purified Water, Boric Acid, Aloe Vera Extract, Glycerin, Preservative System.",
     howto: "Teteskan secukupnya ke dalam telinga, pijat pangkal telinga secara lembut selama beberapa detik, lalu biarkan hewan peliharaan menggelengkan kepala. Bersihkan sisa kotoran yang keluar menggunakan kapas atau tisu bersih.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Grooming"],
   },
   {
     slug: "claripet-gentle-wash-shampoo",
@@ -158,6 +166,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Sulfur, Aloe Vera Extract, Vitamin B5, Hydrolyzed Collagen, Glycerin, Natural Cleansing Agents, Preservative System, Aromatic Blend",
     howto: "Basahi seluruh tubuh hewan peliharaan dengan air.\nTuangkan sampo secukupnya ke telapak tangan atau langsung ke bulu.\nPijat secara lembut hingga berbusa dan merata ke seluruh tubuh.\nDiamkan selama 3–5 menit agar formula bekerja secara optimal.\nBilas hingga bersih dan keringkan seperti biasa.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Grooming"],
   },
   {
     slug: "claripet-vitabulu-spray",
@@ -183,6 +192,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Aloe Vera Extract, Hydrolyzed Collagen, Glycerin, Vitamin B5, Cucumber Extract, Polysorbate 20, Conditioning Agents, Preservative System, Aromatic Blend.",
     howto: "Semprotkan secukupnya ke bulu hewan peliharaan dari jarak sekitar 15–20 cm. Sisir atau ratakan menggunakan tangan agar produk tersebar merata pada bulu.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Grooming"],
   },
   {
     slug: "claripet-vitabulu-beauty-shampoo",
@@ -208,6 +218,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Aloe Vera Extract, Hydrolyzed Collagen, Glycerin, Vitamin B5, Cucumber Extract, Natural Cleansing Agents, Conditioning Agents, Preservative System, Aromatic Blend.",
     howto: "Basahi seluruh tubuh hewan peliharaan dengan air.\nAplikasikan sampo secukupnya dan pijat secara lembut hingga berbusa.\nRatakan ke seluruh tubuh hingga bulu dan kulit terlapisi dengan baik.\nDiamkan selama 2–3 menit.\nBilas hingga bersih dan keringkan seperti biasa.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Grooming"],
   },
   {
     slug: "claripet-vitabulu-beauty-powder",
@@ -224,6 +235,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Natural Starch, Marine Collagen Tripeptide, Oat, Egg Yolk, Cold-Milled Golden Flaxseed, Vitamin E, Probiotic, Silicon Dioxide.",
     howto: "Campurkan dosis yang dianjurkan ke dalam makanan harian hewan peliharaan hingga tercampur merata.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Grooming"],
   },
   {
     slug: "claripet-pet-odor-remover-sereh",
@@ -249,6 +261,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Hydrogen Peroxide, Sodium Bicarbonate, Stabilizing Complex, Aromatic Blend, Pet-Safe Preservative",
     howto: "Semprotkan secukupnya pada area yang ingin dibersihkan atau disegarkan. Diamkan hingga mengering dengan sendirinya. Untuk bau yang lebih kuat, ulangi penggunaan sesuai kebutuhan.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Odor Control"],
   },
   {
     slug: "claripet-pet-odor-remover-fresh",
@@ -274,6 +287,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Hydrogen Peroxide, Sodium Bicarbonate, Stabilizing Complex, Aromatic Blend, Pet-Safe Preservative",
     howto: "Semprotkan secukupnya pada area yang ingin dibersihkan atau disegarkan. Diamkan hingga mengering dengan sendirinya. Untuk bau yang lebih kuat, ulangi penggunaan sesuai kebutuhan.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Odor Control"],
   },
   {
     slug: "claripet-shu-shu-cat",
@@ -300,6 +314,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Denatonium Benzoate, Cat-Specific Aroma Blend, Stabilizer Complex, Pet-Safe Preservative",
     howto: "Semprotkan secukupnya pada area atau benda yang ingin dilindungi. Ulangi penggunaan secara berkala hingga perilaku yang tidak diinginkan berkurang.",
     petType: ["Cat"] as any,
+    concern: ["Odor Control"],
   },
   {
     slug: "claripet-shu-shu-dog",
@@ -326,6 +341,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Denatonium Benzoate, Dog-Specific Aroma Blend, Stabilizer Complex, Pet-Safe Preservative",
     howto: "Semprotkan secukupnya pada area atau benda yang ingin dilindungi. Untuk area yang sering dijadikan tempat buang air, semprotkan pada area tersebut setelah dibersihkan terlebih dahulu. Ulangi penggunaan secara berkala sesuai kebutuhan.",
     petType: ["Dog"] as any,
+    concern: ["Odor Control"],
   },
   {
     slug: "claripet-skin-guard-silver-heal",
@@ -350,6 +366,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Purified Aqua, Silverheal Nano Complex",
     howto: "Semprotkan langsung pada area kulit yang ingin dirawat hingga area tersebut cukup lembap. Biarkan mengering secara alami dan ulangi sesuai kebutuhan.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Sensitive Skin"],
   },
   {
     slug: "claripet-skin-guard-fungal-spray",
@@ -374,6 +391,7 @@ export const PRODUCTS: Product[] = [
     ingredients: "Water, Stabilizer Complex, Natural Extract, Zinc PCA, Pet-Safe Preservative",
     howto: "Semprotkan langsung pada area kulit yang membutuhkan perawatan hingga area tersebut cukup lembap. Biarkan mengering secara alami. Hindari area mata dan mulut.",
     petType: ["Cat","Dog"] as any,
+    concern: ["Sensitive Skin"],
   },
 ];
 
