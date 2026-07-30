@@ -787,7 +787,18 @@ function CheckoutStyles() {
       .pay-btn { width:100%; height:46px; border:0; border-radius:8px; background:#111; color:#fff; font-weight:800; cursor:pointer; }
       .pay-btn:disabled:not(.loading) { background:#edf0f3; color:#a0a8b1; cursor:not-allowed; }
       .empty-checkout .center-card { display:grid; place-items:center; text-align:center; gap:10px; }
-      @media (max-width: 980px) { .checkout-grid { grid-template-columns:minmax(0, 1fr); gap:22px; width: 100%; max-width: 100%; } .checkout-sidebar { position:static; } .two-col { grid-template-columns:1fr; } }
+      @media (max-width: 980px) { .checkout-grid { grid-template-columns:minmax(0, 1fr); gap:22px; width: 100%; max-width: 100%; } .checkout-sidebar { position:static; } .two-col { grid-template-columns:1fr; }
+        /* .checkout-main has no explicit columns, so its implicit track is an
+           auto track — it sizes to max-content and overflows instead of
+           clamping to the 358px container. The widest descendants (the voucher
+           row and the 35-option province select) dragged the whole form out to
+           763px, clipping every field off the right edge. minmax(0, 1fr) lets
+           the track shrink to the container. */
+        .checkout-main { grid-template-columns: minmax(0, 1fr); }
+        /* Bare text buttons — 26-40px tall by default, too small to tap reliably. */
+        .voucher-head button { min-height: 44px; padding: 0 4px; margin-right: -4px; }
+        .summary-head button { min-height: 44px; padding: 0 10px; margin-right: -10px; }
+      }
       @media (max-width: 640px) { .checkout-page { padding-top:18px; } .checkout-card, .side-card, .inner-card { padding:16px; min-width: 0; } .inner-card { border: none; padding: 0; } .inner-card h3 { margin-top: 4px; } .divider { margin: 16px 0; } .checkout-item { grid-template-columns:54px minmax(0,1fr); gap:10px; width: 100%; max-width: 100%; } .checkout-item b { grid-column:2; white-space: nowrap; text-align: right; } .destination-list { max-height:200px; } .courier-opt { grid-template-columns:18px 44px minmax(0,1fr) auto; gap:9px; padding:12px; width: 100%; max-width: 100%; } .courier-logo-img { width:44px; height:28px; } .courier-info strong { font-size:12.5px; } .courier-fee b { font-size:13px; } .saved-addr-head { flex-direction: column; align-items: flex-start; gap: 8px; } .saved-addr-grid { grid-template-columns: 1fr; } }
     `}</style>
   );

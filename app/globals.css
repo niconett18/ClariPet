@@ -70,6 +70,10 @@
   /* Layout */
   --maxw: 1200px;
   --nav-h: 76px;
+  /* Horizontal gutter used by .wrap. Full-bleed scroll rows negate it with
+     calc(-1 * var(--wrap-pad)) so their edges always line up with the gutter
+     instead of overhanging it (which caused 1-2px of horizontal scroll). */
+  --wrap-pad: 28px;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -118,7 +122,7 @@ select:focus-visible {
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 0 28px;
+  padding: 0 var(--wrap-pad);
 }
 
 .section { padding: 84px 0; }
@@ -1153,7 +1157,6 @@ select:focus-visible {
   }
   .pdp-mobile-price { display: none !important; }
   .pdp-buy { display: none; }
-  body { padding-bottom: 128px; }
 }
 .qstep {
   display: inline-flex;
@@ -1661,8 +1664,8 @@ select:focus-visible {
     scroll-snap-type: x mandatory;
     gap: 12px;
     padding-bottom: 12px;
-    margin-inline: -24px;
-    padding-inline: 24px;
+    margin-inline: calc(-1 * var(--wrap-pad));
+    padding-inline: var(--wrap-pad);
     -webkit-overflow-scrolling: touch;
   }
   .cat-scroll-mobile > * {
@@ -1673,14 +1676,14 @@ select:focus-visible {
     flex-shrink: 0;
   }
   .cat-scroll-mobile .cat-card { border-radius: var(--r-md); overflow: hidden; }
-  .prod-grid { 
-    display: flex; 
-    overflow-x: auto; 
-    scroll-snap-type: x mandatory; 
-    padding-bottom: 16px; 
-    margin-inline: -24px; 
-    padding-inline: 24px; 
-    gap: 16px; 
+  .prod-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 16px;
+    margin-inline: calc(-1 * var(--wrap-pad));
+    padding-inline: var(--wrap-pad);
+    gap: 16px;
   }
   .prod-grid > * { 
     min-width: 260px; 
@@ -1775,7 +1778,7 @@ select:focus-visible {
     flex-shrink: 1 !important;
     scroll-snap-align: none;
   }
-  .wrap { padding: 0 16px; }
+  :root { --wrap-pad: 16px; }
   .prod-price { font-size: 15px; }
   .prod-name { font-size: 14px; }
   .prod-foot { flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 6px; }
@@ -1810,14 +1813,14 @@ select:focus-visible {
   .nav.scrolled .nav-inner {
     box-shadow: none;
   }
-  .prod-grid { 
-    display: flex; 
-    overflow-x: auto; 
-    scroll-snap-type: x mandatory; 
-    padding-bottom: 16px; 
-    margin-inline: -16px; 
-    padding-inline: 16px; 
-    gap: 12px; 
+  .prod-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 16px;
+    margin-inline: calc(-1 * var(--wrap-pad));
+    padding-inline: var(--wrap-pad);
+    gap: 12px;
   }
   .prod-grid > * { 
     min-width: 220px; 
@@ -1855,11 +1858,11 @@ select:focus-visible {
   .quiz-options { grid-template-columns: 1fr; }
   .feature-row { grid-template-columns: 1fr 1fr; gap: 18px; }
   .footer-grid { grid-template-columns: 1fr; }
-  .pdp-gallery { 
-    display: flex; 
-    flex-direction: column-reverse; 
-    gap: 16px; 
-    margin-inline: -16px; 
+  .pdp-gallery {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 16px;
+    margin-inline: calc(-1 * var(--wrap-pad));
   }
   .pdp-main-wrap { position: relative; }
   .pdp-carousel {
@@ -1977,7 +1980,7 @@ select:focus-visible {
    SMALL PHONES (<=400px) — final safety net
    =========================================================== */
 @media (max-width: 400px) {
-  .wrap { padding: 0 14px; }
+  :root { --wrap-pad: 14px; }
 
   /* Section heads: stack title and "view all" so neither clips */
   .sec-head {
@@ -1992,9 +1995,6 @@ select:focus-visible {
 
   /* Feature rows & why grids: single column */
   .feature-row, .why-grid { grid-template-columns: 1fr; }
-
-  /* Category grid: keep carousel on very small screens */
-  .cat-scroll-mobile { margin-inline: -16px; padding-inline: 16px; }
 
   /* Reduce oversized section padding */
   .section { padding: 44px 0; }
@@ -3199,8 +3199,8 @@ select:focus-visible {
     scroll-snap-type: x mandatory;
     gap: 14px;
     padding-bottom: 16px;
-    margin-inline: -16px;
-    padding-inline: 16px;
+    margin-inline: calc(-1 * var(--wrap-pad));
+    padding-inline: var(--wrap-pad);
     -webkit-overflow-scrolling: touch;
   }
   .shop-featured-row > * {
@@ -3223,8 +3223,8 @@ select:focus-visible {
     scroll-snap-type: x mandatory;
     gap: 12px;
     padding-bottom: 12px;
-    margin-inline: -16px;
-    padding-inline: 16px;
+    margin-inline: calc(-1 * var(--wrap-pad));
+    padding-inline: var(--wrap-pad);
     -webkit-overflow-scrolling: touch;
   }
   .cat-scroll > * {
@@ -3501,4 +3501,110 @@ select:focus-visible {
 }
 .shop-cat-wide .cat-card {
   max-width: none; /* the 6-col track is the constraint, not this cap */
+}
+
+/* ===========================================================
+   MOBILE DEPLOY POLISH
+   Everything below is inside a max-width media query, so the
+   desktop layout is untouched. Appended last so these rules win
+   over the earlier breakpoint blocks without needing specificity
+   hacks beyond the utility-class !important.
+   =========================================================== */
+
+@media (max-width: 860px) {
+  /* `.desktop-only` was only ever hidden inside `.nav-actions`, so every other
+     use of it stayed visible on phones. The worst offender was
+     `.pdp-thumbs.desktop-only`: a non-shrinkable 608px-wide thumbnail strip
+     that widened the product grid past the viewport. Because <body> only clips
+     overflow (overflow-x:hidden) the page still reported a 607px layout
+     viewport, which pushed the phone *out* of the `max-width: 560px` range and
+     silently disabled every small-screen PDP rule. Hiding the utility properly
+     removes the overflow and lets those rules apply again. */
+  .desktop-only { display: none !important; }
+
+  /* With the thumbnail rail hidden, drop the 84px track it used to occupy so
+     tablets don't render the main image against an empty gutter. (Below 560px
+     the gallery switches to flex column-reverse and this is inert.) */
+  .pdp-gallery { grid-template-columns: 1fr; }
+
+  /* Several classes combine with `.wrap` and then reset padding with a
+     shorthand — `.section`/`.section-sm` use `padding: Npx 0` and `.pdp` uses
+     `padding: 28px 0 64px` — which silently zeroes the horizontal gutter
+     `.wrap` provides. Two consequences on phones: headings sat flush against
+     the screen edge (left=0), and the full-bleed carousels inside them had no
+     gutter to cancel, so their negative margins hung ~14px past both edges and
+     pushed the layout viewport wide. Restoring the gutter fixes both. */
+  .wrap.section,
+  .wrap.section-sm,
+  .pdp { padding-inline: var(--wrap-pad); }
+
+  /* 16px is the threshold below which iOS Safari zooms the page when a field
+     gains focus — it fires on every checkout input and never zooms back out.
+     !important because several field styles are set via id/nested selectors. */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* Touch targets: 44px is the minimum comfortable hit area. */
+  .wishlist { width: 44px; height: 44px; }
+  .mobile-add-btn { width: 44px !important; height: 44px !important; }
+  .shop-cat-pill { min-height: 44px; display: inline-flex; align-items: center; }
+  .footer-col ul { gap: 0; }
+  .footer-col a { display: inline-block; padding: 11px 0; }
+  .pw-toggle { width: 44px !important; height: 44px !important; }
+
+  /* Inline auth links sit in the purchase funnel, so give them a real hit area
+     rather than the ~20px their line box provides. */
+  .forgot-link,
+  .auth-footer a { display: inline-block; padding: 11px 0; }
+  .back-home { display: inline-flex; align-items: center; min-height: 44px; }
+
+  /* Browse navigation: "View All" links and breadcrumbs are how shoppers move
+     between listings, but their line boxes are only ~21-24px tall. */
+  .sec-head .link,
+  .journal-more-link,
+  .breadcrumb a,
+  .breadcrumb .cur { display: inline-flex; align-items: center; min-height: 44px; }
+  .breadcrumb { padding-top: 8px; }
+
+  /* Footer legal row — present on every page, only 21px tall. */
+  .footer-legal { flex-wrap: wrap; }
+  .footer-legal a { display: inline-flex; align-items: center; min-height: 44px; }
+
+  /* Filter pills (order status, shop facets) sit at ~39px. */
+  .filter-pills .pill { min-height: 44px; }
+
+  /* Carousel dots stay 6px visually but get a finger-sized hit area. */
+  .pdp-carousel-dots { gap: 0; }
+  .pdp-dot {
+    width: 22px;
+    height: 22px;
+    background: none;
+    display: grid;
+    place-items: center;
+  }
+  .pdp-dot::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: var(--r-pill);
+    background: var(--line);
+    transition: all .2s var(--ease);
+  }
+  .pdp-dot.active { width: 30px; background: none; }
+  .pdp-dot.active::before { width: 18px; background: var(--navy); }
+}
+
+@media (max-width: 768px) {
+  /* Bottom-bar clearance.
+     Each of these bars is fixed to the bottom and they are mutually exclusive
+     by route (BottomNav hides itself on /product/, /cart and /checkout), so the
+     page only ever needs to clear whichever one it actually renders. Without
+     this the footer's last rows sit underneath the bar and can't be tapped. */
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  body:has(.pdp-sticky-bar) { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+  body:has(.checkout-sticky-pay) { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+  body:has(.mobile-cart-bar) { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
 }

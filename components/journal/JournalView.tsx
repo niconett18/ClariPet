@@ -260,7 +260,7 @@ export function JournalView({
           </h2>
           <Link
             href="/journal"
-            className="inline-flex items-center gap-1.5 text-navy font-semibold text-[14px] hover:underline"
+            className="journal-more-link inline-flex items-center gap-1.5 text-navy font-semibold text-[14px] hover:underline"
           >
             View All Articles
             <Icon name="arrowRight" size={16} />
@@ -288,7 +288,7 @@ export function JournalView({
           </h2>
           <Link
             href="/journal"
-            className="inline-flex items-center gap-1.5 text-navy font-semibold text-[14px] hover:underline"
+            className="journal-more-link inline-flex items-center gap-1.5 text-navy font-semibold text-[14px] hover:underline"
           >
             View All Articles
             <Icon name="arrowRight" size={16} />

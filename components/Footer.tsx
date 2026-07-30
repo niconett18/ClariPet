@@ -14,7 +14,7 @@ export function Footer() {
             <div className="brand" style={{ marginBottom: "1rem" }}>
               <Image src="/brand/logo-light.png" alt="ClariPet" width={140} height={46} className="object-contain" />
             </div>
-            <p className="footer-blurb" style={{ fontWeight: 500, marginBottom: 8, color: "var(--text)" }}>
+            <p className="footer-blurb" style={{ fontWeight: 500, marginBottom: 8, color: "#fff" }}>
               Helping You Help Them.
             </p>
             <p className="footer-blurb">
